@@ -1,0 +1,53 @@
+# -------------------------------------------------------------------------- #
+#                             DEPENDENCIES                                 #
+# -------------------------------------------------------------------------- #
+
+# Node.js dependencies are automatically installed via `npm install`.
+# We don't need to commit them to the repository, which keeps it small.
+node_modules/
+
+# -------------------------------------------------------------------------- #
+#                             ENVIRONMENT FILES                            #
+# -------------------------------------------------------------------------- #
+
+# This is critical for security. The .env files contain sensitive
+# data like API keys and database connection strings.
+.env
+.env.local
+
+# -------------------------------------------------------------------------- #
+#                         BUILD ARTIFACTS AND LOGS                         #
+# -------------------------------------------------------------------------- #
+
+# These are compiled or generated files that are not part of the source code.
+# They can be re-created by running the build command.
+/client/build/
+/client/dist/
+dist/
+dist-ssr/
+
+# Logs and temporary files.
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+.eslintcache
+logs/
+*.log
+
+# -------------------------------------------------------------------------- #
+#                             IDE AND OS FILES                             #
+# -------------------------------------------------------------------------- #
+
+# These files are created automatically by your operating system or IDE
+# and are not needed by other developers.
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

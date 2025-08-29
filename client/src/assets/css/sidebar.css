@@ -1,0 +1,104 @@
+.sideBar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: var(--background-color);
+    width: 15rem;
+    height: 100vh;
+    padding: 2em 1em;
+    box-sizing: border-box;
+    transition: 0.25s all;
+
+}
+
+.sideBarMenu ul {
+    padding: 1em 0 0 0;
+    overflow: hidden;
+    text-overflow: ellipsis
+}
+
+.sideBarMenu ul li::marker {
+    color: #1c274c00;
+}
+
+.sideBarMenu li {
+    padding: 5px;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+.sideBarMenu ul li a {
+    justify-content: left;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+.sideBarMenu ul li a .txt {
+    padding-left: 0.5em;
+    color: #1c274c;
+    font-size: 14px;
+}
+
+.sideBarMenu ul li:hover {
+    background-color: rgba(128, 128, 128, 0.153);
+    transition: 0.25s all;
+}
+
+.sideBarMenu ul li.active {
+    background-color: var(--button-hover);
+}
+
+.sidebarImage {
+    width: 1.3em;
+}
+
+.sideBar .profileImage {
+    width: 2em;
+    border-radius: 50%;
+}
+
+.sideBar .profileToggleContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.profileToggleContainer .profile {
+    display: flex;
+    align-items: center;
+}
+
+.profileToggleContainer .profile:hover {
+    cursor: pointer;
+}
+
+.profileToggleContainer span {
+    margin: 0 0 0 0.5em;
+}
+
+.sideBarMenu .txt {
+    white-space: nowrap;
+}
+
+.sideBar.active {
+    width: 4rem;
+}
+
+.sideBar.active .profileToggleContainer span {
+    display: none;
+    /* opacity: 0; */
+}
+
+.sideBar.active .sideBarMenu ul li a .txt {
+    display: none;
+    /* opacity: 0; */
+}
+
+.sideBar.active .sideBarMenu ul li a {
+    justify-content: center;
+}
+
+.sideBar.active .profileToggleContainer a {
+    margin-left: 1.5em;
+}
