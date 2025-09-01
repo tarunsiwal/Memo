@@ -1,14 +1,16 @@
 .sideBar {
-    position: absolute;
+    position: fixed;
     left: 0;
     top: 0;
+    z-index: 2;
     background-color: var(--background-color);
     width: 15rem;
     height: 100vh;
     padding: 2em 1em;
     box-sizing: border-box;
     transition: 0.25s all;
-
+    box-sizing: border-box;
+    box-shadow: var(--bs-box-shadow) !important;
 }
 
 .sideBarMenu ul {
@@ -32,6 +34,7 @@
     display: flex;
     align-items: center;
     flex-direction: row;
+    text-decoration: none;
 }
 
 .sideBarMenu ul li a .txt {
@@ -101,4 +104,20 @@
 
 .sideBar.active .profileToggleContainer a {
     margin-left: 1.5em;
+}
+
+.dynamicCalendarIcon {
+    position: relative;
+    display: inline-flex;
+    justify-content: center;
+}
+
+.dynamicCalendarIcon span {
+    position: absolute;
+    font-size: 0.7em;
+    color: #1c274c;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    top: 4.5px;
 }

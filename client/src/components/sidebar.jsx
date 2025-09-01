@@ -11,7 +11,7 @@ import calenderUpcoming from '../assets/images/svg/calendar-upcoming.svg'
 import sidebar from '../assets/images/svg/sidebar.svg'
 import profile from '../assets/images/svg/profile.jpg'
 import add from '../assets/images/svg/add.svg'
-
+import Popup from "./popup";
 
 function Sidebar() {
   const uselocation = useLocation()
@@ -23,7 +23,6 @@ function Sidebar() {
   };
   const handleCloseSidebar = () => {
       setCloseSidebar(!closeSidebar)
-      console.log("toggle")
   };
   return (
     <div className={closeSidebar === false ? 'sideBar': 'sideBar active'}>
@@ -63,9 +62,9 @@ function Sidebar() {
           </Link>
         </li>
         <li>
-          <Link to='/updates'>
+          <Link to='/upcoming'>
             <img src={calenderUpcoming} alt='calenderUpcoming' className='sidebarImage'></img>
-            <span className="txt">Upcomings</span>
+            <span className="txt">Upcoming</span>
           </Link>
         </li>
         <li>

@@ -1,0 +1,79 @@
+.popup-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.popup {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 500px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    margin-bottom: 0.5rem;
+    /* font-weight: bold;    */
+}
+
+.form-group input,
+.form-group textarea {
+    width: auto;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.form-group textarea:focus-visible,
+.form-group textarea:focus {
+    border: 1px solid #ccc;
+
+}
+
+.form-group textarea {
+    min-height: 80px;
+    /* Initial expandable height */
+    max-height: 200px;
+    /* Maximum height before scrolling begins */
+    overflow-y: auto;
+    /* Adds scrollbar when max-height is reached */
+    resize: vertical;
+    /* Allows user to manually resize vertically */
+}
+
+.text-area {
+    width: 100%;
+}
+
+.popup-btn {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+}
+
+.popup-btn .task-dueDate-Priority {
+    display: flex;
+    align-items: center;
+    color: var(--root);
+}
+
+.popup-btn .submit-btn {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
