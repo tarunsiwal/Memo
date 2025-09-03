@@ -1,10 +1,13 @@
 import React from "react";
 import { Container } from "react-bootstrap";
+import Dropdown from 'react-bootstrap/Dropdown';
 import { useState, useEffect } from "react";
+
 import MenuDot from "../assets/images/svg/menu-dots.svg"
 
-function Tasks({ taskList, isLoading, error, onTaskDeleted }) {
- const [isMenuOpen, setIsMenuOpen] = useState(false);
+import Spinner from "./helper/spinner"
+
+function Tasks({ taskList, isLoading, error, onTaskDeleted, isGridClose }) {
 
   const handleDelete = async (id) => {
     try {
@@ -23,25 +26,25 @@ function Tasks({ taskList, isLoading, error, onTaskDeleted }) {
       console.error("Fetching error:", err);
     }
   };
-  const toggleMenu = () => {
-        setIsMenuOpen(!isMenuOpen);
-    };
-  // Check for loading or error state first to prevent rendering issues.
   if (isLoading) {
-    return <p>Loading tasks...</p>;
+    return (<div className='mainContainer gap-4 p-4'>
+      <Spinner/>
+      </div>)
   }
 
   if (error) {
-    return <p>Error: {error.message}</p>;
+    return (<div className='mainContainer gap-4 p-4'>
+      <p>Error: {error.message}</p>
+      </div>)
   }
 
-  // Check if taskList is empty before trying to map over it.
   if (!taskList || taskList.length === 0) {
     return <p>No tasks found.</p>;
   }
-   const rotationStyle = { transform: 'rotate(90deg)' };
+  const rotationStyle = { transform: 'rotate(90deg)' };
+  let dFlex = isGridClose ? {display: 'block'} :  {display: 'flex'}
   return (
-    <div className="flex flex-col gap-4 p-4">
+    <div className='mainContainer gap-4 p-4' style={dFlex}>
       {taskList.map((task) => {
         const dateObject = new Date(task.dueDate);
         const localizedDate =
@@ -50,7 +53,8 @@ function Tasks({ taskList, isLoading, error, onTaskDeleted }) {
             : null;
 
         return (
-          <Container key={task._id} className="container-sm border rounded-lg shadow-md p-4 space-y-2 tasks-card">
+          <Container key={task._id} 
+          className="container-sm border rounded-lg shadow-md p-4 space-y-2 tasks-card">
             <h3 className="text-xl font-bold text-gray-800">{task.title}</h3>
             <p className="text-sm text-gray-600 italic">{task.description}</p>
             {localizedDate && (
@@ -65,8 +69,24 @@ function Tasks({ taskList, isLoading, error, onTaskDeleted }) {
                 <span>{localizedDate}</span>
               </div>
             )}
-            <div className="flex justify-end gap-2 mt-1 text-end">
-              <img src={MenuDot} alt='menuDots' className='sidebarImage' style={rotationStyle}></img>
+            <div className="btnContainer flex justify-end gap-2 mt-1 text-end">
+              <div className="taskInfo">
+                
+              </div>
+              <button className="btn">
+                
+              </button>
+                <Dropdown>
+                  <Dropdown.Toggle  id="">
+                    <img src={MenuDot} alt='menuDots' className='sidebarImage' style={rotationStyle}></img>
+                  </Dropdown.Toggle>
+
+                  <Dropdown.Menu>
+                    <Dropdown.Item href="#/action-1">Edit</Dropdown.Item>
+                    <Dropdown.Item href="#/action-2">Delete</Dropdown.Item>
+                    <Dropdown.Item href="#/action-3">priority</Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
             </div>
           </Container>
         );

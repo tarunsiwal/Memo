@@ -10,14 +10,19 @@ import FilterLabels from './pages/filterLabels';
 import './App.css'
 
 function App() {
+  const [isGridClose, setIsGridClose] = useState(true)
+  const handleGridChange = () =>{
+    setIsGridClose(!isGridClose)
+    console.log('clicked', isGridClose)
+  }
   return (
       <BrowserRouter>
       <Sidebar />
-      <Header />
+      <Header handleGridChange={handleGridChange} isGridClose={isGridClose}/>
       <Routes>
-        <Route path="/inbox" element={<Inbox />} />
-        <Route path="/today" element={<Today />} />
-        <Route path="/upcoming" element={<Upcoming />} />
+        <Route path="/inbox" element={<Inbox isGridClose={isGridClose} page={'Inbox'}/>} />
+        <Route path="/today" element={<Inbox isGridClose={isGridClose} page={'Today'}/>} />
+        <Route path="/upcoming" element={<Inbox isGridClose={isGridClose} page={'Upcoming'}/>} />
         <Route path="/filterLabels" element={<FilterLabels />} />
       </Routes>
     </BrowserRouter>

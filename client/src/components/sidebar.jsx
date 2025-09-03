@@ -8,8 +8,8 @@ import widget from '../assets/images/svg/widget.svg'
 import magnifier from '../assets/images/svg/magnifer.svg'
 import inbox from '../assets/images/svg/inbox.svg'
 import calenderUpcoming from '../assets/images/svg/calendar-upcoming.svg'
-import sidebar from '../assets/images/svg/sidebar.svg'
-import profile from '../assets/images/svg/profile.jpg'
+import arrow from '../assets/images/svg/arrow-side.svg'
+import profile from '../assets/images/profile.jpg'
 import add from '../assets/images/svg/add.svg'
 import Popup from "./popup";
 
@@ -25,15 +25,18 @@ function Sidebar() {
       setCloseSidebar(!closeSidebar)
   };
   return (
-    <div className={closeSidebar === false ? 'sideBar': 'sideBar active'}>
-      <div className='profileToggleContainer'>
-        <div className='profile'>
-          <img src={profile} alt='profile' className='profileImage'></img>
-          <span>Tarun</span>
+    <div className={closeSidebar === false ? 'sideBar active': 'sideBar'}>
+      <div className='profileContainer'>
+        <img src={profile} alt='profile' className='profileImage'></img>
+        <span>Tarun</span>
+      </div>
+      <div className="sidebarToggle">
+        <hr></hr>
+        <div className="burgerContainer">
+          {/* <a onClick={handleCloseSidebar}> */}
+            <img onClick={handleCloseSidebar} src={arrow} alt='sidebar' className='sidebarImage'></img>
+          {/* </a> */}
         </div>
-        <a onClick={handleCloseSidebar}>
-          <img src={sidebar} alt='sidebar' className='sidebarImage'></img>
-        </a>
       </div>
       <div className="sideBarMenu">
         <ul>
