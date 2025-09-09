@@ -10,7 +10,7 @@ export const getAllTasks = async (req, res) => {
 };
 
 export const createTask = async (req, res) => {
-  const { title, description, dueDate } = req.body;
+  const { title, description, dueDate, labels, priority } = req.body;
 
   // Basic validation
   if (!title) {
@@ -21,6 +21,8 @@ export const createTask = async (req, res) => {
     title,
     description,
     dueDate,
+    labels,
+    priority,
   });
 
   try {

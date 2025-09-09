@@ -17,13 +17,12 @@
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     width: 90%;
-    max-width: 500px;
+    max-width: 550px;
 }
 
 .form-group {
     display: flex;
     flex-direction: column;
-    margin-bottom: 1rem;
 }
 
 .form-group label {
@@ -32,7 +31,7 @@
 }
 
 .form-group input,
-.form-group textarea {
+/* .form-group textarea {
     width: auto;
     padding: 0.75rem;
     border: 1px solid #ccc;
@@ -47,17 +46,13 @@
 
 .form-group textarea {
     min-height: 80px;
-    /* Initial expandable height */
     max-height: 200px;
-    /* Maximum height before scrolling begins */
     overflow-y: auto;
-    /* Adds scrollbar when max-height is reached */
     resize: vertical;
-    /* Allows user to manually resize vertically */
-}
+} */
 
 .text-area {
-    width: 100%;
+    width: 100% !important;
 }
 
 .popup-btn {

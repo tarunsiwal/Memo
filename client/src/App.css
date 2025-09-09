@@ -23,11 +23,11 @@
   align-items: center;
   padding: 0 1.5rem;
   z-index: 1;
-  background-color: #ffffff;
+  background-color: rgb(255, 255, 255, 0.9);
   transition: all 0.3s ease;
   flex-direction: row-reverse;
+  backdrop-filter: blur(2px);
 }
-
 
 @media (max-width: 640px) {
   .header {
@@ -51,6 +51,7 @@
 .mainContainer .tasks-card {
   position: relative;
   height: min-content;
+  flex-basis: 240px;
 }
 
 .mainContainer .tasks-card .btnContainer {
@@ -84,4 +85,71 @@
 
 .mainContainer .btn:hover {
   background-color: rgba(141, 141, 141, 0.2);
+}
+
+.task-dueDate-Priority {
+  width: 50%;
+  gap: 1em;
+}
+
+.task-dueDate-Priority .react-datepicker-wrapper {
+  width: 100%;
+  height: 100%;
+  border: var(--border);
+  border-radius: 5px;
+}
+
+.react-datepicker__input-container {
+  height: 100%;
+}
+
+.task-dueDate-Priority input {
+  border: none;
+  width: inherit;
+  height: 100%;
+  border-radius: 5px;
+  color: #000;
+  background: #fff;
+}
+
+.task-dueDate-Priority input:focus,
+.task-dueDate-Priority input:focus-visible {
+  border-color: #86b7fe;
+  outline: 0;
+  box-shadow: 0 0 0 .25rem rgba(13, 110, 253, .25);
+}
+
+.submit-btn .btn.submit {
+  background-color: var(--root-color);
+  color: #ffffff;
+}
+
+.submit-btn .btn.submit:hover {}
+
+.submit-btn .btn.cancel {
+  border: var(--border)
+}
+
+.submit-btn .btn.cancel:hover {
+  background-color: rgba(128, 128, 128, 0.153);
+}
+
+#task-menu:active {
+  background-color: #fff;
+}
+
+.btn:focus,
+.btn:active,
+.btn.active,
+.btn.show {
+  background-color: #ffffff !important;
+  box-shadow: none !important;
+}
+
+.dropdown-menu a:focus,
+.dropdown-menu a:active,
+.dropdown-menu a.active {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  color: #000;
 }

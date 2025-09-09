@@ -65,6 +65,27 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+/* Target the entire scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  /* scrollbar-width: thin; */
+  /* Adjust width */
+}
+
+/* Target the draggable part of the scrollbar */
+::-webkit-scrollbar-thumb {
+  background-color: rgb(73, 73, 73);
+  /* Change color */
+  border-radius: 10px;
+  /* Add rounded corners */
+}
+
+/* Target the track the thumb slides on */
+::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+  /* Change track color */
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

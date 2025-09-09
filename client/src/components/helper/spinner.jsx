@@ -8,7 +8,7 @@ const Spinner = () => (
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      height: "100vh",
+      height: "calc(100vh - 6.5rem)",
     }}
   >
     <Oval

@@ -11,19 +11,51 @@ import calenderUpcoming from '../assets/images/svg/calendar-upcoming.svg'
 import arrow from '../assets/images/svg/arrow-side.svg'
 import profile from '../assets/images/profile.jpg'
 import add from '../assets/images/svg/add.svg'
-import Popup from "./popup";
+import AddTaskPopup from "./addTaskPopup";
+import '../assets/css/popup.css'
 
-function Sidebar() {
-  const uselocation = useLocation()
+function Sidebar({refreshTrigger}) {
+  const apiUrl = import.meta.env.VITE_APP_API_URL;
+  // const uselocation = useLocation()
   const [closeSidebar, setCloseSidebar] = useState(false);
+  const [isAddTaskPopupOpen, setIsAddTaskPopupOpen] = useState(false)
 
   const handleSearchClick = () => {
       console.log("Search clicked!");
       alert("clicked")
   };
+  const onAddTask = async (taskData) => {    
+    try {
+    const response = await fetch(`${apiUrl}/tasks`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            title: taskData.title,
+            description: taskData.description,
+            dueDate: taskData.dueDate,
+            labels: taskData.labels,
+            priority: taskData.priority,
+        }),
+    });
+    if (response.ok) {
+      console.log("Task added successfully!")
+      refreshTrigger();
+    } 
+    else {
+        throw new Error("Failed to add task :(");
+    }
+    setIsAddTaskPopupOpen(false);
+    } catch (err) {
+        console.error("Failed to add task:", err);
+    }
+  };
+  const handleAddTask = () => {
+    setIsAddTaskPopupOpen(true)
+  }
   const handleCloseSidebar = () => {
       setCloseSidebar(!closeSidebar)
   };
+
   return (
     <div className={closeSidebar === false ? 'sideBar active': 'sideBar'}>
       <div className='profileContainer'>
@@ -41,7 +73,7 @@ function Sidebar() {
       <div className="sideBarMenu">
         <ul>
           <li className='active'>
-          <a onClick={handleSearchClick}>
+          <a onClick={handleAddTask}>
             <img src={add} alt='sidebar' className='sidebarImage'></img>
             <span className="txt">Add task</span>
           </a>
@@ -78,6 +110,10 @@ function Sidebar() {
         </li>
       </ul>
       </div>
+      <AddTaskPopup 
+      trigger={isAddTaskPopupOpen} 
+      onClose={() => setIsAddTaskPopupOpen(false)} 
+      onAddTask={onAddTask}/>
     </div>
   );
 }

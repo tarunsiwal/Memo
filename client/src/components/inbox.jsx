@@ -1,8 +1,8 @@
 import { useState, useEffect} from 'react'
-import Task from '../components/task'
+import Task from './task'
 
 
-function Inbox ({isGridClose, page}){
+function Inbox ({isGridClose, page, refreshTrigger, handleRefresh}){
   const [tasks, setTasks] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -14,7 +14,7 @@ function Inbox ({isGridClose, page}){
   };
   const apiUrl = import.meta.env.VITE_APP_API_URL;
   
-  const refreshTasks = async () => {
+  const handleTaskAdded = async () => {
     setIsLoading(true);
     setError(null);
     try {
@@ -33,17 +33,22 @@ function Inbox ({isGridClose, page}){
     }
   };
   useEffect(() => {
-    refreshTasks();
-  }, []);
+    handleTaskAdded();
+  }, [refreshTrigger]);
 
   return (
+    <div className='mainContainer gap-4 p-4' >
+      <h2>{page}</h2>
+      <hr/>
       <Task
         taskList={tasks}
         isLoading={isLoading}
         error={error}
-        onTaskDeleted={refreshTasks}
+        onTaskDeleted={handleTaskAdded}
         isGridClose={isGridClose}
+        handleRefresh={handleRefresh}
       />
+    </div>
   )
 }
 
