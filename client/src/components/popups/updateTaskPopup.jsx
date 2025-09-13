@@ -1,56 +1,41 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Form from 'react-bootstrap/Form';
 import Datepicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import 'https://cdn.jsdelivr.net/npm/flatpickr'
+import '../../assets/css/popup.css'
 
-function AddTaskPopup({ trigger, onClose, onAddTask }) {
-  const dummyText = [
-    "Project Plan: Q3 Report",
-    "Team Meeting: Agenda Review",
-    "Client Follow-up: Acme Corp",
-    "Draft Thesis Abstract",
-    "Submit Expense Report",
-    "Groceries run",
-    "Finish blog post draft",
-    "Pick up dry cleaning",
-    "Brainstorm new app ideas",
-  ];
-  const getRandomPlaceholder = () => {
-    const randomIndex = Math.floor(Math.random() * dummyText.length);
-    return dummyText[randomIndex];
-  };
-  const [placeholderText] = useState(getRandomPlaceholder());
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [dueDate, setDueDate] = useState(null);
-  const [priority, setPriority] = useState(4);
-  const [labels, setLabels] = useState([])
+function UpdateTaskPopup({ trigger, onClose, onUpdateTask, taskDetails }) {
+  const initialTask = taskDetails || {};
 
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [title, setTitle] = useState(initialTask.title || '');
+  const [description, setDescription] = useState(initialTask.description || '');
+  const [dueDate, setDueDate] = useState(initialTask.dueDate ? new Date(initialTask.dueDate) : '');
+  const [priority, setPriority] = useState(initialTask.priority || 4);
+  const [labels, setLabels] = useState(initialTask.labels || []);
+  const [id, setId] = useState(initialTask._id || null);
+
+  useEffect(() => {
+    if (taskDetails) {
+      setId(taskDetails._id);
+      setTitle(taskDetails.title);
+      setDescription(taskDetails.description);
+      setDueDate(new Date(taskDetails.dueDate));
+      setPriority(taskDetails.priority);
+      setLabels(taskDetails.labels);
+    }
+  }, [taskDetails]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (title.trim() && description.trim()) {
-      onAddTask({ title, description, dueDate, labels, priority });
-      console.log("Task submitted:", { title, description, dueDate, labels, priority });
-      setTitle(""); 
-      setDescription("");
-      setDueDate("");
-      setPriority(4);
-      setLabels("");
+      onUpdateTask({ id, title, description, dueDate, labels, priority });
+      console.log("Task Updated:", {  id, title, description, dueDate, labels, priority });
     }
-    onClose();
   };
   const handleCloseAndClear = () => {
-    setTitle("");
-    setDescription("");
-    setDueDate("");
-    setPriority(4);
-    setLabels("");
     onClose();
   };
   return trigger ? (
@@ -60,7 +45,7 @@ function AddTaskPopup({ trigger, onClose, onAddTask }) {
           <div className="form-group">
             <InputGroup className="mb-3">
               <Form.Control
-                placeholder={placeholderText}
+                // placeholder={placeholderText}
                 aria-label="title"
                 className="text-area"
                 type="text"
@@ -92,7 +77,6 @@ function AddTaskPopup({ trigger, onClose, onAddTask }) {
               <Datepicker 
                 type="date"
                 selected={dueDate}
-                // value={dueDate}
                 onChange={date=>setDueDate(date)}
                 placeholderText=" Due date"
                 name="Due Date"
@@ -110,7 +94,7 @@ function AddTaskPopup({ trigger, onClose, onAddTask }) {
             </div>
             <div className="submit-btn">
               <button className="btn submit" type="submit">
-                Add task
+                Update task
               </button>
               <button
                 className="btn cancel"
@@ -127,4 +111,4 @@ function AddTaskPopup({ trigger, onClose, onAddTask }) {
   ) : '';
 }
 
-export default AddTaskPopup
+export default UpdateTaskPopup

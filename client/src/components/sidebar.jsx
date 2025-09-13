@@ -2,6 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 
 import '../assets/css/sidebar.css'
+import '../assets/css/popup.css'
 
 import DynamicCalendarIcon from "./helper/dynamicCalendarIcon"
 import widget from '../assets/images/svg/widget.svg'
@@ -11,19 +12,17 @@ import calenderUpcoming from '../assets/images/svg/calendar-upcoming.svg'
 import arrow from '../assets/images/svg/arrow-side.svg'
 import profile from '../assets/images/profile.jpg'
 import add from '../assets/images/svg/add.svg'
-import AddTaskPopup from "./addTaskPopup";
-import '../assets/css/popup.css'
+
+import AddTaskPopup from "./popups/addTaskPopup";
+import SearchPopup from "./popups/searchPopup";
 
 function Sidebar({refreshTrigger}) {
   const apiUrl = import.meta.env.VITE_APP_API_URL;
   // const uselocation = useLocation()
   const [closeSidebar, setCloseSidebar] = useState(false);
-  const [isAddTaskPopupOpen, setIsAddTaskPopupOpen] = useState(false)
+  const [isAddTaskPopupOpen, setIsAddTaskPopupOpen] = useState(false);
+  const [isSearchPopupOpen, setIsSearchPopupOpen] = useState(false);
 
-  const handleSearchClick = () => {
-      console.log("Search clicked!");
-      alert("clicked")
-  };
   const onAddTask = async (taskData) => {    
     try {
     const response = await fetch(`${apiUrl}/tasks`, {
@@ -49,6 +48,10 @@ function Sidebar({refreshTrigger}) {
         console.error("Failed to add task:", err);
     }
   };
+  const handleSearchClick = () => {
+    setIsSearchPopupOpen(true)
+  };
+
   const handleAddTask = () => {
     setIsAddTaskPopupOpen(true)
   }
@@ -114,6 +117,10 @@ function Sidebar({refreshTrigger}) {
       trigger={isAddTaskPopupOpen} 
       onClose={() => setIsAddTaskPopupOpen(false)} 
       onAddTask={onAddTask}/>
+      {/* <SearchPopup
+      trigger={isSearchPopupOpen}
+      onClose={() => setIsSearchPopupOpen(false)} 
+      /> */}
     </div>
   );
 }

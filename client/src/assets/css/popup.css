@@ -30,27 +30,6 @@
     /* font-weight: bold;    */
 }
 
-.form-group input,
-/* .form-group textarea {
-    width: auto;
-    padding: 0.75rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.form-group textarea:focus-visible,
-.form-group textarea:focus {
-    border: 1px solid #ccc;
-
-}
-
-.form-group textarea {
-    min-height: 80px;
-    max-height: 200px;
-    overflow-y: auto;
-    resize: vertical;
-} */
-
 .text-area {
     width: 100% !important;
 }
@@ -71,4 +50,8 @@
     display: flex;
     justify-content: flex-end;
     gap: 1rem;
+}
+
+.popup-btn .submit-btn .submit:hover {
+    background-color: rgb(243, 183, 3);
 }

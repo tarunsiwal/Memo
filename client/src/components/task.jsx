@@ -7,8 +7,13 @@ import MenuDot from "../assets/images/svg/menu-dots.svg"
 import Label from "../assets/images/svg/tag.svg"
 import Spinner from "./helper/spinner"
 
-function Tasks({ taskList, isLoading, error, handleRefresh, isGridClose }) {
+function Tasks({ taskList, isLoading, error, handleRefresh, isGridClose, handleUpdateTaskPopup }) {
   const apiUrl = import.meta.env.VITE_APP_API_URL;
+  // const [title, setTitle] = useState("");
+  // const [description, setDescription] = useState("");
+  // const [dueDate, setDueDate] = useState(null);
+  // const [priority, setPriority] = useState(4);
+  // const [labels, setLabels] = useState([])
 
   const handleDelete = async (id) => {
     try {
@@ -35,30 +40,32 @@ function Tasks({ taskList, isLoading, error, handleRefresh, isGridClose }) {
       <p>Error: {error.message}</p>
       </div>)
   }
-
   if (!taskList || taskList.length === 0) {
     return <p>Please add Tasks.</p>;
   }
-  const rotationStyle = { transform: 'rotate(90deg)' };
-  let dFlex = isGridClose ? {
-    display: 'block'
-  } : {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-  }
-  let calcMargin = isGridClose ? {} : {
-    marginLeft: '0.5em',
-    marginRight: '0.5em',
-  }
+
+  const styles = {
+    dFlex: {
+      display: isGridClose ? 'block' : 'flex',
+      flexWrap: 'wrap',
+      justifyContent: 'center',
+    },
+    cardMenuPosition: {
+      position: isGridClose ? 'absolute' : 'unset'
+    },
+    cardDisplayItemPosition: {
+      display: isGridClose ? 'flex' : 'block'
+    },
+    rotationStyle : { transform: 'rotate(90deg)' },
+  };
+
   return (
-      <div className='taskContainer' style={dFlex}>
+      <div className='taskContainer' style={styles.dFlex}>
         {taskList.map((task) => {
           const hasDueDate = task.dueDate && task.dueDate.trim().length > 0;
           const localizedDate = hasDueDate
           ? new Date(task.dueDate).toLocaleDateString()
           : null;
-
           let flag = 'none'
           if(task.priority === 3) flag = 'green'
           else if(task.priority === 2) flag = 'yellow'
@@ -66,10 +73,10 @@ function Tasks({ taskList, isLoading, error, handleRefresh, isGridClose }) {
           
           return (
             <Container key={task._id} 
-            className="container-sm border rounded-lg shadow-md p-4 space-y-2 tasks-card" style={calcMargin}>
+            className="container-sm border rounded-lg shadow-md p-4 space-y-2 tasks-card">
               <h3 className="text-xl font-bold text-gray-800">{task.title}</h3>
               <p className="text-sm  italic">{task.description}</p>
-                <div className="text-sm  flex items-center space-x-2 d-flex gap-3  ">
+                <div className="text-sm  flex items-center space-x-2  gap-3" style={styles.cardDisplayItemPosition}>
                   {localizedDate && (
                   <div className="text-sm  flex items-center space-x-2 d-flex">
                     <svg className="h-4 w-4 text-gray-500" width="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -80,11 +87,11 @@ function Tasks({ taskList, isLoading, error, handleRefresh, isGridClose }) {
                   )}
                   <div className="text-sm  flex items-center space-x-2 d-flex">
                     <span>Priority {task.priority} 
-                      <svg viewBox="0 0 24 24" style={{width:'1em'}} fill={flag} xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M5 22V14M5 14V4M5 14L7.47067 13.5059C9.1212 13.1758 10.8321 13.3328 12.3949 13.958C14.0885 14.6354 15.9524 14.7619 17.722 14.3195L17.9364 14.2659C18.5615 14.1096 19 13.548 19 12.9037V5.53669C19 4.75613 18.2665 4.18339 17.5092 4.3727C15.878 4.78051 14.1597 4.66389 12.5986 4.03943L12.3949 3.95797C10.8321 3.33284 9.1212 3.17576 7.47067 3.50587L5 4M5 4V2" stroke={flag==='none'? '#000' : flag} stroke-width="1.5" stroke-linecap="round"></path> </g></svg>
+                      <svg viewBox="0 0 24 24" style={{width:'1em'}} fill={flag} xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M5 22V14M5 14V4M5 14L7.47067 13.5059C9.1212 13.1758 10.8321 13.3328 12.3949 13.958C14.0885 14.6354 15.9524 14.7619 17.722 14.3195L17.9364 14.2659C18.5615 14.1096 19 13.548 19 12.9037V5.53669C19 4.75613 18.2665 4.18339 17.5092 4.3727C15.878 4.78051 14.1597 4.66389 12.5986 4.03943L12.3949 3.95797C10.8321 3.33284 9.1212 3.17576 7.47067 3.50587L5 4M5 4V2" stroke={flag==='none'? '#000' : flag} strokeWidth="1.5" strokeLinecap="round"></path> </g></svg>
                     </span>
                   </div>
                 </div>
-              <div className="btnContainer flex justify-end gap-2 mt-1 text-end">
+              <div className="btnContainer flex justify-end gap-2 mt-1 text-end" style={styles.cardMenuPosition}>
                 <div className="taskInfo">
                 </div>
                 <button className="btn">
@@ -92,14 +99,15 @@ function Tasks({ taskList, isLoading, error, handleRefresh, isGridClose }) {
                 </button>
                 <Dropdown>
                   <Dropdown.Toggle  id="task-menu">
-                    <img src={MenuDot} alt='menuDots' className='sidebarImage' style={rotationStyle}></img>
+                    <img src={MenuDot} alt='menuDots' className='sidebarImage' style={styles.rotationStyle}></img>
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
-                    <Dropdown.Item href="#/action-1">Edit</Dropdown.Item>
                     <Dropdown.Item onClick={() => {
-                              handleDelete(task._id);
-                              }}>Delete</Dropdown.Item>
-                    {/* <Dropdown.Item href="#/action-3">priority</Dropdown.Item> */}
+                      handleUpdateTaskPopup(task._id);
+                      }}>Edit</Dropdown.Item>
+                    <Dropdown.Item onClick={() => {
+                      handleDelete(task._id);
+                      }}>Delete</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
               </div>

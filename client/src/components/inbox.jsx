@@ -1,11 +1,14 @@
 import { useState, useEffect} from 'react'
 import Task from './task'
+import UpdateTaskPopup from './popups/updateTaskPopup';
 
 
 function Inbox ({isGridClose, page, refreshTrigger, handleRefresh}){
   const [tasks, setTasks] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isUpdatePopupOpen, setIsUpdatePopupOpen] = useState(false);
+  const [taskDetails, setTaskDetails] = useState(null);
 
   const sortTasks = (taskList) => {
     return taskList.sort((a, b) => {
@@ -36,10 +39,53 @@ function Inbox ({isGridClose, page, refreshTrigger, handleRefresh}){
     handleTaskAdded();
   }, [refreshTrigger]);
 
+  const onUpdateTask = async (taskData) => {
+    try{
+      const response = await fetch(`${apiUrl}/tasks/${taskData.id}`, {
+        method : "PUT",
+        headers : {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          title: taskData.title,
+          description: taskData.description,
+          dueDate: taskData.dueDate,
+          labels: taskData.labels,
+          priority: taskData.priority,
+        }),
+      });
+      if(response.ok){
+        console.log('Task updated successfully!')
+        handleRefresh();
+      } else {
+        console.error("Failed to update task.")
+      }
+      setIsUpdatePopupOpen(false)
+    } catch (err){
+        console.error("Fetching error:",err)
+    }
+  }
+  
+  const handleUpdateTaskPopup = (taskId) => {
+    const foundTask = tasks.find(task => task._id === taskId);
+    if (foundTask) {
+      setTaskDetails(foundTask)
+      console.log(foundTask);
+      setIsUpdatePopupOpen(true);
+    } else {
+      console.error(`Task with ID ${taskId} not found.`);
+    }
+  };
   return (
     <div className='mainContainer gap-4 p-4' >
       <h2>{page}</h2>
       <hr/>
+      <UpdateTaskPopup 
+        trigger={isUpdatePopupOpen}
+        onClose={() => setIsUpdatePopupOpen(false)} 
+        onUpdateTask={onUpdateTask}
+        taskDetails={taskDetails}
+      />
       <Task
         taskList={tasks}
         isLoading={isLoading}
@@ -47,6 +93,7 @@ function Inbox ({isGridClose, page, refreshTrigger, handleRefresh}){
         onTaskDeleted={handleTaskAdded}
         isGridClose={isGridClose}
         handleRefresh={handleRefresh}
+        handleUpdateTaskPopup={handleUpdateTaskPopup}
       />
     </div>
   )
