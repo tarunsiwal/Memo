@@ -3,7 +3,7 @@
     left: 0;
     top: 0;
     z-index: 2;
-    background-color: var(--background-color);
+    background-color: var(--color-3);
     width: 15rem;
     height: 100vh;
     padding: 2em 1em;
@@ -39,7 +39,7 @@
 
 .sideBarMenu ul li a .txt {
     padding-left: 0.5em;
-    color: #1c274c;
+    color: #202020;
     font-size: 14px;
 }
 
@@ -49,12 +49,16 @@
 }
 
 .sideBarMenu ul li.active {
-    background-color: var(--button-hover);
+    background-color: rgb(255 154 0 / 19%);
 }
 
 .sidebarImage {
     width: 1.3em;
     cursor: pointer;
+}
+
+.sideBarMenu .addTask .sidebarImage {
+    fill: var(--color-1);
 }
 
 .sideBar .profileImage {
@@ -134,7 +138,7 @@
 .sidebarToggle .burgerContainer {
     content: "";
     position: absolute;
-    background-color: var(--root-color);
+    background-color: var(--color-1);
     top: -10px;
     right: calc(-1em - 10px);
     height: 20px;

@@ -4,6 +4,7 @@ import UpdateTaskPopup from './popups/updateTaskPopup';
 
 
 function Inbox ({isGridClose, page, refreshTrigger, handleRefresh}){
+  const apiUrl = import.meta.env.VITE_APP_API_URL;
   const [tasks, setTasks] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -14,10 +15,8 @@ function Inbox ({isGridClose, page, refreshTrigger, handleRefresh}){
     return taskList.sort((a, b) => {
       return new Date(b.createdAt) - new Date(a.createdAt);
     });
-  };
-  const apiUrl = import.meta.env.VITE_APP_API_URL;
-  
-  const handleTaskAdded = async () => {
+  };  
+  const getTasks = async () => {
     setIsLoading(true);
     setError(null);
     try {
@@ -35,10 +34,42 @@ function Inbox ({isGridClose, page, refreshTrigger, handleRefresh}){
       setIsLoading(false);
     }
   };
-  useEffect(() => {
-    handleTaskAdded();
-  }, [refreshTrigger]);
-
+  const getTasksByToday = async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await fetch(`${apiUrl}/tasks/today`);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const { tasks: fetchedTasks } = await response.json();
+      const sortedTasks = sortTasks(fetchedTasks);
+      setTasks(sortedTasks);
+    } catch (err) {
+      setError("Failed to fetch tasks. Please ensure you are connected.");
+      console.error("Fetching error:", err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const getUpcomingTasks = async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await fetch(`${apiUrl}/tasks/upcoming`);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const { tasks: fetchedTasks } = await response.json();
+      const sortedTasks = sortTasks(fetchedTasks);
+      setTasks(sortedTasks);
+    } catch (err) {
+      setError("Failed to fetch tasks. Please ensure you are connected.");
+      console.error("Fetching error:", err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   const onUpdateTask = async (taskData) => {
     try{
       const response = await fetch(`${apiUrl}/tasks/${taskData.id}`, {
@@ -65,7 +96,16 @@ function Inbox ({isGridClose, page, refreshTrigger, handleRefresh}){
         console.error("Fetching error:",err)
     }
   }
-  
+  useEffect(() => {
+    if (page === 'Inbox') {
+      getTasks();
+    } else if (page === 'Today') {
+      getTasksByToday();
+    } else if (page === 'Upcoming') {
+      getUpcomingTasks();
+    }
+  }, [page, refreshTrigger]);
+
   const handleUpdateTaskPopup = (taskId) => {
     const foundTask = tasks.find(task => task._id === taskId);
     if (foundTask) {
@@ -90,7 +130,6 @@ function Inbox ({isGridClose, page, refreshTrigger, handleRefresh}){
         taskList={tasks}
         isLoading={isLoading}
         error={error}
-        onTaskDeleted={handleTaskAdded}
         isGridClose={isGridClose}
         handleRefresh={handleRefresh}
         handleUpdateTaskPopup={handleUpdateTaskPopup}

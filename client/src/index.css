@@ -14,10 +14,11 @@
 
   --sidebar-width: 284px;
   --background-color: #fcfaf8;
-  --button-hover: rgb(254, 238, 218);
-  --root-color: rgb(255, 193, 7);
   --border: 1px solid #ccc;
 
+  --color-1: #ff9a00;
+  --color-2: rgb(255, 154, 0);
+  --color-3: rgb(255 251 246);
 }
 
 a {
@@ -65,25 +66,17 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-/* Target the entire scrollbar */
 ::-webkit-scrollbar {
   width: 5px;
-  /* scrollbar-width: thin; */
-  /* Adjust width */
 }
 
-/* Target the draggable part of the scrollbar */
 ::-webkit-scrollbar-thumb {
   background-color: rgb(73, 73, 73);
-  /* Change color */
   border-radius: 10px;
-  /* Add rounded corners */
 }
 
-/* Target the track the thumb slides on */
 ::-webkit-scrollbar-track {
   background-color: #f1f1f1;
-  /* Change track color */
 }
 
 @media (prefers-color-scheme: light) {

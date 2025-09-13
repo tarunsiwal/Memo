@@ -4,8 +4,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Sidebar from './components/sidebar';
 import Header from './components/ui/header'
 import Inbox from './components/inbox';
-import Today from './pages/today';
-import Upcoming from './pages/upcoming';
 import FilterLabels from './pages/filterLabels';
 import './App.css'
 
@@ -32,8 +30,20 @@ function App() {
           refreshTrigger={refreshTrigger}
           handleRefresh={handleRefresh}
           />} />
-        <Route path="/today" element={<Inbox isGridClose={isGridClose} page={'Today'}/>} />
-        <Route path="/upcoming" element={<Inbox isGridClose={isGridClose} page={'Upcoming'}/>} />
+        <Route path="/today" element={
+          <Inbox 
+          isGridClose={isGridClose} 
+          page={'Today'} 
+          refreshTrigger={refreshTrigger}
+          handleRefresh={handleRefresh}
+          />} />
+        <Route path="/upcoming" element={
+          <Inbox 
+          isGridClose={isGridClose} 
+          page={'Upcoming'} 
+          refreshTrigger={refreshTrigger}
+          handleRefresh={handleRefresh}
+          />} />
         <Route path="/filterLabels" element={<FilterLabels />} />
       </Routes>
     </BrowserRouter>

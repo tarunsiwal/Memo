@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import InputGroup from 'react-bootstrap/InputGroup';
@@ -9,7 +9,7 @@ import 'https://cdn.jsdelivr.net/npm/flatpickr'
 import PriorityDropdown from "../ui/priorityDropDown";
 
 function AddTaskPopup({ trigger, onClose, onAddTask }) {
-  const dummyText = [
+    const dummyText = [
     "Project Plan: Q3 Report",
     "Team Meeting: Agenda Review",
     "Client Follow-up: Acme Corp",
@@ -31,7 +31,6 @@ function AddTaskPopup({ trigger, onClose, onAddTask }) {
   const [priority, setPriority] = useState(4);
   const [labels, setLabels] = useState([])
 
-  const [selectedDate, setSelectedDate] = useState(new Date());
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -54,6 +53,7 @@ function AddTaskPopup({ trigger, onClose, onAddTask }) {
     setLabels("");
     onClose();
   };
+
   const flagSVG = (priority) =>{
     let flag;
     if(priority === 3) flag = 'green'
@@ -64,13 +64,14 @@ function AddTaskPopup({ trigger, onClose, onAddTask }) {
   return trigger ? (
     <div className="popup-container">
       <div className="popup">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} >
           <div className="form-group">
-            <InputGroup className="mb-3">
+            <InputGroup >
               <Form.Control
                 placeholder={placeholderText}
+                autofocus
                 aria-label="title"
-                className="text-area"
+                className="text-area title"
                 type="text"
                 id="taskTitle"
                 value={title}
@@ -89,7 +90,6 @@ function AddTaskPopup({ trigger, onClose, onAddTask }) {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Description"
-              style={{ height: '150px' }}
               required
             />
             {/* </FloatingLabel> */}

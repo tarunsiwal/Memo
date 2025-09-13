@@ -43,11 +43,10 @@ function UpdateTaskPopup({ trigger, onClose, onUpdateTask, taskDetails }) {
       <div className="popup">
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <InputGroup className="mb-3">
+            <InputGroup>
               <Form.Control
-                // placeholder={placeholderText}
                 aria-label="title"
-                className="text-area"
+                className="text-area title"
                 type="text"
                 id="taskTitle"
                 value={title}
@@ -66,7 +65,6 @@ function UpdateTaskPopup({ trigger, onClose, onUpdateTask, taskDetails }) {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Description"
-              style={{ height: '150px' }}
               required
             />
             {/* </FloatingLabel> */}
@@ -94,7 +92,7 @@ function UpdateTaskPopup({ trigger, onClose, onUpdateTask, taskDetails }) {
             </div>
             <div className="submit-btn">
               <button className="btn submit" type="submit">
-                Update task
+                Update
               </button>
               <button
                 className="btn cancel"

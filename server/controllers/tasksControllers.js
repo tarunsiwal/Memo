@@ -59,7 +59,7 @@ export const getTasksByDate = async (req, res) => {
         $lt: tomorrow,
       },
     }); // Fetches tasks with a dueDate of today
-    res.status(200).json(tasks);
+    res.status(200).json({ tasks });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -73,7 +73,7 @@ export const getUpcomingTasks = async (req, res) => {
     const tasks = await Task.find({
       dueDate: { $gt: today },
     }); // Fetches tasks with a dueDate in the future
-    res.status(200).json(tasks);
+    res.status(200).json({ tasks });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -89,7 +89,7 @@ export const searchTasks = async (req, res) => {
         { description: { $regex: query, $options: "i" } }, // Case-insensitive search in description
       ],
     });
-    res.status(200).json(tasks);
+    res.status(200).json({ tasks });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -111,7 +111,7 @@ export const updateTask = async (req, res) => {
       return res.status(404).json({ message: "Task not found" });
     }
 
-    res.status(200).json(updatedTask);
+    res.status(200).json({ updatedTask });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

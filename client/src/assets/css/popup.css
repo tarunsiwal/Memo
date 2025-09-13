@@ -13,11 +13,24 @@
 
 .popup {
     background-color: #fff;
-    padding: 2rem;
+    padding: 1rem;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     width: 90%;
     max-width: 550px;
+}
+
+.form-control:focus {
+    box-shadow: none !important
+}
+
+.form-group .title {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.form-group .text-area {
+    border: none;
 }
 
 .form-group {
@@ -27,7 +40,6 @@
 
 .form-group label {
     margin-bottom: 0.5rem;
-    /* font-weight: bold;    */
 }
 
 .text-area {

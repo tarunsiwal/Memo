@@ -11,6 +11,25 @@
   border-radius: 5px;
   padding: 1em;
   margin-top: 1em;
+  position: relative;
+  height: min-content;
+}
+
+.tasks-card .title {
+  color: #202020;
+}
+
+.tasks-card .description {
+  /* font-size: small; */
+  color: #666;
+}
+
+.tasks-card .cardProperties {
+  font-size: 14px;
+}
+
+.tasks-card .cardProperties .dueDate {
+  color: var(--color-2);
 }
 
 .header {
@@ -44,14 +63,8 @@
 }
 
 .mainContainer {
-  margin-left: 19rem;
+  /* margin-left: 19rem; */
   margin-top: 3rem;
-}
-
-.mainContainer .tasks-card {
-  position: relative;
-  height: min-content;
-  flex-basis: 240px;
 }
 
 .mainContainer .tasks-card .btnContainer {
@@ -120,11 +133,11 @@
 }
 
 .submit-btn .btn.submit {
-  background-color: var(--root-color);
+  background-color: var(--color-1);
   color: #ffffff;
 }
 
-.submit-btn .btn.submit:hover {}
+/* .submit-btn .btn.submit:hover {} */
 
 .submit-btn .btn.cancel {
   border: var(--border)
