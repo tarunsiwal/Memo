@@ -17,32 +17,32 @@ Intuitive UI: A modern design that makes managing your tasks feel effortless.
 ✨ Key Features & UI Showcase
 Grid Feature
 Effortlessly switch between a compact list view and a spacious grid layout.
-![Grid feature representation](images/grid.jpeg)
+![Grid feature representation](project_images/grid.png)
 
 
 Add Task
 A simple and straightforward way to add new tasks to your list, ensuring you never miss a beat.
-![Add task](images/add_task.jpeg)
+![Add task](project_images/add_task.png)
 
 
 Update Task
 Easily edit existing tasks with a slick, user-friendly popup interface.
-![Update task popup](images/update.jpeg)
+![Update task popup](project_images/update.png)
 
 
 Delete Task
 Confirm and delete tasks with a clear, concise popup, keeping your workspace clutter-free.
-![Delete popup](images/delete_poup.jpeg)
+![Delete popup](project_images/delete_poup.jpeg)
 
 
 Search Function
 Find any task in a flash with the powerful, case-insensitive search feature.
-![Search function](images/searched.jpeg)
+![Search function](project_images/searched.png)
 
 
 Dynamic Sidenav
 Navigate your project with an elegant and functional sidebar that keeps everything within reach.
-![Sidenav used in project](images/side_nav.jpeg)
+![Sidenav used in project](project_images/side_nav.png)
 
 🌟 My Skills in Action
 This project is a testament to my ability to build a full-featured application from the ground up. It demonstrates:
