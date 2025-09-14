@@ -22,7 +22,7 @@ Effortlessly switch between a compact list view and a spacious grid layout.
 
 Add Task
 A simple and straightforward way to add new tasks to your list, ensuring you never miss a beat.
-![Add task](project_images/add_task.png)
+![Add task](project_images/add task.png)
 
 
 Update Task
@@ -32,7 +32,7 @@ Easily edit existing tasks with a slick, user-friendly popup interface.
 
 Delete Task
 Confirm and delete tasks with a clear, concise popup, keeping your workspace clutter-free.
-![Delete popup](project_images/delete_poup.jpeg)
+![Delete popup](project_images/delete popup.jpeg)
 
 
 Search Function
@@ -42,7 +42,7 @@ Find any task in a flash with the powerful, case-insensitive search feature.
 
 Dynamic Sidenav
 Navigate your project with an elegant and functional sidebar that keeps everything within reach.
-![Sidenav used in project](project_images/side_nav.png)
+![Sidenav used in project](project_images/side nav.png)
 
 🌟 My Skills in Action
 This project is a testament to my ability to build a full-featured application from the ground up. It demonstrates:
