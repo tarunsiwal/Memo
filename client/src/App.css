@@ -15,12 +15,22 @@
   height: min-content;
 }
 
+/* delete message popup */
+.popup-container h1 {
+  line-height: 23px;
+  font-size: 16px;
+}
+
+.popup-container p {
+  font-size: 14px;
+}
+
 .tasks-card .title {
   color: #202020;
 }
 
 .tasks-card .description {
-  /* font-size: small; */
+  font-size: 14px;
   color: #666;
 }
 
@@ -29,7 +39,7 @@
 }
 
 .tasks-card .cardProperties .dueDate {
-  color: var(--color-2);
+  color: var(--color-1);
 }
 
 .header {
@@ -42,7 +52,7 @@
   align-items: center;
   padding: 0 1.5rem;
   z-index: 1;
-  background-color: rgb(255, 255, 255, 0.9);
+  background-color: rgb(255, 255, 255, 0.7);
   transition: all 0.3s ease;
   flex-direction: row-reverse;
   backdrop-filter: blur(2px);
@@ -63,7 +73,6 @@
 }
 
 .mainContainer {
-  /* margin-left: 19rem; */
   margin-top: 3rem;
 }
 
@@ -88,9 +97,10 @@
   border: var(--border);
 }
 
+/* 
 .mainContainer .btn:active {
   background-color: #fff;
-}
+} */
 
 .mainContainer .btn::after {
   display: none;
@@ -126,10 +136,12 @@
 }
 
 .task-dueDate-Priority input:focus,
-.task-dueDate-Priority input:focus-visible {
-  border-color: #86b7fe;
+.task-dueDate-Priority input:focus-visible,
+.task-dueDate-Priority .form-select:focus,
+.task-dueDate-Priority .form-select:focus-visible {
+  border-color: rgb(255 154 0);
   outline: 0;
-  box-shadow: 0 0 0 .25rem rgba(13, 110, 253, .25);
+  box-shadow: 0 0 0 .25rem rgba(255, 154, 0, .25);
 }
 
 .submit-btn .btn.submit {
@@ -151,13 +163,13 @@
   background-color: #fff;
 }
 
-.btn:focus,
+/* .btn:focus,
 .btn:active,
 .btn.active,
 .btn.show {
   background-color: #ffffff !important;
   box-shadow: none !important;
-}
+} */
 
 .dropdown-menu a:focus,
 .dropdown-menu a:active,
@@ -165,4 +177,28 @@
   background-color: transparent !important;
   box-shadow: none !important;
   color: #000;
+}
+
+.search-tag {
+  background: rgb(255 154 0 / 25%);
+  border-radius: 5px;
+  height: 23px;
+  font-size: 14px;
+  color: var(--color-1);
+  width: fit-content;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.search-bar input {
+  border-bottom: var(--border);
+}
+
+.search-tag .btn-submit,
+.search-bar .submit-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }

@@ -1,9 +1,10 @@
 import { useState, useEffect} from 'react'
 import Task from './task'
 import UpdateTaskPopup from './popups/updateTaskPopup';
+import cross from '../assets/images/svg/cross.svg'
 
 
-function Inbox ({isGridClose, page, refreshTrigger, handleRefresh}){
+function Inbox ({isGridClose, page, refreshTrigger, handleRefresh, searchQuery, setSearchQuery}){
   const apiUrl = import.meta.env.VITE_APP_API_URL;
   const [tasks, setTasks] = useState([]);
   const [error, setError] = useState(null);
@@ -95,16 +96,34 @@ function Inbox ({isGridClose, page, refreshTrigger, handleRefresh}){
     } catch (err){
         console.error("Fetching error:",err)
     }
-  }
-  useEffect(() => {
-    if (page === 'Inbox') {
-      getTasks();
-    } else if (page === 'Today') {
-      getTasksByToday();
-    } else if (page === 'Upcoming') {
-      getUpcomingTasks();
+  };
+  const handleSearch = async (query) => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await fetch(`http://localhost:5000/api/tasks/search?query=${query}`);
+      if (!response.ok) throw new Error("Network response was not ok");
+      const {tasks: fetchedTasks} = await response.json();
+      const sortedTasks = sortTasks(fetchedTasks);
+      setTasks(sortedTasks);
+    } catch (err) {
+      setError("Failed to search tasks.");
+    } finally {
+      setIsLoading(false);
     }
-  }, [page, refreshTrigger]);
+  };
+  useEffect(() => {
+    if(searchQuery){
+      handleSearch(searchQuery);
+    }else{
+      if (page === 'Inbox') {
+        getTasks();
+      } else if (page === 'Today') {
+        getTasksByToday();
+      } else if (page === 'Upcoming') {
+        getUpcomingTasks();
+      }
+  }}, [page, refreshTrigger, searchQuery]);
 
   const handleUpdateTaskPopup = (taskId) => {
     const foundTask = tasks.find(task => task._id === taskId);
@@ -116,9 +135,20 @@ function Inbox ({isGridClose, page, refreshTrigger, handleRefresh}){
       console.error(`Task with ID ${taskId} not found.`);
     }
   };
+  const handleClearSearch = () => {
+    setSearchQuery(''); // This triggers the useEffect below
+  };
   return (
     <div className='mainContainer gap-4 p-4' >
       <h2>{page}</h2>
+      {searchQuery && (
+        <div className="search-tag">
+          <span> Searching for: "{searchQuery}"</span>
+          <a className="btn-submit" onClick={handleClearSearch}>
+            <img style={{width:'1em'}} src={cross}></img>
+          </a>
+        </div>
+      )}
       <hr/>
       <UpdateTaskPopup 
         trigger={isUpdatePopupOpen}
@@ -132,6 +162,7 @@ function Inbox ({isGridClose, page, refreshTrigger, handleRefresh}){
         error={error}
         isGridClose={isGridClose}
         handleRefresh={handleRefresh}
+        page={page}
         handleUpdateTaskPopup={handleUpdateTaskPopup}
       />
     </div>

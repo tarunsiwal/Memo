@@ -9,7 +9,7 @@ import Spinner from "./helper/spinner"
 import DeletePopup from "./popups/confirmDeletePopup"
 import TruncatedText from "./ui/truncatedText"
 
-function Tasks({ taskList, isLoading, error, isGridClose, handleRefresh, handleUpdateTaskPopup }) {
+function Tasks({ taskList, isLoading, error, isGridClose, handleRefresh, handleUpdateTaskPopup, page }) {
   const apiUrl = import.meta.env.VITE_APP_API_URL;
   const [isdeletePopupOpen, setIsDeletePopupOpen] = useState(false);
   const [id, setId] = useState(null);
@@ -36,20 +36,21 @@ function Tasks({ taskList, isLoading, error, isGridClose, handleRefresh, handleU
     setId(id)
     setTitle(title)
     setIsDeletePopupOpen(true)
-  }
+  };
   if (isLoading) {
     return (<div className='mainContainer gap-4 p-4'>
       <Spinner/>
       </div>)
-  }
+  };
   if (error) {
     return (<div className='mainContainer gap-4 p-4'>
       <p>Error: {error.message}</p>
       </div>)
-  }
+  };
   if (!taskList || taskList.length === 0) {
+    if(page === 'Today') return <p>No task for today.</p>;
     return <p>Please add Tasks.</p>;
-  }
+  };
 
   const styles = {
     taskContainer: {
@@ -89,7 +90,6 @@ function Tasks({ taskList, isLoading, error, isGridClose, handleRefresh, handleU
             <Container key={task._id} 
             className="tasks-card  rounded-lg shadow-md p-4 space-y-2" style={styles.taskCard}>
               <p className="title text-xl font-bold text-gray-800">{task.title}</p>
-              {/* <p className="description text-sm  italic">{task.description}</p> */}
               <TruncatedText className={"description text-sm  italic"} text={task.description} wordLimit={30}/>
                 <div className="cardProperties text-sm  flex items-center space-x-2  gap-3" style={styles.cardDisplayItemPosition}>
                   {localizedDate && (
@@ -105,7 +105,6 @@ function Tasks({ taskList, isLoading, error, isGridClose, handleRefresh, handleU
                       <svg viewBox="0 0 24 24" style={{width:'1em'}} fill={flag} xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M5 22V14M5 14V4M5 14L7.47067 13.5059C9.1212 13.1758 10.8321 13.3328 12.3949 13.958C14.0885 14.6354 15.9524 14.7619 17.722 14.3195L17.9364 14.2659C18.5615 14.1096 19 13.548 19 12.9037V5.53669C19 4.75613 18.2665 4.18339 17.5092 4.3727C15.878 4.78051 14.1597 4.66389 12.5986 4.03943L12.3949 3.95797C10.8321 3.33284 9.1212 3.17576 7.47067 3.50587L5 4M5 4V2" stroke={flag==='none'? '#000' : flag} strokeWidth="1.5" strokeLinecap="round"></path> </g></svg>
                     </span>
                   </div>
-                  {/* add label here */}
                   <div className="d-flex">
                     {task.label}
                   </div>  
@@ -125,7 +124,6 @@ function Tasks({ taskList, isLoading, error, isGridClose, handleRefresh, handleU
                       handleUpdateTaskPopup(task._id);
                       }}>Edit</Dropdown.Item>
                     <Dropdown.Item onClick={() => {
-                      // handleDelete(task._id);
                       deletePopup(task._id, task.title)
                       }}>Delete</Dropdown.Item>
                   </Dropdown.Menu>

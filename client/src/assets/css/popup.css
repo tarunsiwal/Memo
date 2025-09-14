@@ -64,6 +64,26 @@
     gap: 1rem;
 }
 
+.popup-btn .btn {
+    padding: 0 12px;
+    height: 32px;
+    transition-property: box-shadow, border;
+    transition-duration: .3s;
+    transition-timing-function: ease;
+}
+
+.popup-btn .form-select {
+    height: 32px;
+    padding: 0 12px;
+}
+
+.popup-btn .btn.submit:active {
+    background-color: #ff9a00 !important;
+    scale: 0.9;
+    border: none;
+    color: #fff !important;
+}
+
 .popup-btn .submit-btn .submit:hover {
-    background-color: rgb(243, 183, 3);
+    background-color: #ec9108
 }

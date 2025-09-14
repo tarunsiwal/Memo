@@ -16,7 +16,7 @@ import add from '../assets/images/svg/add.svg'
 import AddTaskPopup from "./popups/addTaskPopup";
 import SearchPopup from "./popups/searchPopup";
 
-function Sidebar({refreshTrigger}) {
+function Sidebar({refreshTrigger, searchQuery, setSearchQuery}) {
   const apiUrl = import.meta.env.VITE_APP_API_URL;
 
   const [closeSidebar, setCloseSidebar] = useState(false);
@@ -58,7 +58,11 @@ function Sidebar({refreshTrigger}) {
   const handleCloseSidebar = () => {
       setCloseSidebar(!closeSidebar)
   };
-
+  const handleSearchIconClick = () => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  };
 
   return (
     <div className={closeSidebar === false ? 'sideBar active': 'sideBar'}>
@@ -85,7 +89,7 @@ function Sidebar({refreshTrigger}) {
         </li>
         <li>
           <a onClick={handleSearchClick}>
-            <img src={magnifier} alt='magnifier' className='sidebarImage'></img>
+            <img src={magnifier} alt='magnifier' onClick={handleSearchIconClick} className='sidebarImage'></img>
             <span className="txt">Search</span>
           </a>
         </li>
@@ -122,7 +126,8 @@ function Sidebar({refreshTrigger}) {
       <SearchPopup
       trigger={isSearchPopupOpen}
       onClose={() => setIsSearchPopupOpen(false)}
-      
+      searchQuery={searchQuery}
+      setSearchQuery={setSearchQuery}
       />
     </div>
   );

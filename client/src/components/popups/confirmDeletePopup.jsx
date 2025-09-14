@@ -1,5 +1,6 @@
 import React from 'react'
 import '../../assets/css/popup.css';
+import TruncatedText from '../ui/truncatedText';
 
 function ConfirmDeletePopup({trigger, title, onClose, deleteTask}) {
     const handleSubmit = (e) => {
@@ -11,10 +12,10 @@ function ConfirmDeletePopup({trigger, title, onClose, deleteTask}) {
     }
   return trigger ? 
     (<div className="popup-container">
-        <div className="popup">
+        <div className="popup" style={{width:'45%'}}>
         <form onSubmit={handleSubmit}>
-                <p>Do you want to delete this task?</p>
-                <p>{title}</p>
+                <h1 className='deleteTaskHeading'>Delete task?</h1>
+                <p className='descriptiotn'>Do you want to delete {<TruncatedText className={'fw-bold'} text={title} wordLimit={4}/>} task?</p>  
                 <div className="popup-btn" style={{float:'right', margin:'0'}}>
                     <div className="submit-btn">
                         <button className="btn submit" type="submit">
