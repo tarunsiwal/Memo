@@ -1,5 +1,5 @@
 <div align="center">
-<h1>🚀 Karyam: Your Ultimate Task Companion 🚀</h1>
+<h1>![Logo](client/public/favicon.png) Karyam: Your Ultimate Task Companion</h1>
 <p>A fundamental to-do app, Karyam serves as a portfolio piece showcasing MERN stack development with an emphasis on clean code and robust CRUD functionality.</p>
 </div>
 
