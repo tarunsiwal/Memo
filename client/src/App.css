@@ -86,7 +86,7 @@
 .btn:active,
 .btn.active,
 .btn.show {
-  background-color: #ffffff !important;
+  /* background-color: #ffffff !important; */
   box-shadow: none !important;
   border: none;
 }
@@ -247,6 +247,11 @@
     box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); */
   }
 
+  .popup {
+    width: 90% !important;
+  }
+
+  /* sidenav mobile */
   .mobile {
     left: -4rem;
     width: 0;
