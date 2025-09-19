@@ -72,11 +72,10 @@ function Tasks({ taskList, isLoading, error, isGridClose, handleRefresh, handleU
     taskCard : { 
       marginLeft: isGridClose ? 'auto' : '0',
       marginRight: isGridClose ? 'auto' : '0',
-      // marginTop: isGridClose ? '1em'
     }
   };
   return (
-      <div className='taskContainer' style={styles.taskContainer}>
+      <div className='taskContainer sm' style={styles.taskContainer}>
         {taskList.map((task) => {
           const hasDueDate = task.dueDate && task.dueDate.trim().length > 0;
           const localizedDate = hasDueDate

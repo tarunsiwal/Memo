@@ -138,33 +138,41 @@ function Inbox ({isGridClose, page, refreshTrigger, handleRefresh, searchQuery, 
   const handleClearSearch = () => {
     setSearchQuery(''); // This triggers the useEffect below
   };
+
+  const style = {
+    objectContainer : {
+      width: isGridClose ? '700px' : '100%',
+    }
+  }
   return (
-    <div className='mainContainer gap-4 p-4' >
-      <h2>{page}</h2>
-      {searchQuery && (
-        <div className="search-tag">
-          <span> Searching for: "{searchQuery}"</span>
-          <a className="btn-submit" onClick={handleClearSearch}>
-            <img style={{width:'1em'}} src={cross}></img>
-          </a>
-        </div>
-      )}
-      <hr/>
-      <UpdateTaskPopup 
-        trigger={isUpdatePopupOpen}
-        onClose={() => setIsUpdatePopupOpen(false)} 
-        onUpdateTask={onUpdateTask}
-        taskDetails={taskDetails}
-      />
-      <Task
-        taskList={tasks}
-        isLoading={isLoading}
-        error={error}
-        isGridClose={isGridClose}
-        handleRefresh={handleRefresh}
-        page={page}
-        handleUpdateTaskPopup={handleUpdateTaskPopup}
-      />
+    <div className='mainContainer'>
+      <div className='objectContainer' style={style.objectContainer}>
+        {/* <h2>{page}</h2> */}
+        {/* {searchQuery && (
+          <div className="search-tag">
+            <span> Searching for: "{searchQuery}"</span>
+            <a className="btn-submit" onClick={handleClearSearch}>
+              <img style={{width:'1em'}} src={cross}></img>
+            </a>
+          </div>
+        )} */}
+        {/* <hr/> */}
+        <UpdateTaskPopup 
+          trigger={isUpdatePopupOpen}
+          onClose={() => setIsUpdatePopupOpen(false)} 
+          onUpdateTask={onUpdateTask}
+          taskDetails={taskDetails}
+        />
+        <Task
+          taskList={tasks}
+          isLoading={isLoading}
+          error={error}
+          isGridClose={isGridClose}
+          handleRefresh={handleRefresh}
+          page={page}
+          handleUpdateTaskPopup={handleUpdateTaskPopup}
+        />
+      </div>
     </div>
   )
 }

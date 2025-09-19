@@ -54,7 +54,7 @@
 
 .sidebarImage {
     width: 1.3em;
-    cursor: pointer;
+    /* cursor: pointer; */
 }
 
 .sideBarMenu .addTask .sidebarImage {
@@ -69,13 +69,19 @@
 .sideBar .profileContainer {
     display: flex;
     align-items: center;
-    /* justify-content: space-between; */
 }
 
+.sideBar .profileContainer .profile {
+    overflow: hidden;
+    display: inline-flex
+}
+
+
+/* 
 .profileContainer {
     display: flex;
     align-items: center;
-}
+} */
 
 .profileContainer:hover {
     cursor: pointer;
@@ -104,12 +110,11 @@
 
 .sideBar.active .sideBarMenu ul li a .txt {
     display: none;
-    /* opacity: 0; */
 }
 
-.sideBar.active .sideBarMenu ul li a {
+/* .sideBar.active .sideBarMenu ul li a {
     justify-content: center;
-}
+} */
 
 /* .sideBar.active .profileToggleContainer a {
     margin-left: 1.5em;
@@ -161,6 +166,8 @@
     margin-left: 2px;
 }
 
-.mainContainer {
-    margin-left: 4rem !important;
+@media (max-width: 640px) {
+    .sideBar .profileContainer {
+        justify-content: space-between;
+    }
 }

@@ -5,15 +5,15 @@
 
   color-scheme: light dark;
   color: #1c274c;
-  background-color: #ffffff;
-
+  /* background-color: rgb(243, 244, 246); */
+  background-color: #f9f9f9;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
   --sidebar-width: 284px;
-  --background-color: #fcfaf8;
+  --background-color: #f9f9f9;
   --border: 1px solid #ccc;
 
   --color-1: #ff9a00;
@@ -38,6 +38,8 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  background-color: #f9f9f9 !important;
+
 }
 
 h1 {
@@ -52,19 +54,19 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #fff;
   cursor: pointer;
   transition: border-color 0.25s;
 }
 
-button:hover {
+/* button:hover {
   border-color: #646cff;
-}
+} */
 
-button:focus,
+/* button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
-}
+} */
 
 ::-webkit-scrollbar {
   width: 5px;
