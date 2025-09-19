@@ -44,6 +44,10 @@ Dynamic Sidenav
 Navigate your project with an elegant and functional sidebar that keeps everything within reach.
 ![Sidenav used in project](project_images/side_nav.png)
 
+Mobile View <hr>
+![Grid in mobile](project_images/gridViewInMobile.png)
+![Sidenav in mobile](project_images/sidebarInMobile.png)
+
 🌟 My Skills in Action
 This project is a testament to my ability to build a full-featured application from the ground up. It demonstrates:
 
