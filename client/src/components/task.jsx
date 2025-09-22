@@ -111,17 +111,20 @@ function Tasks({ taskList, isLoading, error, isGridClose, handleRefresh, handleU
               <div className="btnContainer flex justify-end gap-2 mt-1 text-end" style={styles.cardMenuPosition}>
                 <div className="taskInfo">
                 </div>
-                <button className="btn">
-                  <img src={LabelTag} alt='label' className="sidebarImage" style={{rotate:'180deg'}}></img>
-                </button>
                 <Dropdown>
-                  <Dropdown.Toggle  id="task-menu">
+                  <Dropdown.Toggle  id="task-btn" className="btn">
                     <img src={MenuDot} alt='menuDots' className='sidebarImage' style={styles.rotationStyle}></img>
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
                     <Dropdown.Item onClick={() => {
                       handleUpdateTaskPopup(task._id);
                       }}>Edit</Dropdown.Item>
+                    <Dropdown.Item onClick={() => {
+                      handleUpdateTaskPopup(task._id);
+                      }}>Label</Dropdown.Item>
+                    <Dropdown.Item onClick={() => {
+                      handleUpdateTaskPopup(task._id);
+                      }}>Color</Dropdown.Item>
                     <Dropdown.Item onClick={() => {
                       deletePopup(task._id, task.title)
                       }}>Delete</Dropdown.Item>

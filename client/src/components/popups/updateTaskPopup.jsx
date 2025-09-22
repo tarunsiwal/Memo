@@ -36,6 +36,12 @@ function UpdateTaskPopup({ trigger, onClose, onUpdateTask, taskDetails }) {
     }
   };
   const handleCloseAndClear = () => {
+          setId(taskDetails._id);
+      setTitle(taskDetails.title);
+      setDescription(taskDetails.description);
+      setDueDate(new Date(taskDetails.dueDate));
+      setPriority(taskDetails.priority);
+      setLabels(taskDetails.labels);
     onClose();
   };
   return trigger ? (

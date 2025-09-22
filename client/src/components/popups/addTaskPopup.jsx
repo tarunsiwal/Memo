@@ -27,7 +27,7 @@ function AddTaskPopup({ trigger, onClose, onAddTask }) {
   const [placeholderText] = useState(getRandomPlaceholder());
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [dueDate, setDueDate] = useState(null);
+  const [dueDate, setDueDate] = useState("");
   const [priority, setPriority] = useState(4);
   const [labels, setLabels] = useState([])
 

@@ -1,0 +1,277 @@
+/* :root {
+  --border: 1px solid #e1e1e1;
+  --color-1: #ff9a00;
+} */
+
+#root {
+    width: 100%;
+    min-height: 100vh;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0;
+}
+
+/* Base card styles */
+.tasks-card {
+    border: var(--border);
+    border-radius: 5px;
+    padding: 1em;
+    margin-top: 1em;
+    position: relative;
+    height: min-content;
+    background-color: #fff;
+}
+
+.tasks-card .title {
+    color: #202020;
+}
+
+.tasks-card .description,
+.tasks-card .cardProperties {
+    font-size: 14px;
+}
+
+.tasks-card .description {
+    color: #666;
+}
+
+.tasks-card .cardProperties .dueDate {
+    color: var(--color-1);
+}
+
+.tasks-card #task-btn {
+    padding: 5px;
+    display: flex;
+    background-color: #ffffff;
+    border-radius: 5px;
+    border: none;
+}
+
+.tasks-card #task-btn:hover {
+    background: rgba(141, 141, 141, 0.2);
+}
+
+/* Main layout and containers */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    padding: 0 1.5rem 0 4rem;
+    z-index: 1;
+    background-color: #f9f9f9;
+    transition: all 0.3s ease;
+    justify-content: space-between;
+}
+
+.mainContainer {
+    margin-top: 3rem;
+    padding: 1.5rem 1.5rem 1.5rem 4rem;
+    display: flex;
+    justify-content: center;
+    min-height: calc(100vh - 4.5rem);
+}
+
+.footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5em;
+    font-size: 12px;
+    color: #666;
+    width: 100%;
+}
+
+/* Search bar styles */
+.searchContainer {
+    width: 450px;
+    background-color: #fff;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.searchContainer:focus-within {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.searchContainer .searchBar {
+    border-radius: 5px;
+    border: var(--border);
+    padding: 0 12px;
+}
+
+.searchContainer .searchBar button {
+    background-color: unset;
+    color: var(--color-1);
+    padding: 0;
+    background: #fff;
+}
+
+/* General button styles */
+.btn {
+    padding: 5px;
+    display: flex;
+    background-color: #ffffff;
+    border-radius: 5px;
+    border: none;
+}
+
+.btn:focus,
+.btn:active,
+.btn.active,
+.btn.show {
+    box-shadow: none !important;
+    border: none;
+}
+
+.mainContainer .btnContainer {
+    bottom: 1em;
+    right: 1em;
+    display: flex;
+    justify-content: end;
+}
+
+.mainContainer .btn:focus-visible {
+    background-color: #fff;
+    border: var(--border);
+}
+
+.mainContainer .btn::after {
+    display: none;
+}
+
+.mainContainer .btn:hover {
+    background-color: rgba(141, 141, 141, 0.2);
+}
+
+.submit-btn .btn.submit {
+    background-color: var(--color-1);
+    color: #ffffff;
+}
+
+.submit-btn .btn.cancel {
+    border: var(--border);
+}
+
+.submit-btn .btn.cancel:hover {
+    background-color: rgba(128, 128, 128, 0.153);
+}
+
+/* Form and input styles */
+.task-dueDate-Priority {
+    width: 50%;
+    gap: 1em;
+}
+
+.task-dueDate-Priority .react-datepicker-wrapper {
+    width: 100%;
+    height: 100%;
+    border: var(--border);
+    border-radius: 5px;
+}
+
+.react-datepicker__input-container {
+    height: 100%;
+}
+
+.task-dueDate-Priority input {
+    border: none;
+    width: inherit;
+    height: 100%;
+    border-radius: 5px;
+    color: #000;
+    background: #fff;
+}
+
+.task-dueDate-Priority input:focus,
+.task-dueDate-Priority input:focus-visible,
+.task-dueDate-Priority .form-select:focus,
+.task-dueDate-Priority .form-select:focus-visible {
+    border-color: var(--color-1);
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(255, 154, 0, 0.25);
+}
+
+/* Dropdown and menu styles */
+#task-menu:active {
+    background-color: #fff;
+}
+
+.dropdown-menu a:focus,
+.dropdown-menu a:active,
+.dropdown-menu a.active {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    color: #000;
+}
+
+/* Visibility utilities */
+.hidden {
+    display: none;
+}
+
+.block {
+    display: block !important;
+}
+
+/* Mobile-specific styles */
+.sideNavMobileToggle {
+    display: none !important;
+}
+
+@media (max-width: 640px) {
+    .header .searchContainer {
+        width: auto;
+    }
+
+    .mainContainer {
+        padding: 1.5rem;
+    }
+
+    .header {
+        padding: 0 1.5rem;
+    }
+
+    .sideNavMobileToggle {
+        display: block !important;
+        padding: 0.5rem;
+        background: unset;
+    }
+
+    .popup {
+        width: 90% !important;
+    }
+
+    .mobile {
+        left: -4rem;
+        width: 0;
+    }
+
+    .mobile .profileContainer span {
+        display: none;
+    }
+
+    .taskContainer {
+        grid-template-columns: 1fr 1fr !important;
+    }
+}
+
+/* Other styles */
+.dummy {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Delete message popup styles */
+.popup-container h1 {
+    line-height: 23px;
+    font-size: 16px;
+}
+
+.popup-container p {
+    font-size: 14px;
+}

@@ -6,6 +6,7 @@ import Header from './components/ui/header'
 import Inbox from './components/inbox';
 import FilterLabels from './pages/filterLabels';
 import HomePage from './pages/homePage';
+import Footer from './components/ui/footer'
 import './App.css'
 
 const useResponsiveLayout = (breakpoint = 640) => {
@@ -14,6 +15,7 @@ const useResponsiveLayout = (breakpoint = 640) => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < breakpoint)
     }
+    handleResize()
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
   }, [breakpoint])
@@ -54,37 +56,40 @@ function App() {
       setSearchQuery={setSearchQuery}
       setIsSidebarOpen={setIsSidebarOpen}
       />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/inbox" element={
-          <Inbox 
-          isGridClose={isGridClose} 
-          page={'Inbox'} 
-          refreshTrigger={refreshTrigger}
-          handleRefresh={handleRefresh}
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          />} />
-        <Route path="/today" element={
-          <Inbox 
-          isGridClose={isGridClose} 
-          page={'Today'} 
-          refreshTrigger={refreshTrigger}
-          handleRefresh={handleRefresh}
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          />} />
-        <Route path="/upcoming" element={
-          <Inbox 
-          isGridClose={isGridClose} 
-          page={'Upcoming'} 
-          refreshTrigger={refreshTrigger}
-          handleRefresh={handleRefresh}
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          />} />
-        <Route path="/filterLabels" element={<FilterLabels />} />
-      </Routes>
+        <div className='main'>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/inbox" element={
+              <Inbox 
+              isGridClose={isGridClose} 
+              page={'Inbox'} 
+              refreshTrigger={refreshTrigger}
+              handleRefresh={handleRefresh}
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              />} />
+            <Route path="/today" element={
+              <Inbox 
+              isGridClose={isGridClose} 
+              page={'Today'} 
+              refreshTrigger={refreshTrigger}
+              handleRefresh={handleRefresh}
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              />} />
+            <Route path="/upcoming" element={
+              <Inbox 
+              isGridClose={isGridClose} 
+              page={'Upcoming'} 
+              refreshTrigger={refreshTrigger}
+              handleRefresh={handleRefresh}
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              />} />
+            <Route path="/filterLabels" element={<FilterLabels />} />
+          </Routes>
+          <Footer />
+        </div>
     </BrowserRouter>
   );
 }
