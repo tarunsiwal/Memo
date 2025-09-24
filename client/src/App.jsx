@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, createContext } from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Sidebar from './components/sidebar';
@@ -8,6 +8,8 @@ import FilterLabels from './pages/filterLabels';
 import HomePage from './pages/homePage';
 import Footer from './components/ui/footer'
 import './App.css'
+
+export const MobileContext = createContext(false);
 
 const useResponsiveLayout = (breakpoint = 640) => {
   const [isMobile, setIsMobile] = useState(false);
@@ -24,6 +26,7 @@ const useResponsiveLayout = (breakpoint = 640) => {
 
 
 function App() {
+  
   const isMobile = useResponsiveLayout();
   const [isGridClose, setIsGridClose] = useState(true);
   const [refreshTrigger, setRefreshTrigger] = useState(false);
@@ -41,9 +44,9 @@ function App() {
   };
   return (
     <BrowserRouter>
+      <MobileContext.Provider value={isMobile}>
       <Sidebar 
         refreshTrigger={handleRefresh}
-        isMobile={isMobile}
         isSidebarOpen={isSidebarOpen}
         setIsSidebarOpen={setIsSidebarOpen}
         handleCloseSidebar={handleCloseSidebar}
@@ -90,6 +93,7 @@ function App() {
           </Routes>
           <Footer />
         </div>
+      </MobileContext.Provider>
     </BrowserRouter>
   );
 }

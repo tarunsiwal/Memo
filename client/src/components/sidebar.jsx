@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useState, useEffect, useRef} from "react";
+import { useState, useEffect, useRef, useContext} from "react";
 
 import '../assets/css/sidebar.css'
 import '../assets/css/popup.css'
@@ -12,11 +12,16 @@ import arrow from '../assets/images/svg/arrow-in-circle.svg'
 import profile from '../assets/images/profile.jpg'
 import add from '../assets/images/svg/add.svg'
 import burger from '../assets/images/svg/burger-menu.svg'
+import { MobileContext } from "../App";
+
+import { X } from "lucide-react"
+
 
 import AddTaskPopup from "./popups/addTaskPopup";
 
-function Sidebar({refreshTrigger, isMobile, isSidebarOpen, setIsSidebarOpen, handleCloseSidebar}) {
+function Sidebar({refreshTrigger, isSidebarOpen, setIsSidebarOpen, handleCloseSidebar}) {
   const apiUrl = import.meta.env.VITE_APP_API_URL;
+  const isMobile = useContext(MobileContext);
 
   const [isAddTaskPopupOpen, setIsAddTaskPopupOpen] = useState(false);
 
@@ -63,8 +68,9 @@ function Sidebar({refreshTrigger, isMobile, isSidebarOpen, setIsSidebarOpen, han
         <span>Tarun</span>
         </div>
         {isMobile ? (isMobile && isSidebarOpen === true &&(
-            <button  className="btn">
-              <img onClick={() => setIsSidebarOpen(false)} className='sidebarImage' src={cross} alt="" />
+            <button  className="btn" onClick={() => setIsSidebarOpen(false)}>
+              {/* <img onClick={() => setIsSidebarOpen(false)} className='sidebarImage' src={cross} alt="" /> */}
+              <X className='sidebarImage'/>
             </button>
           )) : null}
       </div>
@@ -86,7 +92,7 @@ function Sidebar({refreshTrigger, isMobile, isSidebarOpen, setIsSidebarOpen, han
             <span className="txt">Add task</span>
           </a>
         </li>
-        <li>
+        <li className="active">
           <Link to='/inbox'>
             <img src={inbox} alt='inbox' className='sidebarImage'></img>
             <span className="txt">Inbox</span>

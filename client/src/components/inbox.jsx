@@ -2,7 +2,7 @@ import { useState, useEffect} from 'react'
 import Task from './task'
 import UpdateTaskPopup from './popups/updateTaskPopup';
 
-function Inbox ({isGridClose, page, refreshTrigger, handleRefresh, searchQuery, setSearchQuery}){
+function Inbox ({isGridClose, page, refreshTrigger, handleRefresh, searchQuery, setSearchQuery,}){
   const apiUrl = import.meta.env.VITE_APP_API_URL;
   const [tasks, setTasks] = useState([]);
   const [error, setError] = useState(null);

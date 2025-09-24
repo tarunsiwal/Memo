@@ -12,7 +12,7 @@ function Tasks({  taskList,
                   handleRefresh, 
                   handleUpdateTaskPopup, 
                   page, 
-                  onPinTask }) {
+                  onPinTask,}) {
   const apiUrl = import.meta.env.VITE_APP_API_URL;
   const [isdeletePopupOpen, setIsDeletePopupOpen] = useState(false);
   const [id, setId] = useState(null);

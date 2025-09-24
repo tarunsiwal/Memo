@@ -2,14 +2,16 @@
 import React from "react";
 import { Container } from "react-bootstrap";
 import Dropdown from 'react-bootstrap/Dropdown';
-import { useState } from "react";
+import { useState, useContext } from "react";
 import TruncatedText from "../helper/truncatedText"
+import { MobileContext } from '../../App';
 
 import { Trash2, Pencil, Palette, Tag, EllipsisVertical, Pin} from "lucide-react"
 
 function TaskCard({ task, deletePopup, togglePin, handleUpdateTaskPopup, styles }) {
   const [hoveredCardId, setHoveredCardId] = useState(null); // Keep hover state here for better encapsulation
   
+  const isMobile = useContext(MobileContext);
   const hasDueDate = task.dueDate && task.dueDate.trim().length > 0;
   const localizedDate = hasDueDate ? new Date(task.dueDate).toLocaleDateString() : null;
 
@@ -17,7 +19,7 @@ function TaskCard({ task, deletePopup, togglePin, handleUpdateTaskPopup, styles 
   if(task.priority === 3) flag = '#198754'
   else if(task.priority === 2) flag = '#ffec2e'
   else if(task.priority === 1) flag = '#de1313ff'
-
+console.log('****',isMobile, '*****')
   return (
     <Container 
       key={task._id} 
@@ -26,13 +28,13 @@ function TaskCard({ task, deletePopup, togglePin, handleUpdateTaskPopup, styles 
       onMouseEnter={() => setHoveredCardId(task._id)}
       onMouseLeave={() => setHoveredCardId(null)}
     >
-      {(task.isPinned || hoveredCardId === task._id) && (
+      {(isMobile || task.isPinned || hoveredCardId === task._id) && (
         <div className={`pin ${task.isPinned ? 'pinned' : ''}`} onClick={() => togglePin(task._id, task.isPinned)}>
           <Pin fill={task.isPinned ? '#4e4e4e' : 'none'} style= {{rotate : task.isPinned ? '0deg' : '45deg'}}/>
         </div>
       )}
-      <p className="title text-xl font-bold text-gray-800">{task.title}</p>
-      <TruncatedText className={"description text-sm  italic"} text={task.description} wordLimit={30}/>
+      <TruncatedText className={"title text-xl font-bold text-gray-800"} text={task.title} wordLimit={6} type={'p'}/>
+      <TruncatedText className={"description text-sm  italic mb-0"} text={task.description} wordLimit={30} type={'span'}/>
       <div className="cardProperties">
         {localizedDate && (
         <div className="dueDate text-sm  flex items-center space-x-2 d-flex" 

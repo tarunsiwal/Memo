@@ -15,7 +15,7 @@ function ConfirmDeletePopup({trigger, title, onClose, deleteTask}) {
         <div className="popup" style={{width:'45%'}}>
         <form onSubmit={handleSubmit}>
                 <h1 className='deleteTaskHeading'>Delete task?</h1>
-                <p className='descriptiotn'>Do you want to delete {<TruncatedText className={'fw-bold'} text={title} wordLimit={4}/>} task?</p>  
+                <p className='descriptiotn'>Do you want to delete {<TruncatedText className={'fw-bold'} text={title} wordLimit={4} type={'span'}/>} task?</p>  
                 <div className="popup-btn" style={{float:'right', margin:'0'}}>
                     <div className="submit-btn">
                         <button className="btn submit" type="submit">

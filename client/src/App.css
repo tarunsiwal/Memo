@@ -41,7 +41,6 @@
   transition: all 0.2s ease-in-out;
   opacity: 0;
   visibility: hidden;
-  /* Add a smooth transition for the opacity change */
   transition: opacity 0.3s ease-in-out, visibility 0.2s ease-in-out;
 }
 
@@ -50,7 +49,6 @@
   visibility: visible;
 }
 
-/* This is the key part: show the pin only when the card is hovered */
 .task-card:hover .pin {
   opacity: 1;
   visibility: visible;
@@ -401,6 +399,11 @@
 
   .cardProperties {
     flex-direction: column;
+  }
+
+  .task-card .pin {
+    opacity: 1 !important;
+    visibility: visible !important;
   }
 }
 

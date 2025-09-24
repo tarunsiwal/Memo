@@ -48,10 +48,6 @@
     transition: 0.25s all;
 }
 
-.sideBarMenu ul li.active {
-    background-color: rgb(255 154 0 / 19%);
-}
-
 .sidebarImage {
     width: 1.3em;
     /* cursor: pointer; */
@@ -97,6 +93,10 @@
 
 .sideBarMenu .txt {
     white-space: nowrap;
+}
+
+.sideBarMenu ul li.active {
+    background-color: rgb(255 154 0 / 19%);
 }
 
 .sideBar.active {
