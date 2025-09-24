@@ -1,16 +1,9 @@
 import React from "react";
-import { Container } from "react-bootstrap";
-import Dropdown from 'react-bootstrap/Dropdown';
 import { useState, useEffect, useRef } from "react";
-
-import MenuDot from "../assets/images/svg/menu-dots.svg"
-import LabelTag from "../assets/images/svg/tag.svg"
 import Spinner from "./helper/spinner"
-import DeletePopup from "./popups/confirmDeletePopup"
-import TruncatedText from "./helper/truncatedText"
 import TaskCard from "./ui/taskCard";
-
-import { Trash2, Pencil, Palette, Tag, EllipsisVertical, Pin} from "lucide-react"
+import DeletePopup from "./popups/confirmDeletePopup"
+import { TextAlignCenter } from "lucide-react";
 
 function Tasks({  taskList, 
                   isLoading, 
@@ -24,9 +17,6 @@ function Tasks({  taskList,
   const [isdeletePopupOpen, setIsDeletePopupOpen] = useState(false);
   const [id, setId] = useState(null);
   const [title, setTitle] = useState('');
-  const [hoveredCardId, setHoveredCardId] = useState(null);
-  // const [color, setColor] = useState('#ffffff');
-  // const [showColorPicker, setShowColorPicker] = useState(false);
 
   const popupRef = useRef(null);
 
@@ -88,6 +78,9 @@ function Tasks({  taskList,
     taskCard : { 
       marginLeft: isGridClose ? 'auto' : '0',
       marginRight: isGridClose ? 'auto' : '0',
+    },
+    gridHeading : {
+      textAlign: isGridClose ? 'unset' : 'center'
     }
   };
   return (
@@ -95,7 +88,7 @@ function Tasks({  taskList,
     {/* Pinned Tasks Section */}
     {pinnedTasks.length > 0 && (
       <div className="pinned-tasks-section" >
-        <h3 className="section-title">Pinned Tasks</h3>
+        <h3 className="section-title" style={styles.gridHeading}>Pinned Tasks</h3>
         <div className="pinned-tasks-grid" style={styles.taskContainer}>
           {pinnedTasks.map((task) => (
             <TaskCard 
@@ -114,7 +107,7 @@ function Tasks({  taskList,
     {/* Other Tasks Section */}
     {unpinnedTasks.length > 0 && (
       <div className="other-tasks-section">
-        <h3 className="section-title">Other Tasks</h3>
+        <h3 className="section-title" style={styles.gridHeading}>Other Tasks</h3>
         <div className="other-tasks-grid" style={styles.taskContainer}>
           {unpinnedTasks.map((task) => (
             <TaskCard 
@@ -129,6 +122,12 @@ function Tasks({  taskList,
         </div>
       </div>
     )}
+    <DeletePopup
+          trigger={isdeletePopupOpen}
+          onClose={() => setIsDeletePopupOpen(false)} 
+          title={title}
+          deleteTask={handleDelete}
+        />
   </div>
   );}
 

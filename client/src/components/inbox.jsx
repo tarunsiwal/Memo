@@ -1,8 +1,6 @@
 import { useState, useEffect} from 'react'
 import Task from './task'
 import UpdateTaskPopup from './popups/updateTaskPopup';
-import cross from '../assets/images/svg/cross.svg'
-import TaskPopup from './popups/taskPopup';
 
 function Inbox ({isGridClose, page, refreshTrigger, handleRefresh, searchQuery, setSearchQuery}){
   const apiUrl = import.meta.env.VITE_APP_API_URL;
