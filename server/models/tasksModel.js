@@ -10,6 +10,8 @@ const taskSchema = new mongoose.Schema({
   assignee: { type: String },
   labels: [String],
   priority: { type: Number },
+  isPinned: { type: Boolean, default: false },
+  cardColor: { type: String, default: "#ffffff" },
 });
 
 const Task = mongoose.model("Task", taskSchema);

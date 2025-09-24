@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 
-import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Form from 'react-bootstrap/Form';
 import Datepicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import 'https://cdn.jsdelivr.net/npm/flatpickr'
 import PriorityDropdown from "../ui/priorityDropDown";
+import {Tag, X, Palette} from "lucide-react"
 
 function AddTaskPopup({ trigger, onClose, onAddTask }) {
     const dummyText = [
@@ -29,19 +29,25 @@ function AddTaskPopup({ trigger, onClose, onAddTask }) {
   const [description, setDescription] = useState("");
   const [dueDate, setDueDate] = useState("");
   const [priority, setPriority] = useState(4);
-  const [labels, setLabels] = useState([])
+  const [labels, setLabels] = useState([]);
+  const [color, setColor] = useState('#ffffff');
+  const [showColorPicker, setShowColorPicker] = useState(false);
 
+  const inputRefs = useRef([]);
+  const spanRefs = useRef([]);
+  const popupRef = useRef(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (title.trim() && description.trim()) {
-      onAddTask({ title, description, dueDate, labels, priority });
-      console.log("Task submitted:", { title, description, dueDate, labels, priority });
+      onAddTask({ title, description, dueDate, labels, priority, color });
+      console.log("Task submitted:", { title, description, dueDate, labels, priority, color });
       setTitle(""); 
       setDescription("");
       setDueDate("");
       setPriority(4);
-      setLabels("");
+      setLabels([]);
+      setColor('#ffffff')
     }
     onClose();
   };
@@ -50,26 +56,48 @@ function AddTaskPopup({ trigger, onClose, onAddTask }) {
     setDescription("");
     setDueDate("");
     setPriority(4);
-    setLabels("");
+    setLabels([]);
+    setColor('#ffffff');
     onClose();
   };
+  // set label logic
+  const handleAddLabel = () => {
+    setLabels([...labels, '']);
+  };
+  const handleChangeLabel = (index, event) => {
+    const inputLabels = [...labels];
+    inputLabels[index] = event.target.value;
+    setLabels(inputLabels);
+  };
+  const handleRemoveLabel = (index) => {
+    const inputLabels = labels.filter((_, i) => i !== index);
+    setLabels(inputLabels);
+  };
+    useEffect(() => {
+    labels.forEach((label, index) => {
+      const inputEl = inputRefs.current[index];
+      const spanEl = spanRefs.current[index];
+      if (inputEl && spanEl) {
+        const textWidth = spanEl.offsetWidth;
+        inputEl.style.width = `${Math.max(10, textWidth + 8)}px`;
+      }
+    });
+  }, [labels]);
 
-  const flagSVG = (priority) =>{
-    let flag;
-    if(priority === 3) flag = 'green'
-    else if(priority === 2) flag = 'yellow'
-    else if(priority === 1) flag = 'red'
-    return <svg viewBox="0 0 24 24" style={{width:'1em'}} fill={flag} xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M5 22V14M5 14V4M5 14L7.47067 13.5059C9.1212 13.1758 10.8321 13.3328 12.3949 13.958C14.0885 14.6354 15.9524 14.7619 17.722 14.3195L17.9364 14.2659C18.5615 14.1096 19 13.548 19 12.9037V5.53669C19 4.75613 18.2665 4.18339 17.5092 4.3727C15.878 4.78051 14.1597 4.66389 12.5986 4.03943L12.3949 3.95797C10.8321 3.33284 9.1212 3.17576 7.47067 3.50587L5 4M5 4V2" stroke={flag==='none'? '#000' : flag} strokeWidth="1.5" strokeLinecap="round"></path> </g></svg>
-  }
+  const handleColorChange = (newColor) => {
+    setColor(newColor);
+    setShowColorPicker(false);
+  };
   return trigger ? (
     <div className="popup-container">
-      <div className="popup">
+      <div className="popup"
+      style={{ backgroundColor: color }}
+      ref={popupRef}>
         <form onSubmit={handleSubmit} >
           <div className="form-group">
-            <InputGroup >
-              <Form.Control
+              <input
                 placeholder={placeholderText}
-                autofocus
+                autoFocus
                 aria-label="title"
                 className="text-area title"
                 type="text"
@@ -79,11 +107,9 @@ function AddTaskPopup({ trigger, onClose, onAddTask }) {
                 required
                 aria-describedby="basic-addon1"
               />
-            </InputGroup>
           </div>
           <div className="form-group">
-            {/* <FloatingLabel controlId="floatingTextarea2" label="Description"> */}
-            <Form.Control
+            <textarea
               as="textarea"
               name="Description"
               className="text-area"
@@ -92,32 +118,80 @@ function AddTaskPopup({ trigger, onClose, onAddTask }) {
               placeholder="Description"
               required
             />
-            {/* </FloatingLabel> */}
+          </div>
+          <div className="label-tag-container">
+            {labels.map((label, index) => (
+          <div key={index} className="label-tag">
+            {/* font-size: 12px; padding: 4px !important; */}
+            <span 
+              ref={el => spanRefs.current[index] = el}
+              style={{ visibility: 'hidden', whiteSpace: 'pre', position: 'absolute' }}>
+              {label}
+            </span>
+            <input
+              autoFocus
+              ref={el => inputRefs.current[index] = el}
+              type="text"
+              value={label}
+              style={{width:`${label.length * 8}`}}
+              onChange={(e) => handleChangeLabel(index, e)}
+              className=""
+              // placeholder={`Label ${index + 1}`}
+            />
+            <button
+              type="button"
+              onClick={() => handleRemoveLabel(index)}
+              className="btn"
+            >
+              <X color="#4e4e4e" height="16" width="16"/>
+            </button>
+          </div>
+        ))}
           </div>
           <hr/>
           <div className="popup-btn">
-            <div className="task-dueDate-Priority">
+            <div className="task-properties">
               <Datepicker 
                 type="date"
                 selected={dueDate}
-                // value={dueDate}
                 onChange={date=>setDueDate(date)}
                 placeholderText=" Due date"
                 name="Due Date"
               />
-              {/* <PriorityDropdown
-                    priority={priority}
-                    onPriorityChange={setPriority}
-                  /> */}
               <Form.Select aria-label="Floating label select example"
               id="priority"
               value={priority}
               onChange={(e) => setPriority(Number(e.target.value))}>
-                <option value="1">Priority 1 {console.log(flagSVG(1))}</option>
-                <option value="2">Priority 2 {flagSVG(2)}</option>
-                <option value="3">Priority 3 {flagSVG(3)}</option>
-                <option value="4">Priority 4 {flagSVG(4)}</option>   
+                <option value="1">Priority 1</option>
+                <option value="2">Priority 2</option>
+                <option value="3">Priority 3</option>
+                <option value="4">Priority 4</option>   
+              {/* {flagSVG(1)}
+              {flagSVG(2)}
+              {flagSVG(3)}
+              {flagSVG(4)} */}
               </Form.Select>
+              <button className="btn" id="task-btn" type="button" onClick={handleAddLabel}>
+                <Tag className="task-property-icon" />
+              </button>
+              <button className="btn" id="task-btn"
+                type="button"
+                onClick={() => setShowColorPicker(!showColorPicker)}
+              >
+                <Palette className="task-property-icon" />
+              </button>
+              {showColorPicker && (
+              <div className="color-picker-container">
+                {['#fdfbd5', '#f9a6a6', '#b1cbf2', '#c2ebbc', '#f3f3f3', '#ffffff'].map((c) => (
+                  <div
+                    key={c}
+                    className="color-swatch"
+                    style={{ backgroundColor: c }}
+                    onClick={() => handleColorChange(c)}
+                  ></div>
+                ))}
+                </div>)}
+              {/* <LabelsManager /> */}
             </div>
             <div className="submit-btn">
               <button className="btn submit" type="submit">

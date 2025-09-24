@@ -33,6 +33,7 @@ function Sidebar({refreshTrigger, isMobile, isSidebarOpen, setIsSidebarOpen, han
             dueDate: taskData.dueDate,
             labels: taskData.labels,
             priority: taskData.priority,
+            cardColor: taskData.color,
         }),
     });
     if (response.ok) {

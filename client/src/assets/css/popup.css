@@ -20,8 +20,17 @@
     max-width: 550px;
 }
 
+.popup hr {
+    margin: 0.5rem 0;
+}
+
 .form-control:focus {
-    box-shadow: none !important
+    box-shadow: none !important;
+    background-color: transparent !important;
+}
+
+.form-control {
+    background-color: transparent !important;
 }
 
 .form-group .title {
@@ -31,6 +40,10 @@
 
 .form-group .text-area {
     border: none;
+    background-color: transparent;
+    color: #212529;
+
+
 }
 
 .form-group {
@@ -43,19 +56,43 @@
 }
 
 .text-area {
-    width: 100% !important;
+    display: block;
+    width: 100%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--bs-body-color);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: var(--bs-body-bg);
+    background-clip: padding-box;
+    border: var(--bs-border-width) solid var(--bs-border-color);
+    border-radius: var(--bs-border-radius);
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.text-area:focus,
+.text-area:focus-visible {
+    border: none;
+    outline: none;
 }
 
 .popup-btn {
     display: flex;
     justify-content: space-between;
-    margin-top: 1.5rem;
+    margin-top: 0.5rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
 }
 
-.popup-btn .task-dueDate-Priority {
+.popup-btn .task-properties {
     display: flex;
     align-items: center;
     color: var(--root);
+    width: 50%;
+    gap: 0.5em;
 }
 
 .popup-btn .submit-btn {
@@ -75,6 +112,7 @@
 .popup-btn .form-select {
     height: 32px;
     padding: 0 12px;
+    font-size: 14px;
 }
 
 .popup-btn .btn.submit:active {
@@ -86,4 +124,24 @@
 
 .popup-btn .submit-btn .submit:hover {
     background-color: #ec9108
+}
+
+.react-datepicker__input-container {
+    height: 100%;
+    font-size: 14px;
+}
+
+.task-properties .task-property-icon {
+    width: 16px;
+    color: #4e4e4e;
+}
+
+@media (max-width: 640px) {
+    .popup-btn {
+        justify-content: space-around;
+    }
+
+    .popup-btn .task-properties {
+        width: 100%;
+    }
 }

@@ -1,7 +1,7 @@
 import React from "react";
-import { Oval } from "react-loader-spinner";
+import Spinner from 'react-bootstrap/Spinner';
 
-const Spinner = () => (
+const SpinnerContainer = () => (
   <div
     className="spinner"
     style={{
@@ -11,7 +11,7 @@ const Spinner = () => (
       height: "calc(100vh - 15rem)",
     }}
   >
-    <Oval
+    {/* <Oval
       height={30}
       width={30}
       color="rgb(255, 167, 59)"
@@ -22,8 +22,12 @@ const Spinner = () => (
       secondaryColor="rgb(255, 167, 59)"
       strokeWidth={5}
       strokeWidthSecondary={2}
-    />
+    /> */}
+
+    <Spinner animation="border" role="status" variant="warning">
+      <span className="visually-hidden">Loading...</span>
+    </Spinner>
   </div>
 );
 
-export default Spinner;
+export default SpinnerContainer;

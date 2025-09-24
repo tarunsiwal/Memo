@@ -1,6 +1,6 @@
 import React from 'react'
 import '../../assets/css/popup.css';
-import TruncatedText from '../ui/truncatedText';
+import TruncatedText from '../helper/truncatedText';
 
 function ConfirmDeletePopup({trigger, title, onClose, deleteTask}) {
     const handleSubmit = (e) => {

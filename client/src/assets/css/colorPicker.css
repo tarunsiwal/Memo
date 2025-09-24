@@ -1,0 +1,44 @@
+.color-picker-container {
+  position: absolute;
+  /* absolute */
+  left: 50%;
+  /* left-0 */
+  bottom: -200%;
+  /* bottom-full */
+  margin-bottom: 0.5rem;
+  /* mb-2 */
+  padding: 0.5rem;
+  /* p-2 */
+  background-color: #fff;
+  /* bg-white */
+  border-radius: 0.5rem;
+  /* rounded-lg */
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  /* shadow-xl */
+  display: flex;
+  /* flex */
+  gap: 0.5rem;
+  /* gap-2 */
+}
+
+/* Styles for the individual color swatch circles */
+.color-swatch {
+  width: 2rem;
+  /* w-8 */
+  height: 2rem;
+  /* h-8 */
+  border-radius: 50%;
+  /* rounded-full */
+  cursor: pointer;
+  /* cursor-pointer */
+  border: 2px solid #d1d5db;
+  /* border-2 border-gray-300 */
+  transition: border-color 0.2s ease-in-out;
+  /* transition-all */
+}
+
+/* Hover effect for the color swatch circles */
+.color-swatch:hover {
+  border-color: #3b82f6;
+  /* hover:border-blue-500 */
+}

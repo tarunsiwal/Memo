@@ -2,7 +2,7 @@ import { useState, useEffect} from 'react'
 import Task from './task'
 import UpdateTaskPopup from './popups/updateTaskPopup';
 import cross from '../assets/images/svg/cross.svg'
-
+import TaskPopup from './popups/taskPopup';
 
 function Inbox ({isGridClose, page, refreshTrigger, handleRefresh, searchQuery, setSearchQuery}){
   const apiUrl = import.meta.env.VITE_APP_API_URL;
@@ -73,6 +73,7 @@ function Inbox ({isGridClose, page, refreshTrigger, handleRefresh, searchQuery, 
   };
   const onUpdateTask = async (taskData) => {
     try{
+      console.log(taskData)
       const response = await fetch(`${apiUrl}/tasks/${taskData.id}`, {
         method : "PUT",
         headers : {
@@ -84,10 +85,11 @@ function Inbox ({isGridClose, page, refreshTrigger, handleRefresh, searchQuery, 
           dueDate: taskData.dueDate,
           labels: taskData.labels,
           priority: taskData.priority,
+          cardColor: taskData.color,
         }),
       });
       if(response.ok){
-        console.log('Task updated successfully!')
+        console.log('Task updated successfully!', taskData.color)
         handleRefresh();
       } else {
         console.error("Failed to update task.")
@@ -95,6 +97,25 @@ function Inbox ({isGridClose, page, refreshTrigger, handleRefresh, searchQuery, 
       setIsUpdatePopupOpen(false)
     } catch (err){
         console.error("Fetching error:",err)
+    }
+  };
+  const onPinTask = async (taskId, isPinned) => {
+    try {
+        const response = await fetch(`${apiUrl}/tasks/${taskId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ isPinned }),
+        });
+        if (response.ok) {
+            console.log('Pin status updated successfully!');
+            handleRefresh();
+        } else {
+            console.error("Failed to update pin status.");
+        }
+    } catch (err) {
+        console.error("Fetching error:", err);
     }
   };
   const handleSearch = async (query) => {
@@ -135,10 +156,6 @@ function Inbox ({isGridClose, page, refreshTrigger, handleRefresh, searchQuery, 
       console.error(`Task with ID ${taskId} not found.`);
     }
   };
-  const handleClearSearch = () => {
-    setSearchQuery(''); // This triggers the useEffect below
-  };
-
   const style = {
     objectContainer : {
       width: isGridClose ? '700px' : '100%',
@@ -147,16 +164,6 @@ function Inbox ({isGridClose, page, refreshTrigger, handleRefresh, searchQuery, 
   return (
     <div className='mainContainer'>
       <div className='objectContainer' style={style.objectContainer}>
-        {/* <h2>{page}</h2> */}
-        {/* {searchQuery && (
-          <div className="search-tag">
-            <span> Searching for: "{searchQuery}"</span>
-            <a className="btn-submit" onClick={handleClearSearch}>
-              <img style={{width:'1em'}} src={cross}></img>
-            </a>
-          </div>
-        )} */}
-        {/* <hr/> */}
         <UpdateTaskPopup 
           trigger={isUpdatePopupOpen}
           onClose={() => setIsUpdatePopupOpen(false)} 
@@ -171,6 +178,7 @@ function Inbox ({isGridClose, page, refreshTrigger, handleRefresh, searchQuery, 
           handleRefresh={handleRefresh}
           page={page}
           handleUpdateTaskPopup={handleUpdateTaskPopup}
+          onPinTask={onPinTask}
         />
       </div>
     </div>

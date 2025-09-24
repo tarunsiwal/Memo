@@ -10,7 +10,8 @@ export const getAllTasks = async (req, res) => {
 };
 
 export const createTask = async (req, res) => {
-  const { title, description, dueDate, labels, priority } = req.body;
+  const { title, description, dueDate, labels, priority, isPinned, cardColor } =
+    req.body;
 
   // Basic validation
   if (!title) {
@@ -23,6 +24,8 @@ export const createTask = async (req, res) => {
     dueDate,
     labels,
     priority,
+    isPinned,
+    cardColor,
   });
 
   try {
@@ -97,13 +100,30 @@ export const searchTasks = async (req, res) => {
 
 export const updateTask = async (req, res) => {
   const { id } = req.params;
-  const { title, description, dueDate, isCompleted, labels, priority } =
-    req.body;
+  const {
+    title,
+    description,
+    dueDate,
+    isCompleted,
+    labels,
+    priority,
+    isPinned,
+    cardColor,
+  } = req.body;
 
   try {
     const updatedTask = await Task.findByIdAndUpdate(
       id,
-      { title, description, dueDate, isCompleted, labels, priority },
+      {
+        title,
+        description,
+        dueDate,
+        isCompleted,
+        labels,
+        priority,
+        isPinned,
+        cardColor,
+      },
       { new: true } // Returns the updated document
     );
 
