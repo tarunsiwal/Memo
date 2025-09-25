@@ -93,7 +93,6 @@ function UpdateTaskPopup({ trigger, onClose, onUpdateTask, taskDetails }) {
         <form onSubmit={handleSubmit}>
           <div className="form-group">
               <input
-                autoFocus
                 aria-label="title"
                 className="text-area title"
                 type="text"
@@ -106,6 +105,7 @@ function UpdateTaskPopup({ trigger, onClose, onUpdateTask, taskDetails }) {
           </div>
           <div className="form-group">
             <textarea
+              autoFocus
               as="textarea"
               name="Description"
               className="text-area"

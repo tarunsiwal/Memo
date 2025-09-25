@@ -69,16 +69,15 @@ button:focus-visible {
 } */
 
 ::-webkit-scrollbar {
-  width: 5px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: rgb(73, 73, 73);
-  border-radius: 10px;
+  background-color: rgba(73, 73, 73, 0.443);
 }
 
 ::-webkit-scrollbar-track {
-  background-color: #f1f1f1;
+  background-color: rgba(213, 213, 213, 0.4);
 }
 
 @media (prefers-color-scheme: light) {

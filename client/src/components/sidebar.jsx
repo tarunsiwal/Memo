@@ -92,7 +92,7 @@ function Sidebar({refreshTrigger, isSidebarOpen, setIsSidebarOpen, handleCloseSi
             <span className="txt">Add task</span>
           </a>
         </li>
-        <li className="active">
+        <li className="">
           <Link to='/inbox'>
             <img src={inbox} alt='inbox' className='sidebarImage'></img>
             <span className="txt">Inbox</span>

@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import tasksRoutes from "./routes/tasksRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -9,7 +10,13 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
-app.use("/api", tasksRoutes);
+app.use("/api/tasks", tasksRoutes);
+app.use("/api/user", userRoutes);
+
+// A simple root route to check if the server is running
+app.get("/", (req, res) => {
+  res.send("API is running!");
+});
 
 const mongoosConnection = process.env.MONGODB_URI;
 

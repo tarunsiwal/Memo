@@ -19,7 +19,7 @@ function TaskCard({ task, deletePopup, togglePin, handleUpdateTaskPopup, styles 
   if(task.priority === 3) flag = '#198754'
   else if(task.priority === 2) flag = '#ffec2e'
   else if(task.priority === 1) flag = '#de1313ff'
-console.log('****',isMobile, '*****')
+
   return (
     <Container 
       key={task._id} 
