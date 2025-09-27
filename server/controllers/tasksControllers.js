@@ -1,24 +1,32 @@
 import Task from "../models/tasksModel.js";
+import asyncHandler from "express-async-handler";
 
-export const getAllTasks = async (req, res) => {
-  try {
-    const tasks = await Task.find();
-    res.status(200).json({ tasks });
-  } catch (error) {
-    res.status(404).json({ message: error.message });
-  }
-};
+// @desc    Get all tasks for the logged-in user
+// @route   GET /api/tasks
+// @access  Private
+export const getAllTasks = asyncHandler(async (req, res) => {
+  // Removed try/catch. asyncHandler will catch any Mongoose errors.
+  const tasks = await Task.find({ user: req.user.id });
+  res.status(200).json(tasks);
+});
 
-export const createTask = async (req, res) => {
+// @desc    Create a new task
+// @route   POST /api/tasks
+// @access  Private
+export const createTask = asyncHandler(async (req, res) => {
   const { title, description, dueDate, labels, priority, isPinned, cardColor } =
     req.body;
+  const user = req.user.id;
 
-  // Basic validation
+  // IMPORTANT: For validation errors, we set the status and THROW an Error.
+  // The asyncHandler will catch this and pass it to errorMiddleware.js.
   if (!title) {
-    return res.status(400).json({ message: "Title is required" });
+    res.status(400);
+    throw new Error("Title is required");
   }
 
-  const newTask = new Task({
+  // FIXED: Correctly use Task.create() and await the promise.
+  const savedTask = await Task.create({
     title,
     description,
     dueDate,
@@ -26,126 +34,118 @@ export const createTask = async (req, res) => {
     priority,
     isPinned,
     cardColor,
+    user,
   });
 
-  try {
-    const savedTask = await newTask.save(); // Saves the new task to the database
-    res.status(201).json(savedTask); // Returns the created task
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+  res.status(201).json(savedTask);
+});
 
-export const getTaskById = async (req, res) => {
-  const { id } = req.params;
-  try {
-    const task = await Task.findById(id); // Finds the task by its ID
-    if (!task) {
-      return res.status(404).json({ message: "Task not found" });
-    }
-    res.status(200).json(task); // Returns the task in JSON format
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+// @desc    Get a single task by ID
+// @route   GET /api/tasks/:id
+// @access  Private
+export const getTaskById = asyncHandler(async (req, res) => {
+  // Removed try/catch.
+  // FIXED: Access the ID correctly via req.params.id
+  const task = await Task.findOne({ _id: req.params.id, user: req.user.id });
 
-export const getTasksByDate = async (req, res) => {
+  if (!task) {
+    // For a 'not found' error, we set the status to 404 and throw the error.
+    res.status(404);
+    throw new Error("Task not found");
+  }
+
+  res.status(200).json(task);
+});
+
+// @desc    Get tasks due today
+// @route   GET /api/tasks/today
+// @access  Private
+export const getTasksByDate = asyncHandler(async (req, res) => {
+  // Removed try/catch.
   const today = new Date();
-  today.setHours(0, 0, 0, 0); // Sets time to midnight for consistency
+  today.setHours(0, 0, 0, 0);
   const tomorrow = new Date(today);
-  tomorrow.setDate(tomorrow.getDate() + 1); // The next day
+  tomorrow.setDate(tomorrow.getDate() + 1);
 
-  try {
-    const tasks = await Task.find({
-      dueDate: {
-        $gte: today,
-        $lt: tomorrow,
-      },
-    }); // Fetches tasks with a dueDate of today
-    res.status(200).json({ tasks });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+  const tasks = await Task.find({
+    dueDate: {
+      $gte: today,
+      $lt: tomorrow,
+    },
+    user: req.user.id,
+  });
+  res.status(200).json(tasks);
+});
 
-export const getUpcomingTasks = async (req, res) => {
+// @desc    Get upcoming tasks (after today)
+// @route   GET /api/tasks/upcoming
+// @access  Private
+export const getUpcomingTasks = asyncHandler(async (req, res) => {
+  // Removed try/catch.
   const today = new Date();
-  today.setHours(0, 0, 0, 0); // Sets time to midnight for consistency
+  today.setHours(0, 0, 0, 0);
 
-  try {
-    const tasks = await Task.find({
-      dueDate: { $gt: today },
-    }); // Fetches tasks with a dueDate in the future
-    res.status(200).json({ tasks });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+  const tasks = await Task.find({
+    dueDate: { $gt: today },
+    user: req.user.id,
+  });
+  res.status(200).json(tasks);
+});
 
-export const searchTasks = async (req, res) => {
+// @desc    Search tasks by title or description
+// @route   GET /api/tasks/search?query=...
+// @access  Private
+export const searchTasks = asyncHandler(async (req, res) => {
+  // Removed try/catch.
   const { query } = req.query;
 
-  try {
-    const tasks = await Task.find({
-      $or: [
-        { title: { $regex: query, $options: "i" } }, // Case-insensitive search in title
-        { description: { $regex: query, $options: "i" } }, // Case-insensitive search in description
-      ],
-    });
-    res.status(200).json({ tasks });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+  const tasks = await Task.find({
+    $or: [
+      { title: { $regex: query, $options: "i" } },
+      { description: { $regex: query, $options: "i" } },
+    ],
+    user: req.user.id,
+  });
+  res.status(200).json(tasks);
+});
 
-export const updateTask = async (req, res) => {
+// @desc    Update a task by ID
+// @route   PUT /api/tasks/:id
+// @access  Private
+export const updateTask = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  const {
-    title,
-    description,
-    dueDate,
-    isCompleted,
-    labels,
-    priority,
-    isPinned,
-    cardColor,
-  } = req.body;
+  const updatFields = req.body;
 
-  try {
-    const updatedTask = await Task.findByIdAndUpdate(
-      id,
-      {
-        title,
-        description,
-        dueDate,
-        isCompleted,
-        labels,
-        priority,
-        isPinned,
-        cardColor,
-      },
-      { new: true } // Returns the updated document
-    );
+  // FIXED: Correct Mongoose method is findOneAndUpdate (not findByOneUpdate)
+  const updatedTask = await Task.findOneAndUpdate(
+    { _id: id, user: req.user.id },
+    updatFields,
+    { new: true } // { new: true } returns the updated document
+  );
 
-    if (!updatedTask) {
-      return res.status(404).json({ message: "Task not found" });
-    }
-
-    res.status(200).json({ updatedTask });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+  if (!updatedTask) {
+    res.status(404);
+    throw new Error("Task not found");
   }
-};
 
-export const deleteTask = async (req, res) => {
-  const { id } = req.params;
-  try {
-    const deletedTask = await Task.findByIdAndDelete(id); // Finds the task by its ID
-    if (!deletedTask) {
-      return res.status(404).json({ message: "Task not found" });
-    }
-    res.status(200).json({ message: "Task deleted successfully", deletedTask }); // Returns the task in JSON format
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+  res.status(200).json(updatedTask);
+});
+
+// @desc    Delete a task by ID
+// @route   DELETE /api/tasks/:id
+// @access  Private
+export const deleteTask = asyncHandler(async (req, res) => {
+  // Removed try/catch.
+  const deletedTask = await Task.findOneAndDelete({
+    _id: req.params.id,
+    user: req.user.id,
+  });
+
+  if (!deletedTask) {
+    res.status(404);
+    throw new Error("Task not found");
   }
-};
+
+  // The client doesn't need the deleted task body, just a success message
+  res.status(200).json({ message: "Task deleted successfully" });
+});

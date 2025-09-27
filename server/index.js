@@ -4,6 +4,8 @@ import mongoose from "mongoose";
 import tasksRoutes from "./routes/tasksRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import dotenv from "dotenv";
+import { errorHandler } from "./middleware/errorMiddleware.js"; // You create this file
+
 dotenv.config();
 
 const app = express();
@@ -12,6 +14,7 @@ app.use(express.json());
 app.use(cors());
 app.use("/api/tasks", tasksRoutes);
 app.use("/api/user", userRoutes);
+app.use(errorHandler);
 
 // A simple root route to check if the server is running
 app.get("/", (req, res) => {
