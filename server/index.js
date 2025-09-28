@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import tasksRoutes from "./routes/tasksRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import dotenv from "dotenv";
-import { errorHandler } from "./middleware/errorMiddleware.js"; // You create this file
+import { errorHandler } from "./middleware/errorMiddleware.js";
 
 dotenv.config();
 

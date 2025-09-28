@@ -7,7 +7,11 @@ import asyncHandler from "express-async-handler";
 export const getAllTasks = asyncHandler(async (req, res) => {
   // Removed try/catch. asyncHandler will catch any Mongoose errors.
   const tasks = await Task.find({ user: req.user.id });
-  res.status(200).json(tasks);
+  res.status(200).json({
+    success: true, // Optional metadata
+    count: tasks.length, // Optional metadata
+    tasks: tasks, // The array is now a property called 'tasks'
+  });
 });
 
 // @desc    Create a new task

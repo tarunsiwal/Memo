@@ -1,13 +1,10 @@
 import {useState} from 'react'
-import grid from '../../assets/images/svg/grid.svg'
-import gridClose from '../../assets/images/svg/grid-close.svg'
 import InputGroup from 'react-bootstrap/InputGroup';
 import Form from 'react-bootstrap/Form';
-import magnifier from '../../assets/images/svg/magnifer.svg'
-import burger from '../../assets/images/svg/burger-menu.svg'
+
+import { Rows2, LayoutGrid, Search, Menu} from "lucide-react"
 
 function Header({ handleGridChange, isGridClose, searchQuery, setSearchQuery, isMobile, setIsSidebarOpen }) {
-  const setGrid = isGridClose ? gridClose : grid
   const handleSubmit = (e) => {
     e.preventDefault();
   };
@@ -19,15 +16,15 @@ function Header({ handleGridChange, isGridClose, searchQuery, setSearchQuery, is
       <div className='dummy'>
         {!isMobile ?  
           <button onClick={() => setIsSidebarOpen(true)} className="sideNavMobileToggle">
-            <img src={burger} className='sidebarImage' alt="" />
+            <Menu className='sidebarImage' alt="" />
           </button>
         : null}
       </div>
       <div className='searchContainer sm'>
         <div className="searchBar">
           <form className='form-group' onSubmit={handleSubmit}>
-            <div className='d-flex search-bar'>
-              <img src={magnifier} className='sidebarImage' alt="search" />
+            <div className='search-bar'>
+              <Search className='sidebarImage' alt="search" strokeWidth={'1.8'}/>
               <InputGroup >
               <Form.Control
                 placeholder="Search..."
@@ -47,9 +44,9 @@ function Header({ handleGridChange, isGridClose, searchQuery, setSearchQuery, is
         </div>
       </div>
       <button className="gridBtn btn" onClick={handleGridChange} >
-        <img src={setGrid} 
-          alt='grid'
-          className='sidebarImage'></img>
+        {isGridClose ? 
+        <Rows2 className='sidebarImage' strokeWidth={'1.8'}/> : 
+        <LayoutGrid className='sidebarImage' strokeWidth={'1.8'}/> }
       </button>
     </div>
   )

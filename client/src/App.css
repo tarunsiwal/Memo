@@ -83,12 +83,13 @@
   color: #666;
 }
 
-/* .task-card .cardProperties .dueDate {
-  color: var(--color-1);
-} */
-
 .dueDate svg {
   margin-right: 5px;
+}
+
+.dueDate {
+  display: flex;
+  align-items: center;
 }
 
 #task-btn {
@@ -120,6 +121,11 @@
   background-color: #f9f9f9;
   transition: all 0.3s ease;
   justify-content: space-between;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
 }
 
 .mainContainer {

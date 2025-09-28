@@ -27,18 +27,21 @@
     padding: 5px;
     border-radius: 5px;
     margin-top: 5px;
+    cursor: pointer;
 }
 
-.sideBarMenu ul li a {
+.sideBarMenu button {
     justify-content: left;
     display: flex;
     align-items: center;
     flex-direction: row;
     text-decoration: none;
+    padding: 0;
+    background-color: transparent;
 }
 
-.sideBarMenu ul li a .txt {
-    padding-left: 0.5em;
+.sideBarMenu button .txt {
+    padding-left: 0.8em;
     color: #202020;
     font-size: 14px;
 }
@@ -50,7 +53,8 @@
 
 .sidebarImage {
     width: 1.3em;
-    /* cursor: pointer; */
+    height: 1.3em;
+    color: #202020;
 }
 
 .sideBarMenu .addTask .sidebarImage {
@@ -71,13 +75,6 @@
     overflow: hidden;
     display: inline-flex
 }
-
-
-/* 
-.profileContainer {
-    display: flex;
-    align-items: center;
-} */
 
 .profileContainer:hover {
     cursor: pointer;
@@ -112,14 +109,6 @@
     display: none;
 }
 
-/* .sideBar.active .sideBarMenu ul li a {
-    justify-content: center;
-} */
-
-/* .sideBar.active .profileToggleContainer a {
-    margin-left: 1.5em;
-} */
-
 .dynamicCalendarIcon {
     position: relative;
     display: inline-flex;
@@ -128,12 +117,13 @@
 
 .dynamicCalendarIcon span {
     position: absolute;
-    font-size: 0.7em;
+    font-size: 0.6em;
+    font-weight: bold;
     color: #1c274c;
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    top: 4.5px;
+    top: 6px;
 }
 
 .sidebarToggle {

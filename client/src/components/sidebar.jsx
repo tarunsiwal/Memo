@@ -5,21 +5,18 @@ import '../assets/css/sidebar.css'
 import '../assets/css/popup.css'
 
 import DynamicCalendarIcon from "./helper/dynamicCalendarIcon"
-import widget from '../assets/images/svg/widget.svg'
-import inbox from '../assets/images/svg/inbox.svg'
-import calenderUpcoming from '../assets/images/svg/calendar-upcoming.svg'
 import arrow from '../assets/images/svg/arrow-in-circle.svg'
 import profile from '../assets/images/profile.jpg'
 import add from '../assets/images/svg/add.svg'
-import burger from '../assets/images/svg/burger-menu.svg'
 import { MobileContext } from "../App";
+import TruncatedText from "./helper/truncatedText";
 
-import { X } from "lucide-react"
+import { X, Inbox, CalendarDays, FunnelPlus, LayoutGrid,LogOut } from "lucide-react"
 
 
 import AddTaskPopup from "./popups/addTaskPopup";
 
-function Sidebar({refreshTrigger, isSidebarOpen, setIsSidebarOpen, handleCloseSidebar}) {
+function Sidebar({refreshTrigger, isSidebarOpen, setIsSidebarOpen, handleCloseSidebar, onNavigate, currentPage, handleLogout, token, user}) {
   const apiUrl = import.meta.env.VITE_APP_API_URL;
   const isMobile = useContext(MobileContext);
 
@@ -29,7 +26,10 @@ function Sidebar({refreshTrigger, isSidebarOpen, setIsSidebarOpen, handleCloseSi
     try {
     const response = await fetch(`${apiUrl}/tasks`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json' ,
+          'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify({
             title: taskData.title,
             description: taskData.description,
@@ -54,18 +54,21 @@ function Sidebar({refreshTrigger, isSidebarOpen, setIsSidebarOpen, handleCloseSi
   const handleAddTask = () => {
     setIsAddTaskPopupOpen(true)
   }
-
-  const style = {
-    sideBar : {
-    left: '-4rem',
-  }}
+  const navItems = [
+      { name: 'Inbox', path: 'Inbox', imgSrc: <Inbox className="sidebarImage" strokeWidth="1.8"/> },
+      { name: 'Today', path: 'Today', imgSrc: <DynamicCalendarIcon/> },
+      { name: 'Upcoming', path: 'Upcoming', imgSrc: <CalendarDays className="sidebarImage" strokeWidth="1.8"/>},
+      { name: 'Filter/Labels', path: 'FilterLabels', imgSrc: <FunnelPlus className="sidebarImage" strokeWidth="1.8"/>},
+  ];
   
   return (
     <div className={isSidebarOpen === false ? (isMobile ? 'sideBar mobile' : 'sideBar active'): 'sideBar'}>
       <div className='profileContainer'>
         <div className="profile">
         <img src={profile} alt='profile' className='profileImage'></img>
-        <span>Tarun</span>
+        {console.log(user)}
+        {user}
+        {/* <TruncatedText text={user} wordLimit={10} type={'p'}/> */}
         </div>
         {isMobile ? (isMobile && isSidebarOpen === true &&(
             <button  className="btn" onClick={() => setIsSidebarOpen(false)}>
@@ -85,38 +88,46 @@ function Sidebar({refreshTrigger, isSidebarOpen, setIsSidebarOpen, handleCloseSi
         }
       </div>
       <div className="sideBarMenu">
-        <ul>
-          <li className='active addTask'>
-          <a onClick={handleAddTask}>
+      <ul className="space-y-2 flex-grow">
+        <li className='active addTask'>
+          <button onClick={handleAddTask}>
             <img src={add} alt='sidebar' className='sidebarImage'></img>
             <span className="txt">Add task</span>
-          </a>
+          </button>
         </li>
-        <li className="">
-          <Link to='/inbox'>
-            <img src={inbox} alt='inbox' className='sidebarImage'></img>
-            <span className="txt">Inbox</span>
-          </Link>
-        </li>
-        <li>
-          <Link to='/today'>
-            <DynamicCalendarIcon />
-            <span className="txt">Today</span>
-          </Link>
-        </li>
-        <li>
-          <Link to='/upcoming'>
-            <img src={calenderUpcoming} alt='calenderUpcoming' className='sidebarImage'></img>
-            <span className="txt">Upcoming</span>
-          </Link>
-        </li>
-        <li>
-          <Link to='/filterLabels'>
-            <img src={widget} alt='widget' className='sidebarImage'></img>
-            <span className="txt">Update & Labels</span>
-          </Link>
-        </li>
-      </ul>
+        {navItems.map(item => (
+          <li key={item.path}>
+              <button
+                  onClick={() => onNavigate(item.path)}
+                  // className={`w-full flex items-center space-x-3 text-left p-2 rounded-lg transition duration-150 ease-in-out font-medium 
+                  //     ${currentPage === item.path 
+                  //         ? 'bg-indigo-100 text-indigo-700' 
+                  //         : 'text-gray-600 hover:bg-gray-100'}`}
+                  
+                  >
+                  {/* <img 
+                      src={item.imgSrc} 
+                      alt={item.name} 
+                      className='sidebarImage w-6 h-6 rounded-md'
+                      onError={(e) => { e.target.onerror = null; e.target.src="https://placehold.co/24x24/cccccc/000000?text=?"}}
+                  /> */}
+                  {item.imgSrc}
+                  <span className="txt">{item.name}</span>
+                </button>
+            </li>
+            ))}
+            <li>
+              <button 
+                onClick={handleLogout}
+                className="logout-btn"
+                // className="mt-8 w-full px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg shadow-md hover:bg-red-600 transition duration-150"
+              ><LogOut className="sidebarImage"/>
+                  <span className="txt" width="14">Logout</span>
+              </button>
+            </li>
+            </ul>
+            
+            
       </div>
       <AddTaskPopup 
       trigger={isAddTaskPopupOpen} 

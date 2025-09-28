@@ -4,6 +4,7 @@ const TruncatedText = ({ text, wordLimit, className , type}) => {
   if (!text) {
     return null;
   }
+  console.log(text)
   const words = text.split(/\s+/); 
   if (words.length <= wordLimit) {
     return type === 'p' ? <p className={className}>{text}</p> : 

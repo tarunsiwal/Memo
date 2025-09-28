@@ -31,3 +31,7 @@ node_modules/
 build/
 dist/
 .vite/
+
+# development files
+dommy.jsx
+app-v1.jsx

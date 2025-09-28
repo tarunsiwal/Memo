@@ -2,7 +2,7 @@ import { useState, useEffect} from 'react'
 import Task from './task'
 import UpdateTaskPopup from './popups/updateTaskPopup';
 
-function Inbox ({isGridClose, page, refreshTrigger, handleRefresh, searchQuery, setSearchQuery,}){
+function Inbox ({isGridClose, page, refreshTrigger, handleRefresh, searchQuery, setSearchQuery, token,}){
   const apiUrl = import.meta.env.VITE_APP_API_URL;
   const [tasks, setTasks] = useState([]);
   const [error, setError] = useState(null);
@@ -18,12 +18,20 @@ function Inbox ({isGridClose, page, refreshTrigger, handleRefresh, searchQuery, 
   const getTasks = async () => {
     setIsLoading(true);
     setError(null);
+    const endpoint = `/api/tasks`;
     try {
-      const response = await fetch(`${apiUrl}/tasks`);
+      // const response = await fetch(`${apiUrl}/tasks`);
+      const response = await fetch(`${apiUrl}/tasks`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`, 
+                    },
+                });
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-      const { tasks: fetchedTasks } = await response.json();
+      const { tasks: fetchedTasks, count } = await response.json();
       const sortedTasks = sortTasks(fetchedTasks);
       setTasks(sortedTasks);
     } catch (err) {
