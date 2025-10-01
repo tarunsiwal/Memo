@@ -10,7 +10,8 @@ import HomePage from './pages/homePage';
 import Footer from './components/footer'
 import './App.css'
 
-const API_BASE_URL = 'http://localhost:5000/api/user'; 
+const apiUrl = import.meta.env.VITE_APP_API_URL;
+const USER_API_BASE_URL = `${apiUrl}/user`; 
 const TOKEN_STORAGE_KEY = 'user_jwt_token'; 
 
 
@@ -42,19 +43,45 @@ function App() {
         if (storedToken) {
             setToken(storedToken);
         }
-        setIsCheckingAuth(false);
+        const validateToken = async () => {
+            try{
+                const responce = await fetch(`${USER_API_BASE_URL}/profile`, {
+                    headers: { 
+                        'Content-Type' : 'application/json' ,
+                        'Authorization': `Bearer ${storedToken}`
+                    }
+                })
+                if(responce.ok){
+                    setToken(storedToken);
+                    const data = await responce.json()
+                    setUserName(data.name)
+                    setIsCheckingAuth(false);
+                }
+                else{
+                    localStorage.removeItem(TOKEN_STORAGE_KEY);
+                    setToken(null);
+                }
+            } catch (error){
+                console.error("Token validation failed:", error);
+                localStorage.removeItem(TOKEN_STORAGE_KEY);
+                setToken(null)
+            } finally {
+                setIsCheckingAuth(false);
+            }
+        }
+        validateToken();
     }, []);
 
-    // Handles both login and registration network calls
-    const handleAuthAction = async (email, password, mode) => {
+    const handleAuthAction = async (name, email, password, mode) => {
         setAuthError('');
         const endpoint = mode === 'login' ? 'login' : '';
-
         try {
-            const response = await fetch(`${API_BASE_URL}/${endpoint}`, {
+            const response = await fetch(`${USER_API_BASE_URL}/${endpoint}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password }),
+                body: JSON.stringify(
+                    endpoint === 'login' ? { email, password } : {name, email, password }
+                ),
             });
 
             const data = await response.json();
@@ -66,7 +93,6 @@ function App() {
             }
 
             const jwt = data.token; 
-            console.log(data)
             setUserName(data.name)
             
             if (jwt) {
@@ -82,17 +108,14 @@ function App() {
         }
     };
 
-    // Logout Handler: Clears token and state
     const handleLogout = () => {
         localStorage.removeItem(TOKEN_STORAGE_KEY);
         setToken(null);
         console.log("clicked")
     };
 
-
-    // --- 2. Application UI/Layout State (From your code) ---
+    // --- 2. Application UI/Layout State ---
     const isMobile = useResponsiveLayout();
-    // Since we can't use react-router-dom in this environment, we'll simulate route state
     const [currentPage, setCurrentPage] = useState('Inbox');
     const [isGridClose, setIsGridClose] = useState(true);
     const [refreshTrigger, setRefreshTrigger] = useState(false);
@@ -112,18 +135,16 @@ function App() {
     // --- 3. Conditional Render Logic ---
     if (isCheckingAuth) {
         return (
-            <div className="flex justify-center items-center min-h-screen bg-gray-100">
-                <div className="text-xl font-semibold text-indigo-600">Checking User Session...</div>
+            <div className="main-message-container">
+                <div className="isChecking">Checking User Session...</div>
             </div>
         );
     }
-    
+
     if (!token) {
-        // If no token exists, show the login/register screen
         return <AuthView onAuthAction={handleAuthAction} authError={authError} />;
     }
 
-    // If token exists, render the full protected application content
     const getPageElement = () => {
         switch (currentPage) {
             case 'Home':
@@ -136,6 +157,7 @@ function App() {
                         isGridClose={isGridClose} 
                         page={currentPage} 
                         refreshTrigger={refreshTrigger}
+                        handleRefresh={handleRefresh}
                         searchQuery={searchQuery}
                         token={token}
                     />
@@ -148,8 +170,6 @@ function App() {
     };
 
     return (
-        // Note: BrowserRouter and Routes/Route have been removed and replaced 
-        // with simple conditional rendering for this single-file environment.
         <MobileContext.Provider value={isMobile}>
             <div className="min-h-screen flex flex-col font-inter">
                 <Header 
@@ -159,7 +179,7 @@ function App() {
                     searchQuery={searchQuery}
                     setSearchQuery={setSearchQuery}
                     setIsSidebarOpen={setIsSidebarOpen}
-                    onLogout={handleLogout} // Passed down to handle logout from header if needed
+                    onLogout={handleLogout}
                 />
                 <div className="flex flex-1 overflow-hidden">
                     <Sidebar 
@@ -167,7 +187,7 @@ function App() {
                         isSidebarOpen={isSidebarOpen}
                         setIsSidebarOpen={setIsSidebarOpen}
                         handleCloseSidebar={handleCloseSidebar}
-                        handleLogout={handleLogout} // Logout button placed in Sidebar
+                        handleLogout={handleLogout}
                         currentPage={currentPage}
                         onNavigate={handleNavigation}
                         token={token}

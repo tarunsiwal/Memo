@@ -60,19 +60,28 @@ function Sidebar({refreshTrigger, isSidebarOpen, setIsSidebarOpen, handleCloseSi
       { name: 'Upcoming', path: 'Upcoming', imgSrc: <CalendarDays className="sidebarImage" strokeWidth="1.8"/>},
       { name: 'Filter/Labels', path: 'FilterLabels', imgSrc: <FunnelPlus className="sidebarImage" strokeWidth="1.8"/>},
   ];
+
+  const style = {
+    hideSpan : {
+      display : isSidebarOpen ? 'block' : 'none'  
+    },
+    widthLI : {
+      width :  isSidebarOpen ? 'unset' : 'calc(10px + 1.2rem)'
+    },
+    widthBT : {
+      width : isSidebarOpen ? '100%' : 'unset'
+    },
+  }
   
   return (
     <div className={isSidebarOpen === false ? (isMobile ? 'sideBar mobile' : 'sideBar active'): 'sideBar'}>
       <div className='profileContainer'>
         <div className="profile">
         <img src={profile} alt='profile' className='profileImage'></img>
-        {console.log(user)}
-        {user}
-        {/* <TruncatedText text={user} wordLimit={10} type={'p'}/> */}
+        <TruncatedText text={user} wordLimit={2} type={'span'} />
         </div>
         {isMobile ? (isMobile && isSidebarOpen === true &&(
             <button  className="btn" onClick={() => setIsSidebarOpen(false)}>
-              {/* <img onClick={() => setIsSidebarOpen(false)} className='sidebarImage' src={cross} alt="" /> */}
               <X className='sidebarImage'/>
             </button>
           )) : null}
@@ -88,46 +97,31 @@ function Sidebar({refreshTrigger, isSidebarOpen, setIsSidebarOpen, handleCloseSi
         }
       </div>
       <div className="sideBarMenu">
-      <ul className="space-y-2 flex-grow">
-        <li className='active addTask'>
-          <button onClick={handleAddTask}>
-            <img src={add} alt='sidebar' className='sidebarImage'></img>
-            <span className="txt">Add task</span>
-          </button>
-        </li>
-        {navItems.map(item => (
-          <li key={item.path}>
-              <button
-                  onClick={() => onNavigate(item.path)}
-                  // className={`w-full flex items-center space-x-3 text-left p-2 rounded-lg transition duration-150 ease-in-out font-medium 
-                  //     ${currentPage === item.path 
-                  //         ? 'bg-indigo-100 text-indigo-700' 
-                  //         : 'text-gray-600 hover:bg-gray-100'}`}
-                  
-                  >
-                  {/* <img 
-                      src={item.imgSrc} 
-                      alt={item.name} 
-                      className='sidebarImage w-6 h-6 rounded-md'
-                      onError={(e) => { e.target.onerror = null; e.target.src="https://placehold.co/24x24/cccccc/000000?text=?"}}
-                  /> */}
-                  {item.imgSrc}
-                  <span className="txt">{item.name}</span>
-                </button>
-            </li>
-            ))}
-            <li>
-              <button 
-                onClick={handleLogout}
-                className="logout-btn"
-                // className="mt-8 w-full px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg shadow-md hover:bg-red-600 transition duration-150"
-              ><LogOut className="sidebarImage"/>
-                  <span className="txt" width="14">Logout</span>
+        <ul className="space-y-2 flex-grow">
+          <li className='active addTask' style={style.widthLI}>
+            <button onClick={handleAddTask} style={style.widthBT}>
+              <img src={add} alt='sidebar' className='sidebarImage'></img>
+              <span className="txt" style={style.hideSpan}>Add task</span>
+            </button>
+          </li> 
+          {navItems.map(item => (
+            <li key={item.path} style={style.widthLI} className={item.path === currentPage ? 'active' : ''}>
+              <button onClick={() => onNavigate(item.path)} style={style.widthBT}>
+                <div className="image-container">{item.imgSrc}</div>
+                <span className="txt" style={style.hideSpan}>{item.name}</span>
               </button>
             </li>
-            </ul>
-            
-            
+          ))}
+          <li style={style.widthLI}>
+            <button 
+              onClick={handleLogout}
+              className="logout-btn"
+              style={style.widthBT}
+            ><div className="image-container"><LogOut className="sidebarImage"/></div>
+              <span className="txt" width="14" style={style.hideSpan}>Logout</span>
+            </button>
+          </li>
+        </ul>
       </div>
       <AddTaskPopup 
       trigger={isAddTaskPopupOpen} 

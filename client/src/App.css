@@ -136,6 +136,27 @@
   min-height: calc(100vh - 4.5rem);
 }
 
+.main-message-container {
+  height: calc(100vh - 4rem - 30px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.main-message-container .isChecking {
+  font-weight: bold;
+}
+
+
+.main-message-container img {
+  width: 8rem;
+}
+
+.main-message-container p {
+  margin-top: 1em;
+}
+
 .footer {
   display: flex;
   justify-content: center;

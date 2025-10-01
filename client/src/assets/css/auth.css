@@ -1,0 +1,187 @@
+/* --------------------------------------------------------------------- */
+/* Auth Container and Card */
+/* --------------------------------------------------------------------- */
+
+.auth-container {
+    /* flex justify-center items-center min-h-screen p-4 bg-gray-50 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 1rem;
+    /* p-4 */
+    background-color: #f9fafb;
+    /* bg-gray-50 */
+}
+
+.auth-card {
+    /* w-full max-w-md bg-white p-8 shadow-2xl rounded-xl border border-gray-100 */
+    width: 100%;
+    max-width: 28rem;
+    /* max-w-md */
+    background-color: #fff;
+    padding: 2rem;
+    /* p-8 */
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    /* shadow-2xl */
+    border-radius: 0.75rem;
+    /* rounded-xl */
+    border: 1px solid #f3f4f6;
+    /* border-gray-100 */
+}
+
+/* --------------------------------------------------------------------- */
+/* Typography and Headers */
+/* --------------------------------------------------------------------- */
+
+.auth-header {
+    /* text-3xl font-extrabold text-gray-900 text-center mb-2 */
+    font-size: 1.875rem;
+    /* text-3xl */
+    font-weight: 800;
+    /* font-extrabold */
+    color: #111827;
+    /* text-gray-900 */
+    text-align: center;
+    margin-bottom: 0.5rem;
+    /* mb-2 */
+}
+
+.auth-subtext {
+    /* text-center text-sm text-gray-600 mb-6 */
+    text-align: center;
+    font-size: 0.875rem;
+    /* text-sm */
+    color: #4b5563;
+    /* text-gray-600 */
+    margin-bottom: 1.5rem;
+    /* mb-6 */
+}
+
+.auth-switch-button {
+    /* font-medium text-indigo-600 hover:text-indigo-500 */
+    font-weight: 500;
+    /* font-medium */
+    color: #ff9a00;
+    /* text-indigo-600 */
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.15s ease-in-out;
+}
+
+.auth-switch-button:hover {
+    color: #ec9108;
+    /* hover:text-indigo-500 */
+}
+
+
+/* --------------------------------------------------------------------- */
+/* Form Elements */
+/* --------------------------------------------------------------------- */
+
+.auth-card .form-group {
+    /* space-y-6 equivalent structure */
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 0.25rem;
+}
+
+.input-field {
+    display: block;
+    width: 100%;
+    background-color: #fff;
+    color: #374151;
+    margin-top: 0.25rem;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    font-size: 0.875rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: #ff9a00;
+    box-shadow: 0 0 0 0.25rem rgba(255, 154, 0, 0.25);
+}
+
+/* --------------------------------------------------------------------- */
+/* Button Styling */
+/* --------------------------------------------------------------------- */
+
+.submit-button {
+    /* w-full flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-md text-sm font-medium text-white transition duration-200 ease-in-out */
+    width: 100%;
+    margin-top: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    background-color: #ff9a00;
+}
+
+.submit-button:hover:not(:disabled) {
+    background-color: #ec9108;
+}
+
+.submit-button:focus:not(:disabled) {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 0.25rem rgba(255, 154, 0, 0.25);
+}
+
+.submit-button:disabled {
+    background-color: #ffdca8;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* --------------------------------------------------------------------- */
+/* Error Message */
+/* --------------------------------------------------------------------- */
+
+.auth-error {
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    font-size: 0.875rem;
+    color: #b91c1c;
+    background-color: #fee2e2;
+    border-radius: 0.5rem;
+    border-left: 4px solid #ef4444;
+}
+
+/* --------------------------------------------------------------------- */
+/* Spinner Animation */
+/* --------------------------------------------------------------------- */
+
+/* Keyframes for the spinner animation */
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-spin {
+    animation: spin 1s linear infinite;
+    margin-left: -0.25rem;
+    margin-right: 0.75rem;
+    height: 1.25rem;
+    width: 1.25rem;
+    color: white;
+}

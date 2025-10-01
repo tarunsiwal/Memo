@@ -4,6 +4,8 @@ import UpdateTaskPopup from './popups/updateTaskPopup';
 
 function Inbox ({isGridClose, page, refreshTrigger, handleRefresh, searchQuery, setSearchQuery, token,}){
   const apiUrl = import.meta.env.VITE_APP_API_URL;
+  const TASK_API_BASE_URL = `${apiUrl}/tasks`; 
+
   const [tasks, setTasks] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -20,12 +22,11 @@ function Inbox ({isGridClose, page, refreshTrigger, handleRefresh, searchQuery, 
     setError(null);
     const endpoint = `/api/tasks`;
     try {
-      // const response = await fetch(`${apiUrl}/tasks`);
-      const response = await fetch(`${apiUrl}/tasks`, {
+      const response = await fetch(`${TASK_API_BASE_URL}`, {
                     method: 'GET',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`, 
+                      "Authorization": `Bearer ${token}`,
+                      'Content-Type': 'application/json',
                     },
                 });
       if (!response.ok) {
@@ -45,7 +46,13 @@ function Inbox ({isGridClose, page, refreshTrigger, handleRefresh, searchQuery, 
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${apiUrl}/tasks/today`);
+      const response = await fetch(`${TASK_API_BASE_URL}/today`, {
+                    method: 'GET',
+                    headers: {
+                      "Authorization": `Bearer ${token}`,
+                      'Content-Type': 'application/json',
+                    },
+                });
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -63,7 +70,13 @@ function Inbox ({isGridClose, page, refreshTrigger, handleRefresh, searchQuery, 
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${apiUrl}/tasks/upcoming`);
+      const response = await fetch(`${TASK_API_BASE_URL}/upcoming`, {
+        method: 'GET',
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -80,10 +93,11 @@ function Inbox ({isGridClose, page, refreshTrigger, handleRefresh, searchQuery, 
   const onUpdateTask = async (taskData) => {
     try{
       console.log(taskData)
-      const response = await fetch(`${apiUrl}/tasks/${taskData.id}`, {
+      const response = await fetch(`${TASK_API_BASE_URL}/${taskData.id}`, {
         method : "PUT",
         headers : {
-          "Content-Type": "application/json"
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           title: taskData.title,
@@ -107,12 +121,13 @@ function Inbox ({isGridClose, page, refreshTrigger, handleRefresh, searchQuery, 
   };
   const onPinTask = async (taskId, isPinned) => {
     try {
-        const response = await fetch(`${apiUrl}/tasks/${taskId}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ isPinned }),
+        const response = await fetch(`${TASK_API_BASE_URL}/${taskId}`, {
+          method: "PUT",
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json",                
+          },
+          body: JSON.stringify({ isPinned }),
         });
         if (response.ok) {
             console.log('Pin status updated successfully!');
@@ -128,7 +143,13 @@ function Inbox ({isGridClose, page, refreshTrigger, handleRefresh, searchQuery, 
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch(`http://localhost:5000/api/tasks/search?query=${query}`);
+      const response = await fetch(`${TASK_API_BASE_URL}/search?query=${query}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`, 
+                    },
+                });
       if (!response.ok) throw new Error("Network response was not ok");
       const {tasks: fetchedTasks} = await response.json();
       const sortedTasks = sortTasks(fetchedTasks);

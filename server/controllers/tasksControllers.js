@@ -8,9 +8,9 @@ export const getAllTasks = asyncHandler(async (req, res) => {
   // Removed try/catch. asyncHandler will catch any Mongoose errors.
   const tasks = await Task.find({ user: req.user.id });
   res.status(200).json({
-    success: true, // Optional metadata
-    count: tasks.length, // Optional metadata
-    tasks: tasks, // The array is now a property called 'tasks'
+    success: true,
+    count: tasks.length,
+    tasks: tasks,
   });
 });
 
@@ -58,7 +58,7 @@ export const getTaskById = asyncHandler(async (req, res) => {
     throw new Error("Task not found");
   }
 
-  res.status(200).json(task);
+  res.status(200).json({ task });
 });
 
 // @desc    Get tasks due today
@@ -78,7 +78,7 @@ export const getTasksByDate = asyncHandler(async (req, res) => {
     },
     user: req.user.id,
   });
-  res.status(200).json(tasks);
+  res.status(200).json({ tasks });
 });
 
 // @desc    Get upcoming tasks (after today)
@@ -93,7 +93,7 @@ export const getUpcomingTasks = asyncHandler(async (req, res) => {
     dueDate: { $gt: today },
     user: req.user.id,
   });
-  res.status(200).json(tasks);
+  res.status(200).json({ tasks });
 });
 
 // @desc    Search tasks by title or description
@@ -110,7 +110,7 @@ export const searchTasks = asyncHandler(async (req, res) => {
     ],
     user: req.user.id,
   });
-  res.status(200).json(tasks);
+  res.status(200).json({ tasks });
 });
 
 // @desc    Update a task by ID
@@ -132,7 +132,7 @@ export const updateTask = asyncHandler(async (req, res) => {
     throw new Error("Task not found");
   }
 
-  res.status(200).json(updatedTask);
+  res.status(200).json({ updatedTask });
 });
 
 // @desc    Delete a task by ID

@@ -4,6 +4,7 @@ import Spinner from "./helper/spinner"
 import TaskCard from "./ui/taskCard";
 import DeletePopup from "./popups/confirmDeletePopup"
 import { TextAlignCenter } from "lucide-react";
+import noTask from "../assets/images/message-images/noTasks.png"
 
 function Tasks({  taskList, 
                   isLoading, 
@@ -45,18 +46,24 @@ function Tasks({  taskList,
     onPinTask(id, !isCurrentlyPinned);
   };
   if (isLoading) {
-    return (<div className='mainContainer gap-4 p-4'>
+    return (<div className='main-message-container'>
       <Spinner/>
       </div>)
   };
   if (error) {
-    return (<div className='mainContainer gap-4 p-4'>
+    return (<div className='main-message-container'>
       <p>Error: {error.message}</p>
       </div>)
   };
   if (!taskList || taskList.length === 0) {
-    if(page === 'Today') return <p>No task for today.</p>;
-    return <p>Please add Tasks.</p>;
+    if(page === 'Today') return (<div className='main-message-container'>
+      <img src={noTask} alt="No task" style={{width: ''}}/>
+      <p>No task for today</p>
+    </div>)
+    return (<div className='main-message-container'>
+      <img src={noTask} alt="No task" style={{width: ''}}/>
+      <p>No task available Please <span>add task</span></p>
+    </div>)
   };
   const pinnedTasks = taskList.filter(task => task.isPinned);
   const unpinnedTasks = taskList.filter(task => !task.isPinned);

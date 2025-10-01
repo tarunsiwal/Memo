@@ -64,7 +64,7 @@ export const loginUser = asyncHandler(async (req, res) => {
 // @route POST /api/user/
 // @access Private
 
-export const getMe = asyncHandler(async (req, res) => {
+export const profile = asyncHandler(async (req, res) => {
   const { _id, name, email } = await User.findById(req.user.id);
   res.status(200).json({
     id: _id,
