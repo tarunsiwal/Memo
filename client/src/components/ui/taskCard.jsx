@@ -33,8 +33,8 @@ function TaskCard({ task, deletePopup, togglePin, handleUpdateTaskPopup, styles 
           <Pin fill={task.isPinned ? '#4e4e4e' : 'none'} style= {{rotate : task.isPinned ? '0deg' : '45deg'}}/>
         </div>
       )}
-      <TruncatedText className={"title text-xl font-bold text-gray-800"} text={task.title} wordLimit={6} type={'p'}/>
-      <TruncatedText className={"description text-sm  italic mb-0"} text={task.description} wordLimit={30} type={'span'}/>
+      <TruncatedText className={"title text-xl font-bold text-gray-800"} text={task.title} wordLimit={25} type={'p'}/>
+      <TruncatedText className={"description text-sm  italic mb-0"} text={task.description} wordLimit={100} type={'span'}/>
       <div className="cardProperties">
         {localizedDate && (
         <div className="dueDate" 

@@ -1,17 +1,14 @@
 import mongoose from "mongoose";
 
 const labelSchema = new mongoose.Schema({
-  userId: {
+  user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
     index: true,
   },
-  name: {
-    type: String,
-    required: true,
-  },
+  label: { type: String, required: true },
 });
-const Labels = mongoose.model("Labels", labelSchema);
+const UserLabels = mongoose.model("Labels", labelSchema);
 
-export default Labels;
+export default UserLabels;

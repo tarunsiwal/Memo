@@ -1,21 +1,21 @@
 import { useState, useEffect, createContext } from 'react';
-// import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import AuthView from './pages/authView';
 import Sidebar from './components/sidebar';
 import Header from './components/header'
 import Inbox from './components/inbox';
 import FilterLabels from './pages/filterLabels';
-import HomePage from './pages/homePage';
 import Footer from './components/footer'
+import Spinner from './components/helper/spinner';
+
 import './App.css'
 
 const apiUrl = import.meta.env.VITE_APP_API_URL;
 const USER_API_BASE_URL = `${apiUrl}/user`; 
 const TOKEN_STORAGE_KEY = 'user_jwt_token'; 
 
-
 export const MobileContext = createContext(false);
+export const TokenContext = createContext(null)
 
 const useResponsiveLayout = (breakpoint = 640) => {
   const [isMobile, setIsMobile] = useState(false);
@@ -35,7 +35,8 @@ function App() {
     const [token, setToken] = useState(null); 
     const [isCheckingAuth, setIsCheckingAuth] = useState(true);
     const [authError, setAuthError] = useState('');
-    const [userName, setUserName] = useState('')
+    const [userName, setUserName] = useState('');
+    const [userLabels, setUserLabels] = useState([]);
 
     // Load token from local storage on mount
     useEffect(() => {
@@ -136,19 +137,18 @@ function App() {
     if (isCheckingAuth) {
         return (
             <div className="main-message-container">
+                <Spinner/>
                 <div className="isChecking">Checking User Session...</div>
             </div>
         );
     }
 
     if (!token) {
-        return <AuthView onAuthAction={handleAuthAction} authError={authError} />;
+        return <AuthView onAuthAction={handleAuthAction} authError={authError} setAuthError={setAuthError} />;
     }
 
     const getPageElement = () => {
-        switch (currentPage) {
-            case 'Home':
-                return <HomePage />;
+        switch (currentPage) {            
             case 'Inbox':
             case 'Today':
             case 'Upcoming':
@@ -159,18 +159,24 @@ function App() {
                         refreshTrigger={refreshTrigger}
                         handleRefresh={handleRefresh}
                         searchQuery={searchQuery}
-                        token={token}
                     />
                 );
             case 'FilterLabels':
                 return <FilterLabels />;
             default:
-                return <HomePage />;
-        }
+                return <Inbox
+                        isGridClose={isGridClose} 
+                        page={'Inbox'} 
+                        refreshTrigger={refreshTrigger}
+                        handleRefresh={handleRefresh}
+                        searchQuery={searchQuery}
+                        />
+        };
     };
 
     return (
         <MobileContext.Provider value={isMobile}>
+        <TokenContext.Provider value={token}>
             <div className="min-h-screen flex flex-col font-inter">
                 <Header 
                     handleGridChange={handleGridChange} 
@@ -190,7 +196,6 @@ function App() {
                         handleLogout={handleLogout}
                         currentPage={currentPage}
                         onNavigate={handleNavigation}
-                        token={token}
                         user={userName}
                     />
                     <main className="flex-1 overflow-y-auto bg-gray-100 transition-all duration-300">
@@ -199,8 +204,9 @@ function App() {
                     </main>
                 </div>
             </div>
+        </TokenContext.Provider>
         </MobileContext.Provider>
     );
-}
+};
 
 export default App;

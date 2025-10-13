@@ -1,5 +1,5 @@
 .labels-container {
-    width: unset;
+    width: 14rem;
     max-width: 28rem;
     margin: 0 auto;
     background-color: #ffffff;
@@ -7,6 +7,11 @@
     border-radius: 0.5rem;
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     position: absolute;
+    overflow: hidden;
+}
+
+.labels-container p.message {
+    padding: 0 1rem;
 }
 
 .labels-header {
@@ -15,6 +20,18 @@
     justify-content: space-between;
     padding: 1rem;
     border-bottom: 1px solid #e5e7eb;
+}
+
+.labels-header-buttons {
+    display: flex;
+}
+
+.labels-createlabel-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    color: #111827;
 }
 
 .labels-title {
@@ -54,7 +71,7 @@
 }
 
 .label-input {
-    width: 100%;
+    width: 100% !important;
     padding: 0.5rem 0.75rem;
     border: 1px solid #d1d5db;
     border-radius: 0.375rem;
@@ -76,6 +93,8 @@
 
 .labels-list {
     padding: 0.5rem;
+    max-height: 120px;
+    overflow: auto;
 }
 
 .label-item {
@@ -108,7 +127,7 @@
 .label-checkbox {
     height: 1rem;
     width: 1rem;
-    accent-color: #3b82f6;
+    accent-color: transparent;
     cursor: pointer;
 }
 
@@ -133,7 +152,7 @@
 }
 
 /* Dark mode support */
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
     .labels-container {
         background-color: #1f2937;
         border-color: #374151;

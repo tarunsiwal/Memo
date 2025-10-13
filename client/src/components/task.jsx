@@ -62,7 +62,7 @@ function Tasks({  taskList,
     </div>)
     return (<div className='main-message-container'>
       <img src={noTask} alt="No task" style={{width: ''}}/>
-      <p>No task available Please <span>add task</span></p>
+      <p>No task available. Please <span>add task</span></p>
     </div>)
   };
   const pinnedTasks = taskList.filter(task => task.isPinned);

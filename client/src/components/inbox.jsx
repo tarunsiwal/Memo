@@ -1,11 +1,12 @@
-import { useState, useEffect} from 'react'
+import { useState, useEffect, useContext} from 'react'
 import Task from './task'
+import { TokenContext } from '../App';
 import UpdateTaskPopup from './popups/updateTaskPopup';
 
-function Inbox ({isGridClose, page, refreshTrigger, handleRefresh, searchQuery, setSearchQuery, token,}){
+function Inbox ({isGridClose, page, refreshTrigger, handleRefresh, searchQuery, setSearchQuery}){
   const apiUrl = import.meta.env.VITE_APP_API_URL;
   const TASK_API_BASE_URL = `${apiUrl}/tasks`; 
-
+  const token = useContext(TokenContext)
   const [tasks, setTasks] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -30,7 +31,7 @@ function Inbox ({isGridClose, page, refreshTrigger, handleRefresh, searchQuery, 
                     },
                 });
       if (!response.ok) {
-        throw new Error("Network response was not ok");
+        throw new Error("Check your internet connection and try again.");
       }
       const { tasks: fetchedTasks, count } = await response.json();
       const sortedTasks = sortTasks(fetchedTasks);
@@ -54,7 +55,7 @@ function Inbox ({isGridClose, page, refreshTrigger, handleRefresh, searchQuery, 
                     },
                 });
       if (!response.ok) {
-        throw new Error("Network response was not ok");
+        throw new Error("Check your internet connection and try again.");
       }
       const { tasks: fetchedTasks } = await response.json();
       const sortedTasks = sortTasks(fetchedTasks);
@@ -78,7 +79,7 @@ function Inbox ({isGridClose, page, refreshTrigger, handleRefresh, searchQuery, 
         },
       });
       if (!response.ok) {
-        throw new Error("Network response was not ok");
+        throw new Error("Check your internet connection and try again.");
       }
       const { tasks: fetchedTasks } = await response.json();
       const sortedTasks = sortTasks(fetchedTasks);
@@ -150,7 +151,7 @@ function Inbox ({isGridClose, page, refreshTrigger, handleRefresh, searchQuery, 
                         'Authorization': `Bearer ${token}`, 
                     },
                 });
-      if (!response.ok) throw new Error("Network response was not ok");
+      if (!response.ok) throw new Error("Check your internet connection and try again.");
       const {tasks: fetchedTasks} = await response.json();
       const sortedTasks = sortTasks(fetchedTasks);
       setTasks(sortedTasks);

@@ -145,6 +145,7 @@
 }
 
 .main-message-container .isChecking {
+  margin-top: 1em;
   font-weight: bold;
 }
 
@@ -176,7 +177,7 @@
 }
 
 .searchContainer:focus-within {
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
 
 .searchContainer .searchBar {
@@ -208,6 +209,10 @@
   font-size: 0.85rem;
   display: flex;
   align-items: center;
+}
+
+.label-tag span {
+  padding: 0 5px;
 }
 
 .label-tag:hover button {

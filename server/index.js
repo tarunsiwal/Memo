@@ -3,6 +3,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import tasksRoutes from "./routes/tasksRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import userLabelsRoutes from "./routes/userLabelsRoutes.js";
 import dotenv from "dotenv";
 import { errorHandler } from "./middleware/errorMiddleware.js";
 
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use(cors());
 app.use("/api/tasks", tasksRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/user/labels", userLabelsRoutes);
 app.use(errorHandler);
 
 // A simple root route to check if the server is running

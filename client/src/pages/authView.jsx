@@ -1,11 +1,12 @@
 import { useState } from "react";
 import Spinner from "../components/helper/spinner";
+import { X } from "lucide-react"
 import "../assets/css/auth.css"
 // ----------------------------------------------------------------------
 // Auth Views (Login/Register)
 // ----------------------------------------------------------------------
 
-const AuthView = ({ onAuthAction, authError }) => {
+const AuthView = ({ onAuthAction, authError, setAuthError }) => {
     const [authMode, setAuthMode] = useState('login'); 
     const [email, setEmail] = useState('');
     const [userName, setUserName] = useState('')
@@ -41,6 +42,7 @@ const AuthView = ({ onAuthAction, authError }) => {
                 {authError && (
                     <div className="auth-error ">
                         {authError}
+                        <X onClick={()=> setAuthError('')} style={{cursor:'pointer'}}/>
                     </div>
                 )}
 
