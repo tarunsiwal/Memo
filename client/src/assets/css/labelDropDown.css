@@ -8,6 +8,8 @@
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     position: absolute;
     overflow: hidden;
+    top: 40px;
+    right: -165px;
 }
 
 .labels-container p.message {
@@ -18,7 +20,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1rem;
+    padding: 0.5rem;
     border-bottom: 1px solid #e5e7eb;
 }
 
@@ -32,13 +34,14 @@
     align-items: center;
     width: 100%;
     color: #111827;
+    font-size: 14px;
 }
 
 .labels-title {
-    font-size: 1.125rem;
+    font-size: 1rem;
     font-weight: 500;
     color: #111827;
-    margin: 0;
+    margin: 0 0 0 10px;
 }
 
 .add-button {
@@ -56,7 +59,8 @@
 }
 
 .add-button:hover {
-    background-color: #f3f4f6;
+    /* background-color: #f3f4f6; */
+    background-color: rgba(240, 240, 240, 0.4)
 }
 
 .add-button svg {
@@ -66,7 +70,7 @@
 }
 
 .input-section {
-    padding: 1rem;
+    padding: 0.5rem;
     border-bottom: 1px solid #e5e7eb;
 }
 
@@ -108,7 +112,7 @@
 }
 
 .label-item:hover {
-    background-color: rgba(243, 244, 246, 0.5);
+    background-color: rgba(240, 240, 240, 0.4)
 }
 
 .label-icon {
@@ -120,7 +124,7 @@
 
 .label-text {
     flex: 1;
-    font-size: 0.875rem;
+    font-size: 14px;
     color: #111827;
 }
 
@@ -128,11 +132,14 @@
     height: 1rem;
     width: 1rem;
     accent-color: transparent;
+    /* accent-color: var(--color1); */
     cursor: pointer;
 }
 
+/* .checkbox {} */
+
 /* Page styles */
-.main-container {
+/* .main-container {
     min-height: 100vh;
     background-color: #f9fafb;
     padding: 2rem;
@@ -149,10 +156,10 @@
     text-align: center;
     margin-bottom: 2rem;
     color: #111827;
-}
+} */
 
 /* Dark mode support */
-@media (prefers-color-scheme: light) {
+/* @media (prefers-color-scheme: light) {
     .labels-container {
         background-color: #1f2937;
         border-color: #374151;
@@ -198,4 +205,4 @@
     .main-container {
         background-color: #111827;
     }
-}
+} */

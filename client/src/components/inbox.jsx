@@ -1,12 +1,19 @@
-import { useState, useEffect, useContext} from 'react'
-import Task from './task'
+import { useState, useEffect, useContext } from 'react';
+import Task from './task';
 import { TokenContext } from '../App';
-import UpdateTaskPopup from './popups/updateTaskPopup';
+import TaskPopup from './popups/taskPopup';
 
-function Inbox ({isGridClose, page, refreshTrigger, handleRefresh, searchQuery, setSearchQuery}){
+function Inbox({
+  isGridClose,
+  page,
+  refreshTrigger,
+  handleRefresh,
+  searchQuery,
+  setSearchQuery,
+}) {
   const apiUrl = import.meta.env.VITE_APP_API_URL;
-  const TASK_API_BASE_URL = `${apiUrl}/tasks`; 
-  const token = useContext(TokenContext)
+  const TASK_API_BASE_URL = `${apiUrl}/tasks`;
+  const token = useContext(TokenContext);
   const [tasks, setTasks] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -17,28 +24,28 @@ function Inbox ({isGridClose, page, refreshTrigger, handleRefresh, searchQuery, 
     return taskList.sort((a, b) => {
       return new Date(b.createdAt) - new Date(a.createdAt);
     });
-  };  
+  };
   const getTasks = async () => {
     setIsLoading(true);
     setError(null);
     const endpoint = `/api/tasks`;
     try {
       const response = await fetch(`${TASK_API_BASE_URL}`, {
-                    method: 'GET',
-                    headers: {
-                      "Authorization": `Bearer ${token}`,
-                      'Content-Type': 'application/json',
-                    },
-                });
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
       if (!response.ok) {
-        throw new Error("Check your internet connection and try again.");
+        throw new Error('Check your internet connection and try again.');
       }
       const { tasks: fetchedTasks, count } = await response.json();
       const sortedTasks = sortTasks(fetchedTasks);
       setTasks(sortedTasks);
     } catch (err) {
-      setError("Failed to fetch tasks. Please ensure you are connected.");
-      console.error("Fetching error:", err);
+      setError('Failed to fetch tasks. Please ensure you are connected.');
+      console.error('Fetching error:', err);
     } finally {
       setIsLoading(false);
     }
@@ -48,21 +55,21 @@ function Inbox ({isGridClose, page, refreshTrigger, handleRefresh, searchQuery, 
     setError(null);
     try {
       const response = await fetch(`${TASK_API_BASE_URL}/today`, {
-                    method: 'GET',
-                    headers: {
-                      "Authorization": `Bearer ${token}`,
-                      'Content-Type': 'application/json',
-                    },
-                });
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
       if (!response.ok) {
-        throw new Error("Check your internet connection and try again.");
+        throw new Error('Check your internet connection and try again.');
       }
       const { tasks: fetchedTasks } = await response.json();
       const sortedTasks = sortTasks(fetchedTasks);
       setTasks(sortedTasks);
     } catch (err) {
-      setError("Failed to fetch tasks. Please ensure you are connected.");
-      console.error("Fetching error:", err);
+      setError('Failed to fetch tasks. Please ensure you are connected.');
+      console.error('Fetching error:', err);
     } finally {
       setIsLoading(false);
     }
@@ -74,31 +81,31 @@ function Inbox ({isGridClose, page, refreshTrigger, handleRefresh, searchQuery, 
       const response = await fetch(`${TASK_API_BASE_URL}/upcoming`, {
         method: 'GET',
         headers: {
-          "Authorization": `Bearer ${token}`,
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
       });
       if (!response.ok) {
-        throw new Error("Check your internet connection and try again.");
+        throw new Error('Check your internet connection and try again.');
       }
       const { tasks: fetchedTasks } = await response.json();
       const sortedTasks = sortTasks(fetchedTasks);
       setTasks(sortedTasks);
     } catch (err) {
-      setError("Failed to fetch tasks. Please ensure you are connected.");
-      console.error("Fetching error:", err);
+      setError('Failed to fetch tasks. Please ensure you are connected.');
+      console.error('Fetching error:', err);
     } finally {
       setIsLoading(false);
     }
   };
   const onUpdateTask = async (taskData) => {
-    try{
-      console.log(taskData)
+    try {
+      console.log(taskData);
       const response = await fetch(`${TASK_API_BASE_URL}/${taskData.id}`, {
-        method : "PUT",
-        headers : {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json",
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           title: taskData.title,
@@ -109,62 +116,66 @@ function Inbox ({isGridClose, page, refreshTrigger, handleRefresh, searchQuery, 
           cardColor: taskData.color,
         }),
       });
-      if(response.ok){
-        console.log('Task updated successfully!', taskData.color)
+      if (response.ok) {
+        console.log('Task updated successfully!', taskData.color);
         handleRefresh();
       } else {
-        console.error("Failed to update task.")
+        console.error('Failed to update task.');
       }
-      setIsUpdatePopupOpen(false)
-    } catch (err){
-        console.error("Fetching error:",err)
+      setIsUpdatePopupOpen(false);
+    } catch (err) {
+      console.error('Fetching error:', err);
     }
   };
   const onPinTask = async (taskId, isPinned) => {
     try {
-        const response = await fetch(`${TASK_API_BASE_URL}/${taskId}`, {
-          method: "PUT",
-          headers: {
-            "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json",                
-          },
-          body: JSON.stringify({ isPinned }),
-        });
-        if (response.ok) {
-            console.log('Pin status updated successfully!');
-            handleRefresh();
-        } else {
-            console.error("Failed to update pin status.");
-        }
+      const response = await fetch(`${TASK_API_BASE_URL}/${taskId}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ isPinned }),
+      });
+      if (response.ok) {
+        console.log('Pin status updated successfully!');
+        handleRefresh();
+      } else {
+        console.error('Failed to update pin status.');
+      }
     } catch (err) {
-        console.error("Fetching error:", err);
+      console.error('Fetching error:', err);
     }
   };
   const handleSearch = async (query) => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${TASK_API_BASE_URL}/search?query=${query}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`, 
-                    },
-                });
-      if (!response.ok) throw new Error("Check your internet connection and try again.");
-      const {tasks: fetchedTasks} = await response.json();
+      const response = await fetch(
+        `${TASK_API_BASE_URL}/search?query=${query}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+        },
+      );
+      if (!response.ok)
+        throw new Error('Check your internet connection and try again.');
+      const { tasks: fetchedTasks } = await response.json();
       const sortedTasks = sortTasks(fetchedTasks);
       setTasks(sortedTasks);
     } catch (err) {
-      setError("Failed to search tasks.");
+      setError('Failed to search tasks.');
     } finally {
       setIsLoading(false);
     }
   };
   useEffect(() => {
-    if(searchQuery){
+    if (searchQuery) {
       handleSearch(searchQuery);
-    }else{
+    } else {
       if (page === 'Inbox') {
         getTasks();
       } else if (page === 'Today') {
@@ -172,12 +183,13 @@ function Inbox ({isGridClose, page, refreshTrigger, handleRefresh, searchQuery, 
       } else if (page === 'Upcoming') {
         getUpcomingTasks();
       }
-  }}, [page, refreshTrigger, searchQuery]);
+    }
+  }, [page, refreshTrigger, searchQuery]);
 
   const handleUpdateTaskPopup = (taskId) => {
-    const foundTask = tasks.find(task => task._id === taskId);
+    const foundTask = tasks.find((task) => task._id === taskId);
     if (foundTask) {
-      setTaskDetails(foundTask)
+      setTaskDetails(foundTask);
       console.log(foundTask);
       setIsUpdatePopupOpen(true);
     } else {
@@ -185,18 +197,19 @@ function Inbox ({isGridClose, page, refreshTrigger, handleRefresh, searchQuery, 
     }
   };
   const style = {
-    objectContainer : {
+    objectContainer: {
       width: isGridClose ? '700px' : '100%',
-    }
-  }
+    },
+  };
   return (
-    <div className='mainContainer'>
-      <div className='objectContainer' style={style.objectContainer}>
-        <UpdateTaskPopup 
+    <div className="mainContainer">
+      <div className="objectContainer" style={style.objectContainer}>
+        <TaskPopup
           trigger={isUpdatePopupOpen}
-          onClose={() => setIsUpdatePopupOpen(false)} 
+          onClose={() => setIsUpdatePopupOpen(false)}
           onUpdateTask={onUpdateTask}
           taskDetails={taskDetails}
+          action={'update'}
         />
         <Task
           taskList={tasks}
@@ -210,7 +223,7 @@ function Inbox ({isGridClose, page, refreshTrigger, handleRefresh, searchQuery, 
         />
       </div>
     </div>
-  )
+  );
 }
 
-export default Inbox
+export default Inbox;

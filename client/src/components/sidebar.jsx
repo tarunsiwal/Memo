@@ -9,6 +9,7 @@ import profile from '../assets/images/profile.jpg';
 import add from '../assets/images/svg/add.svg';
 import { MobileContext, TokenContext } from '../App';
 import TruncatedText from './helper/truncatedText';
+import TaskPopup from './popups/taskPopup';
 
 import {
   X,
@@ -19,7 +20,6 @@ import {
   LogOut,
   StickyNote,
 } from 'lucide-react';
-import AddTaskPopup from './popups/addTaskPopup';
 
 function Sidebar({
   refreshTrigger,
@@ -70,11 +70,11 @@ function Sidebar({
     setIsAddTaskPopupOpen(true);
   };
   const navItems = [
-    {
-      name: 'Sticky Note',
-      path: 'Sticky Note',
-      imgSrc: <StickyNote className="sidebarImage" strokeWidth="1.8" />,
-    },
+    // {
+    //   name: 'Sticky Note',
+    //   path: 'Sticky Note',
+    //   imgSrc: <StickyNote className="sidebarImage" strokeWidth="1.8" />,
+    // },
     {
       name: 'Inbox',
       path: 'Inbox',
@@ -185,10 +185,11 @@ function Sidebar({
           </li>
         </ul>
       </div>
-      <AddTaskPopup
+      <TaskPopup
         trigger={isAddTaskPopupOpen}
         onClose={() => setIsAddTaskPopupOpen(false)}
         onAddTask={onAddTask}
+        action={'add'}
       />
     </div>
   );

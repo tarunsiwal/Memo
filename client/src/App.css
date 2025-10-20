@@ -73,10 +73,21 @@
   font-size: 14px;
 }
 
+.task-card .cardProperties .priority span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.task-card .cardProperties .priority span svg {
+  margin-left: 3px;
+}
+
 .task-card .cardProperties {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+
 }
 
 .task-card .description {
@@ -103,8 +114,7 @@
 }
 
 #task-btn:hover {
-  background: rgba(141, 141, 141, 0.2);
-  /* background-color: rgb(248, 249, 250, 0.5); */
+  background-color: rgba(240, 240, 240, 0.4)
 }
 
 /* Main layout and containers */
@@ -430,7 +440,7 @@
   }
 
   .cardProperties {
-    flex-direction: column;
+    flex-direction: row;
   }
 
   .task-card .pin {

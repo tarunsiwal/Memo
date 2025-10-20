@@ -1,4 +1,10 @@
-import { useContext, useState, useEffect, useCallback } from 'react';
+import {
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+  forwardRef,
+} from 'react';
 import { Plus, Tag, X } from 'lucide-react';
 import '../../assets/css/labelDropDown.css';
 import Spinner from '../helper/spinner.jsx';
@@ -7,7 +13,7 @@ import { TokenContext } from '../../App.jsx';
 
 const apiUrl = import.meta.env.VITE_APP_API_URL;
 
-function LabelsManager({ handleLabel, labels, setLabels }) {
+const LabelsManager = forwardRef(({ handleLabel, labels, setLabels }, ref) => {
   const [displayedLabels, setDisplayedLabels] = useState([]);
   const [allLabelsCache, setAllLabelsCache] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -15,32 +21,18 @@ function LabelsManager({ handleLabel, labels, setLabels }) {
 
   const token = useContext(TokenContext);
 
-  // Function to save selected labels and close the dropdown
-  const handleSaveAndClose = () => {
-    // 1. Filter the entire cache (which holds the source of truth for all checks)
-    const checkedLabelNames = allLabelsCache
-      .filter((label) => label.checked)
-      .map((label) => label.label);
-
-    // 2. Set the parent state with the filtered list of names
-    setLabels(checkedLabelNames);
-
-    // 3. Close the dropdown
-    handleLabel();
-  };
-
-  // Effect to filter displayed labels based on the search query and the allLabelsCache
-  // This ensures the displayed list is always correct based on the cache's checked status.
   useEffect(() => {
     const query = searchQuery.trim().toLowerCase();
-
-    // Filter based on the source of truth (allLabelsCache)
     const filteredLabels = allLabelsCache.filter((label) =>
       label.label.toLowerCase().includes(query),
     );
 
     setDisplayedLabels(filteredLabels);
   }, [searchQuery, allLabelsCache]);
+
+  const handleSaveAndClose = () => {
+    handleLabel();
+  };
 
   const fetchLabels = useCallback(
     async (query) => {
@@ -63,19 +55,14 @@ function LabelsManager({ handleLabel, labels, setLabels }) {
           );
         }
         const { labels: fetchedLabels } = await response.json();
-
-        // Key logic: Initialize 'checked' status based on the parent's current 'labels' array
         const labelsWithStatus = fetchedLabels.map((label) => ({
           ...label,
           checked: labels.includes(label.label),
         }));
 
         if (query === '') {
-          // Update the cache with the full list and correct checked status
           setAllLabelsCache(labelsWithStatus);
         } else {
-          // For search results, we just display what the API returned,
-          // the useEffect above handles merging with cache status.
           setDisplayedLabels(labelsWithStatus);
         }
       } catch (err) {
@@ -84,13 +71,15 @@ function LabelsManager({ handleLabel, labels, setLabels }) {
         setIsLoading(false);
       }
     },
-    // Dependency on 'labels' is crucial here to ensure initial checked status is correct
     [token, labels],
   );
 
   useEffect(() => {
     if (token) {
-      fetchLabels(searchQuery);
+      const timer = setTimeout(() => {
+        fetchLabels(searchQuery);
+      }, 0);
+      return () => clearTimeout(timer);
     }
   }, [searchQuery, token, fetchLabels]);
 
@@ -115,11 +104,9 @@ function LabelsManager({ handleLabel, labels, setLabels }) {
         throw new Error('Failed to create label on server.');
       }
 
-      // Select the new label in the parent state immediately (will re-trigger fetch)
       setLabels((prevLabels) => [...prevLabels, newLabelText]);
 
       setSearchQuery('');
-      // Refetch the full list to include the newly created and now selected label
       await fetchLabels('');
     } catch (err) {
       console.log('Error adding label:', err);
@@ -129,13 +116,16 @@ function LabelsManager({ handleLabel, labels, setLabels }) {
   };
 
   const handleToggleLabel = (_id) => {
-    // Only update the allLabelsCache (source of truth)
-    setAllLabelsCache((prevCache) =>
-      prevCache.map((label) =>
+    setAllLabelsCache((prevCache) => {
+      const updatedCache = prevCache.map((label) =>
         label._id === _id ? { ...label, checked: !label.checked } : label,
-      ),
-    );
-    // The displayedLabels will automatically update via the dedicated useEffect
+      );
+      const checkedLabelNames = updatedCache
+        .filter((label) => label.checked)
+        .map((label) => label.label);
+      setLabels(checkedLabelNames);
+      return updatedCache;
+    });
   };
 
   const handleKeyPress = (e) => {
@@ -144,19 +134,12 @@ function LabelsManager({ handleLabel, labels, setLabels }) {
     }
   };
 
-  const renderSpinner = () => (
-    <div className="flex justify-center p-4">
-      <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-indigo-500"></div>
-    </div>
-  );
-
   return (
-    <div className="labels-container">
+    <div className="labels-container" ref={ref}>
       {/* Header */}
       <div className="labels-header">
         <h2 className="labels-title">Labels</h2>
         <div className="labels-header-buttons">
-          {/* Use handleSaveAndClose to commit changes before closing */}
           <button
             className="add-button"
             onClick={handleSaveAndClose}
@@ -172,7 +155,7 @@ function LabelsManager({ handleLabel, labels, setLabels }) {
         <input
           autoFocus
           type="text"
-          placeholder="Type a label"
+          placeholder="Create label.."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           onKeyPress={handleKeyPress}
@@ -182,7 +165,9 @@ function LabelsManager({ handleLabel, labels, setLabels }) {
 
       {/* Labels list */}
       {isLoading ? (
-        renderSpinner()
+        <div style={{ padding: '5px 0' }}>
+          <Spinner width={'15px'} />
+        </div>
       ) : (
         <div className="labels-list">
           {displayedLabels.map((label) => (
@@ -243,6 +228,6 @@ function LabelsManager({ handleLabel, labels, setLabels }) {
       )}
     </div>
   );
-}
+});
 
 export default LabelsManager;
