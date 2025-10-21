@@ -5,8 +5,9 @@ import DatePicker from '../ui/datePicker';
 import PriorityDropdown from '../ui/priorityDropDown';
 import LabelDropDown from '../ui/labelDropDown';
 import '../../assets/css/colorPicker.css';
+import '../../assets/css/popup.css';
 
-import { Tag, X, Palette, CalendarFold } from 'lucide-react';
+import { Tag, X, Palette, CalendarFold, Pin } from 'lucide-react';
 
 function taskPopup({
   trigger,
@@ -43,6 +44,7 @@ function taskPopup({
   const [priority, setPriority] = useState(initialTask.priority || 4);
   const [labels, setLabels] = useState(initialTask.labels || []);
   const [color, setColor] = useState(initialTask.cardColor || '#ffffff');
+  const [isPinned, setIsPinned] = useState(initialTask.isPinned || false);
   const [id, setId] = useState(initialTask._id || null);
 
   // toggle state
@@ -69,6 +71,7 @@ function taskPopup({
       setPriority(taskDetails.priority);
       setLabels(taskDetails.labels);
       setColor(taskDetails.cardColor);
+      setIsPinned(taskDetails.isPinned);
     }
   }, [taskDetails]);
 
@@ -76,13 +79,22 @@ function taskPopup({
     e.preventDefault();
     if (title.trim() && description.trim()) {
       if (action === 'add') {
-        onAddTask({ title, description, dueDate, labels, priority, color });
+        onAddTask({
+          title,
+          description,
+          dueDate,
+          labels,
+          priority,
+          color,
+          isPinned,
+        });
         setTitle('');
         setDescription('');
         setDueDate('');
         setPriority(4);
         setLabels([]);
         setColor('#ffffff');
+        setIsPinned(false);
       } else {
         onUpdateTask({
           id,
@@ -92,6 +104,7 @@ function taskPopup({
           labels,
           priority,
           color,
+          isPinned,
         });
       }
       isDev
@@ -102,6 +115,7 @@ function taskPopup({
             labels,
             priority,
             color,
+            isPinned,
           })
         : null;
     }
@@ -115,6 +129,7 @@ function taskPopup({
       setPriority(4);
       setLabels([]);
       setColor('#ffffff');
+      setIsPinned(false);
     } else {
       setId(taskDetails._id);
       setTitle(taskDetails.title);
@@ -123,6 +138,7 @@ function taskPopup({
       setPriority(taskDetails.priority);
       setLabels(taskDetails.labels);
       setColor(taskDetails.cardColor);
+      setIsPinned(taskDetails.isPinned);
     }
     onClose();
   };
@@ -144,6 +160,9 @@ function taskPopup({
   };
   const onPriorityChange = (p) => {
     setPriority(p);
+  };
+  const handelIsPinned = () => {
+    setIsPinned(!isPinned);
   };
 
   // main div outclick effect
@@ -252,6 +271,13 @@ function taskPopup({
     <div className="popup-container">
       <div className="popup" style={{ backgroundColor: color }} ref={popupRef}>
         <form onSubmit={handleSubmit}>
+          <div
+            onClick={handelIsPinned}
+            className={isPinned ? 'pinned pin' : 'pin'}
+          >
+            {/* style={{ rotate: isPinned ? '0deg' : '45deg' }} */}
+            <Pin fill={isPinned ? '#4e4e4e' : 'none'} />
+          </div>
           <div className="form-group">
             <input
               placeholder={placeholderText}
@@ -342,7 +368,6 @@ function taskPopup({
                   onClick={() => {
                     setShowColorPicker(!showColorPicker);
                     setIslabelDropDownOpen(false);
-                    console.log('clicked', showColorPicker);
                   }}
                   ref={colorPickerBtnRef}
                 >
@@ -357,7 +382,13 @@ function taskPopup({
                       <div
                         key={c}
                         className="color-swatch"
-                        style={{ backgroundColor: c }}
+                        style={{
+                          backgroundColor: c,
+                          border:
+                            c === color
+                              ? '2px solid #3b82f6'
+                              : '2px solid #d1d5db',
+                        }}
                         onClick={() => handleColorChange(c)}
                       ></div>
                     ))}

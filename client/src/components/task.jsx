@@ -5,7 +5,7 @@ import TaskCard from './ui/taskCard';
 import DeletePopup from './popups/confirmDeletePopup';
 import { TextAlignCenter } from 'lucide-react';
 import noTask from '../assets/images/message-images/noTasks.png';
-import { TokenContext } from '../App';
+import { TokenContext, MobileContext } from '../App';
 
 function Tasks({
   taskList,
@@ -19,6 +19,8 @@ function Tasks({
 }) {
   const token = useContext(TokenContext);
   const apiUrl = import.meta.env.VITE_APP_API_URL;
+  const isMobile = useContext(MobileContext);
+
   const [isdeletePopupOpen, setIsDeletePopupOpen] = useState(false);
   const [id, setId] = useState(null);
   const [title, setTitle] = useState('');
@@ -94,7 +96,7 @@ function Tasks({
       gap: '1rem',
     },
     cardMenuPosition: {
-      position: isGridClose ? 'absolute' : 'unset',
+      position: isGridClose && !isMobile ? 'absolute' : 'unset',
     },
     rotationStyle: {
       transform: 'rotate(90deg)',

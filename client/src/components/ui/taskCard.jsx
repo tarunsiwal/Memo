@@ -24,7 +24,7 @@ function TaskCard({
   handleUpdateTaskPopup,
   styles,
 }) {
-  const [hoveredCardId, setHoveredCardId] = useState(null); // Keep hover state here for better encapsulation
+  const [hoveredCardId, setHoveredCardId] = useState(null);
 
   const isMobile = useContext(MobileContext);
   const hasDueDate = task.dueDate && task.dueDate.trim().length > 0;
@@ -51,10 +51,7 @@ function TaskCard({
           className={`pin ${task.isPinned ? 'pinned' : ''}`}
           onClick={() => togglePin(task._id, task.isPinned)}
         >
-          <Pin
-            fill={task.isPinned ? '#4e4e4e' : 'none'}
-            style={{ rotate: task.isPinned ? '0deg' : '45deg' }}
-          />
+          <Pin fill={task.isPinned ? '#4e4e4e' : 'none'} />
         </div>
       )}
       <TruncatedText
@@ -100,10 +97,7 @@ function TaskCard({
           </div>
         </div>
       </div>
-      <div
-        className="menuBtnContainer flex justify-end gap-2 mt-1 text-end"
-        style={styles.cardMenuPosition}
-      >
+      <div className="menuBtnContainer" style={styles.cardMenuPosition}>
         <Dropdown>
           <Dropdown.Toggle id="task-btn" className="btn">
             <EllipsisVertical color={'#2d2d2dff'} />
@@ -112,12 +106,6 @@ function TaskCard({
             <Dropdown.Item onClick={() => handleUpdateTaskPopup(task._id)}>
               <Pencil /> Edit
             </Dropdown.Item>
-            {/* <Dropdown.Item onClick={() => handleUpdateTaskPopup(task._id)}>
-              <Tag /> Label
-            </Dropdown.Item>
-            <Dropdown.Item>
-              <Palette /> Color
-            </Dropdown.Item> */}
             <hr style={{ margin: '0' }} />
             <Dropdown.Item onClick={() => deletePopup(task._id, task.title)}>
               <Trash2 color="#ff0000ff" />

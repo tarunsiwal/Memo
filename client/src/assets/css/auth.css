@@ -179,22 +179,23 @@
     border-radius: 5rem;
 }
 
-/* --------------------------------------------------------------------- */
-/* Spinner Animation */
-/* --------------------------------------------------------------------- */
+.password-container {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
 
-/* Keyframes for the spinner animation
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
-} */
+.eye-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    padding: 0;
+}
 
-/* .animate-spin {
-    animation: spin 1s linear infinite;
-    margin-left: -0.25rem;
-    margin-right: 0.75rem;
-    height: 1.25rem;
-    width: 1.25rem;
-    color: white;
-} */
+.password-container svg {
+    color: #6c757d;
+    width: 16px;
+}

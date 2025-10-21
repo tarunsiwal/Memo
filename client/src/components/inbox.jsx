@@ -14,6 +14,8 @@ function Inbox({
   const apiUrl = import.meta.env.VITE_APP_API_URL;
   const TASK_API_BASE_URL = `${apiUrl}/tasks`;
   const token = useContext(TokenContext);
+  const isDev = import.meta.env.REACT_APP_ENV === 'development';
+
   const [tasks, setTasks] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -114,10 +116,13 @@ function Inbox({
           labels: taskData.labels,
           priority: taskData.priority,
           cardColor: taskData.color,
+          isPinned: taskData.isPinned,
         }),
       });
       if (response.ok) {
-        console.log('Task updated successfully!', taskData.color);
+        isDev === 'development'
+          ? console.log('Task updated successfully!', taskData)
+          : null;
         handleRefresh();
       } else {
         console.error('Failed to update task.');
@@ -190,7 +195,6 @@ function Inbox({
     const foundTask = tasks.find((task) => task._id === taskId);
     if (foundTask) {
       setTaskDetails(foundTask);
-      console.log(foundTask);
       setIsUpdatePopupOpen(true);
     } else {
       console.error(`Task with ID ${taskId} not found.`);
@@ -205,6 +209,7 @@ function Inbox({
     <div className="mainContainer">
       <div className="objectContainer" style={style.objectContainer}>
         <TaskPopup
+          key={taskDetails?._id || 'add-new-task'}
           trigger={isUpdatePopupOpen}
           onClose={() => setIsUpdatePopupOpen(false)}
           onUpdateTask={onUpdateTask}

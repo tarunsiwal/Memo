@@ -19,6 +19,7 @@ import {
   LayoutGrid,
   LogOut,
   StickyNote,
+  Clock,
 } from 'lucide-react';
 
 function Sidebar({
@@ -34,6 +35,7 @@ function Sidebar({
   const apiUrl = import.meta.env.VITE_APP_API_URL;
   const isMobile = useContext(MobileContext);
   const token = useContext(TokenContext);
+  const isDev = import.meta.env.REACT_APP_ENV === 'development';
 
   const [isAddTaskPopupOpen, setIsAddTaskPopupOpen] = useState(false);
 
@@ -52,10 +54,13 @@ function Sidebar({
           labels: taskData.labels,
           priority: taskData.priority,
           cardColor: taskData.color,
+          isPinned: taskData.isPinned,
         }),
       });
       if (response.ok) {
-        console.log('Task added successfully!');
+        isDev === 'development'
+          ? console.log('Task added successfully!')
+          : null;
         refreshTrigger();
       } else {
         throw new Error('Failed to add task :(');

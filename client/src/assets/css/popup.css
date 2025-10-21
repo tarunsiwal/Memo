@@ -12,6 +12,7 @@
 }
 
 .popup {
+    position: relative;
     background-color: #fff;
     padding: 1rem;
     border-radius: 10px;
@@ -133,6 +134,37 @@
 
 .task-properties .task-property-icon {
     width: 16px;
+    color: #4e4e4e;
+}
+
+.popup .pin {
+    width: 24px;
+    height: 24px;
+    border-radius: 3rem;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    rotate: 45deg;
+}
+
+.popup .pin:hover {
+    background: #a7a7a744;
+    rotate: 0deg;
+}
+
+
+.popup .pin.pinned {
+    rotate: 0deg;
+}
+
+.popup .pin svg {
+    width: 16px;
+    height: 16px;
     color: #4e4e4e;
 }
 
