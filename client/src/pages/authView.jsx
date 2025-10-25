@@ -83,7 +83,7 @@ const AuthView = ({ onAuthAction, authError, setAuthError }) => {
               placeholder="you@example.com"
             />
           </div>
-          <div className="password-container">
+          <div>
             <label htmlFor="password" className="form-label">
               Password
             </label>

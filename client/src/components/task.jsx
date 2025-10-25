@@ -3,9 +3,10 @@ import { useState, useEffect, useRef, useContext } from 'react';
 import Spinner from './helper/spinner';
 import TaskCard from './ui/taskCard';
 import DeletePopup from './popups/confirmDeletePopup';
-import { TextAlignCenter } from 'lucide-react';
+import { TextAlignCenter, User } from 'lucide-react';
 import noTask from '../assets/images/message-images/noTasks.png';
-import { TokenContext, MobileContext } from '../App';
+import relax from '../assets/images/message-images/relax.png';
+import { TokenContext, MobileContext, UserContext } from '../App';
 
 function Tasks({
   taskList,
@@ -17,6 +18,7 @@ function Tasks({
   page,
   onPinTask,
 }) {
+  const userName = useContext(UserContext);
   const token = useContext(TokenContext);
   const apiUrl = import.meta.env.VITE_APP_API_URL;
   const isMobile = useContext(MobileContext);
@@ -71,16 +73,18 @@ function Tasks({
     if (page === 'Today')
       return (
         <div className="main-message-container">
-          <img src={noTask} alt="No task" style={{ width: '' }} />
-          <p>No task for today</p>
+          <img src={relax} alt="No task" style={{ width: '' }} />
+          <p>
+            Zero tasks on the agenda for today! {userName}
+            <br></br>
+            <span>Time to relax, or add a quick win!</span>
+          </p>
         </div>
       );
     return (
       <div className="main-message-container">
         <img src={noTask} alt="No task" style={{ width: '' }} />
-        <p>
-          No task available. Please <span>add task</span>
-        </p>
+        <p>No task available.</p>
       </div>
     );
   }
@@ -89,11 +93,17 @@ function Tasks({
 
   const styles = {
     taskContainer: {
+      // display: isGridClose ? 'block' : undefined,
+      // columnCount: isGridClose ? '1' : isMobile ? '2' : '3',
+      // columnGap: isMobile ? '0.6rem' : '1rem',
       display: isGridClose ? 'block' : 'grid',
+
       justifyContent: 'center',
       justifyItems: 'start',
-      gridTemplateColumns: `repeat(auto-fit, minmax(240px, 240px))`,
-      gap: '1rem',
+      gridTemplateColumns: isMobile
+        ? 'repeat(auto-fit, minmax(160px, 160px))'
+        : 'repeat(auto-fit, minmax(240px, 240px))',
+      gap: isMobile ? '0.6rem' : '1rem',
     },
     cardMenuPosition: {
       position: isGridClose && !isMobile ? 'absolute' : 'unset',

@@ -54,10 +54,11 @@
     padding-left: 0.8em;
     color: #202020;
     font-size: 14px;
+    font-weight: 400;
 }
 
 .sideBarMenu ul li:hover {
-    background-color: rgba(128, 128, 128, 0.153);
+    background-color: #f0f0f0;
     transition: 0.25s all;
 }
 
@@ -102,28 +103,28 @@
 }
 
 .sideBarMenu ul li.active {
-    background-color: rgba(128, 128, 128, 0.153);
+    background-color: rgb(255 154 0 / 19%);
 }
 
-.sideBarMenu ul li:hover .sidebarImage {
+/* .sideBarMenu ul li:hover .sidebarImage {
     color: #404040
-}
+} */
 
 .sideBarMenu ul li.active .sidebarImage {
-    color: #404040
+    color: #ff9a00
 }
 
 /* dynamicCalendarIcon color chagne on hovers */
-.sideBarMenu ul li:hover .dynamicCalendarIcon span {
+/* .sideBarMenu ul li:hover .dynamicCalendarIcon span {
     color: #404040
-}
+} */
 
 .sideBarMenu ul li.active .dynamicCalendarIcon span {
-    color: #404040
+    color: #ff9a00
 }
 
-.sideBarMenu ul li.addTask {
-    background-color: rgb(255 154 0 / 19%);
+.sideBarMenu ul li.addTask span {
+    font-weight: 600;
 }
 
 .sideBarMenu .addTask .sidebarImage {

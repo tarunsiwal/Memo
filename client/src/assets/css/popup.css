@@ -19,6 +19,7 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     width: 90%;
     max-width: 550px;
+    transition: all 0.2s ease-in-out;
 }
 
 .popup hr {
@@ -167,6 +168,45 @@
     height: 16px;
     color: #4e4e4e;
 }
+
+.popup .task-date-container {
+    width: fit-content;
+    padding: 0 4px;
+    border-radius: 5px;
+    display: flex;
+    border: 1px solid transparent;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+    cursor: pointer;
+    position: relative;
+}
+
+.popup .task-date-container:hover {
+    box-shadow: inset 0 0 0 1px rgba(154, 160, 166, 0.54);
+}
+
+.task-date-container:hover .cross {
+    display: flex;
+}
+
+.task-date-container .cross {
+    display: none;
+    margin-left: 4px;
+    color: #4e4e4e;
+    width: 16px;
+    height: 16px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    padding: 0;
+    background-color: transparent;
+}
+
+.task-date-container .cross:hover {
+    background-color: rgba(141, 141, 141, 0.2);
+}
+
 
 @media (max-width: 640px) {
     .popup-btn {

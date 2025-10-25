@@ -7,32 +7,36 @@ import React, {
 } from 'react';
 import { Calendar, X, ChevronRight, ChevronLeft } from 'lucide-react';
 import '../../assets/css/datePicker.css';
-import { createPopper } from '@popperjs/core';
+import PopperDropdown from '../helper/popperDropdown';
 
-function DatePicker({ setDueDate }) {
+function DatePicker({ setDueDate, dueDate }) {
   const [isOpen, setIsOpen] = useState(false);
   const [currentViewDate, setCurrentViewDate] = useState(new Date());
+  let selectedDateObj = new Date(dueDate);
 
-  const pickerRef = useRef(null);
+  // Use getDate() for the day (1-31)
+  let dueDateDay = selectedDateObj.getDate();
 
-  useEffect(() => {
-    if (!isOpen) return;
+  // Use getMonth() for the month (0-11)
+  let dueDateMonth = selectedDateObj.getMonth();
 
-    const timer = setTimeout(() => {
-      const handleClickOutside = (event) => {
-        if (pickerRef.current && !pickerRef.current.contains(event.target)) {
-          setIsOpen(false);
-        }
-      };
-      document.addEventListener('pointerdown', handleClickOutside);
+  // Get the year for complete comparison
+  let dueDateYear = selectedDateObj.getFullYear();
 
-      return () => {
-        document.removeEventListener('pointerdown', handleClickOutside);
-      };
-    }, 0);
+  // Helper to check if a day cell matches the selected due date
+  const isSelectedDate = useCallback(
+    (day) => {
+      if (!day.isCurrentMonth || !day.fullDate) return false;
 
-    return () => clearTimeout(timer);
-  }, [isOpen]);
+      // Check day, month, AND year for accurate selection
+      return (
+        day.fullDate.getDate() === dueDateDay &&
+        day.fullDate.getMonth() === dueDateMonth &&
+        day.fullDate.getFullYear() === dueDateYear
+      );
+    },
+    [dueDateDay, dueDateMonth, dueDateYear],
+  );
 
   const generateCalendar = useCallback(() => {
     const year = currentViewDate.getFullYear();
@@ -92,91 +96,85 @@ function DatePicker({ setDueDate }) {
 
   const calendarBtnRef = useRef(null);
   const calendarDropdownRef = useRef(null);
-
-  useEffect(() => {
-    let calendarPopperInstance = null;
-    if (isOpen && calendarBtnRef.current && calendarDropdownRef.current) {
-      calendarPopperInstance = createPopper(
-        calendarBtnRef.current,
-        calendarDropdownRef.current,
-        {
-          placement: 'bottom-start',
-          modifiers: [
-            {
-              name: 'flip',
-              options: { fallbackPlacements: ['top-start', 'right-start'] },
-            },
-            {
-              name: 'preventOverflow',
-              options: { padding: 8 },
-            },
-          ],
-        },
-      );
-    }
-    return () => {
-      calendarPopperInstance?.destroy();
-    };
-  }, [isOpen]);
+  const pickerRef = useRef(null);
 
   return (
-    <div ref={pickerRef} className="date-picker">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        id="task-btn"
-        type="button"
-        ref={calendarBtnRef}
-      >
-        <Calendar className="task-property-icon" />
-      </button>
-      {isOpen && (
-        <div
-          className="calendar-dropdown"
-          onClick={(e) => e.stopPropagation()}
-          ref={calendarDropdownRef}
-        >
-          <div className="calendar-header">
-            <button
-              onClick={goToPrevMonth}
-              className="calendar-navigation-btn"
-              type="button"
+    <PopperDropdown
+      containerRef={pickerRef}
+      btnRef={calendarBtnRef}
+      dropdownRef={calendarDropdownRef}
+      isOpen={isOpen}
+      setIsOpen={setIsOpen}
+      content={
+        <div ref={pickerRef} className="date-picker">
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            id="task-btn"
+            type="button"
+            ref={calendarBtnRef}
+          >
+            <Calendar className="task-property-icon" />
+          </button>
+          {isOpen && (
+            <div
+              className="calendar-dropdown"
+              onClick={(e) => e.stopPropagation()}
+              ref={calendarDropdownRef}
             >
-              <ChevronLeft size={16} />
-            </button>
-            <span>
-              {currentViewDate.toLocaleString('default', { month: 'long' })}{' '}
-              {currentViewDate.getFullYear()}
-            </span>
-            <button
-              onClick={goToNextMonth}
-              className="calendar-navigation-btn"
-              type="button"
-            >
-              <ChevronRight size={16} />
-            </button>
-          </div>
+              <div className="calendar-header">
+                <button
+                  onClick={goToPrevMonth}
+                  className="calendar-navigation-btn"
+                  type="button"
+                >
+                  <ChevronLeft size={16} />
+                </button>
+                <span>
+                  {currentViewDate.toLocaleString('default', { month: 'long' })}{' '}
+                  {currentViewDate.getFullYear()}
+                </span>
+                <button
+                  onClick={goToNextMonth}
+                  className="calendar-navigation-btn"
+                  type="button"
+                >
+                  <ChevronRight size={16} />
+                </button>
+              </div>
 
-          <div className="calendar-grid">
-            {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
-              <div key={day} className="day-header">
-                {day}
+              <div className="calendar-grid">
+                {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(
+                  (day) => (
+                    <div key={day} className="day-header">
+                      {day}
+                    </div>
+                  ),
+                )}
+
+                {calendarDays.map((day, idx) => {
+                  const isSelected = isSelectedDate(day);
+                  const isToday =
+                    day.isCurrentMonth &&
+                    day.fullDate.toDateString() === new Date().toDateString();
+
+                  return (
+                    <div
+                      key={idx}
+                      className={`day-cell 
+                    ${isSelected ? 'selected' : isToday ? ' ' : ' '} 
+                    ${day.isCurrentMonth ? '' : 'inactive'}`}
+                      onClick={() => handleDateClick(day)}
+                    >
+                      {day.date}
+                    </div>
+                  );
+                })}
               </div>
-            ))}
-            {calendarDays.map((day, idx) => (
-              <div
-                key={idx}
-                className={`day-cell ${day.isSelected ? 'selected' : ''} ${
-                  !day.isCurrentMonth ? 'inactive' : ''
-                }`}
-                onClick={() => handleDateClick(day)}
-              >
-                {day.date}
-              </div>
-            ))}
-          </div>
+            </div>
+          )}
         </div>
-      )}
-    </div>
+      }
+    />
   );
 }
 

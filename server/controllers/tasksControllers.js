@@ -87,20 +87,110 @@ export const getUpcomingTasks = asyncHandler(async (req, res) => {
   res.status(200).json({ tasks });
 });
 
-// @desc    Search tasks by title or description
-// @route   GET /api/tasks/search?query=...
-// @access  Private
-export const searchTasks = asyncHandler(async (req, res) => {
-  const { query } = req.query;
+// // @desc    Search tasks by title or description
+// // @route   GET /api/tasks/search?query=...
+// // @access  Private
+// export const searchTasks = asyncHandler(async (req, res) => {
+//   const { query } = req.query;
 
-  const tasks = await Task.find({
-    $or: [
-      { title: { $regex: query, $options: "i" } },
-      { description: { $regex: query, $options: "i" } },
-    ],
+//   const tasks = await Task.find({
+//     $or: [
+//       { title: { $regex: query, $options: "i" } },
+//       { description: { $regex: query, $options: "i" } },
+//     ],
+//     user: req.user.id,
+//   });
+//   res.status(200).json({ tasks });
+// });
+
+// // @desc    Search tasks by title or description
+// // @route   GET /api/tasks/search?query=...
+// // @access  Private
+// export const filterTasks = asyncHandler(async (req, res) => {
+//   const { color, priority, labels } = req.query;
+//   const filterConditions = {
+//     user: req.user.id,
+//   };
+//   if (color) {
+//     filterConditions.cardColor = color;
+//   }
+//   if (priority) {
+//     const priorityNumber = parseInt(priority, 10);
+//     if (!isNaN(priorityNumber)) {
+//       filterConditions.priority = priorityNumber;
+//     }
+//   }
+//   if (labels) {
+//     const labelArray = labels
+//       .split(",")
+//       .map((label) => label.trim())
+//       .filter((label) => label.length > 0);
+
+//     if (labelArray.length > 0) {
+//       filterConditions.labels = { $in: labelArray };
+//     }
+//   }
+
+//   const tasks = await Task.find(filterConditions);
+
+//   res.status(200).json({
+//     tasks,
+//     appliedFilters: { color, priority, labels: labelArray || [] },
+//   });
+// });
+
+/**
+ * @desc    Fetch and filter tasks based on page context (e.g., /today), text query,
+ * and structured filters (color, priority, labels).
+ * @route   GET /api/tasks?query=...&color=...&priority=...&labels=...
+ * @access  Private
+ */
+export const getTasksWithFilters = asyncHandler(async (req, res) => {
+  const { query, color, priority, labels } = req.query;
+  const filterConditions = {
     user: req.user.id,
+  };
+  if (color) {
+    filterConditions.cardColor = color;
+  }
+
+  if (priority) {
+    const priorityNumber = parseInt(priority, 10);
+    if (!isNaN(priorityNumber)) {
+      filterConditions.priority = priorityNumber;
+    }
+  }
+  let labelArray = [];
+  if (labels) {
+    labelArray = labels
+      .split(",")
+      .map((label) => label.trim())
+      .filter((label) => label.length > 0);
+
+    if (labelArray.length > 0) {
+      filterConditions.labels = { $in: labelArray };
+    }
+  }
+
+  // --- 2. Text Search (OR logic) ---
+  if (query) {
+    const textSearchConditions = {
+      $or: [
+        { title: { $regex: query, $options: "i" } },
+        { description: { $regex: query, $options: "i" } },
+      ],
+    };
+    const combinedFilter = {
+      $and: [filterConditions, textSearchConditions],
+    };
+    const tasks = await Task.find(combinedFilter);
+    return res.status(200).json({ tasks });
+  }
+  const tasks = await Task.find(filterConditions);
+
+  res.status(200).json({
+    tasks,
   });
-  res.status(200).json({ tasks });
 });
 
 // @desc    Update a task by ID

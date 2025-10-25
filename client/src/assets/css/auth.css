@@ -185,6 +185,7 @@
     width: 100%;
 }
 
+
 .eye-icon {
     position: absolute;
     right: 10px;
@@ -196,6 +197,6 @@
 }
 
 .password-container svg {
-    color: #6c757d;
+    color: #d1d5db;
     width: 16px;
 }

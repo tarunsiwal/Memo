@@ -1,14 +1,14 @@
-import { Calendar } from "lucide-react"
+import { Calendar } from 'lucide-react';
 
 const date = new Date().getDate();
-const currentDay = date.toString().padStart(2, "0");
+const currentDay = date.toString().padStart(2, '0');
 
 const DynamicCalendarIcon = () => {
   return (
-  <div className="dynamicCalendarIcon">
-    <Calendar className="sidebarImage" strokeWidth="1.8"/>
-    <span>{currentDay}</span>
-  </div>
+    <div className="dynamicCalendarIcon">
+      <Calendar className="sidebarImage" strokeWidth="1.6" />
+      <span>{currentDay}</span>
+    </div>
   );
 };
 

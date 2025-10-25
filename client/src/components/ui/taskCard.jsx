@@ -1,7 +1,4 @@
-// src/components/TaskCard.jsx
-import React from 'react';
-import { Container } from 'react-bootstrap';
-import Dropdown from 'react-bootstrap/Dropdown';
+import React, { useRef } from 'react';
 import { useState, useContext } from 'react';
 import TruncatedText from '../helper/truncatedText';
 import { MobileContext } from '../../App';
@@ -16,6 +13,7 @@ import {
   CalendarFold,
   Flag,
 } from 'lucide-react';
+import PopperDropdown from '../helper/popperDropdown';
 
 function TaskCard({
   task,
@@ -24,7 +22,12 @@ function TaskCard({
   handleUpdateTaskPopup,
   styles,
 }) {
+  const taskDropdownContainerRef = useRef(null);
+  const taskMenuBtnRef = useRef(null);
+  const taskDropdownRef = useRef(null);
+
   const [hoveredCardId, setHoveredCardId] = useState(null);
+  const [isTaskUtilMenuOpen, setisTaskUtilMenuOpen] = useState(false);
 
   const isMobile = useContext(MobileContext);
   const hasDueDate = task.dueDate && task.dueDate.trim().length > 0;
@@ -38,10 +41,14 @@ function TaskCard({
   else if (task.priority === 2) flag = '#ffec2e' && (fill = '#ffec2e');
   else if (task.priority === 1) flag = 'red' && (fill = 'red');
 
+  const handleUtilMenuToggle = () => {
+    setisTaskUtilMenuOpen(!isTaskUtilMenuOpen);
+  };
+
   return (
-    <Container
+    <div
       key={task._id}
-      className="task-card rounded-lg shadow-md p-4 space-y-2"
+      className="task-card container "
       style={{ ...styles.taskCard, backgroundColor: task.cardColor }}
       onMouseEnter={() => setHoveredCardId(task._id)}
       onMouseLeave={() => setHoveredCardId(null)}
@@ -55,13 +62,13 @@ function TaskCard({
         </div>
       )}
       <TruncatedText
-        className={'title text-xl font-bold text-gray-800'}
+        className={'title'}
         text={task.title}
         wordLimit={25}
         type={'p'}
       />
       <TruncatedText
-        className={'description text-sm  italic mb-0'}
+        className={'description'}
         text={task.description}
         wordLimit={100}
         type={'span'}
@@ -97,24 +104,42 @@ function TaskCard({
           </div>
         </div>
       </div>
-      <div className="menuBtnContainer" style={styles.cardMenuPosition}>
-        <Dropdown>
-          <Dropdown.Toggle id="task-btn" className="btn">
-            <EllipsisVertical color={'#2d2d2dff'} />
-          </Dropdown.Toggle>
-          <Dropdown.Menu>
-            <Dropdown.Item onClick={() => handleUpdateTaskPopup(task._id)}>
-              <Pencil /> Edit
-            </Dropdown.Item>
-            <hr style={{ margin: '0' }} />
-            <Dropdown.Item onClick={() => deletePopup(task._id, task.title)}>
-              <Trash2 color="#ff0000ff" />
-              <span style={{ color: '#ff0000ff' }}> Delete</span>
-            </Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
-      </div>
-    </Container>
+      <PopperDropdown
+        containerRef={taskDropdownContainerRef}
+        btnRef={taskMenuBtnRef}
+        dropdownRef={taskDropdownRef}
+        isOpen={isTaskUtilMenuOpen}
+        setIsOpen={setisTaskUtilMenuOpen}
+        content={
+          <div
+            className="menuBtnContainer"
+            style={styles.cardMenuPosition}
+            ref={taskDropdownContainerRef}
+          >
+            <button
+              onClick={handleUtilMenuToggle}
+              id="task-btn"
+              className="btn"
+              ref={taskMenuBtnRef}
+            >
+              <EllipsisVertical color={'#2d2d2dff'} />
+            </button>
+            {isTaskUtilMenuOpen ? (
+              <ul className="task-dropdown-menu" ref={taskDropdownRef}>
+                <li onClick={() => handleUpdateTaskPopup(task._id)}>
+                  <Pencil /> Edit
+                </li>
+                <hr style={{ margin: '0' }} />
+                <li onClick={() => deletePopup(task._id, task.title)}>
+                  <Trash2 color="#ff0000ff" />
+                  <span style={{ color: '#ff0000ff' }}> Delete</span>
+                </li>
+              </ul>
+            ) : null}
+          </div>
+        }
+      />
+    </div>
   );
 }
 

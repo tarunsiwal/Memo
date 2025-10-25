@@ -1,11 +1,10 @@
 import { useState, useEffect, useRef, useContext } from 'react';
-import { createPopper } from '@popperjs/core';
 import DatePicker from '../ui/datePicker';
-// import 'https://cdn.jsdelivr.net/npm/flatpickr';
 import PriorityDropdown from '../ui/priorityDropDown';
 import LabelDropDown from '../ui/labelDropDown';
 import '../../assets/css/colorPicker.css';
 import '../../assets/css/popup.css';
+import PopperDropdown from '../helper/popperDropdown';
 
 import { Tag, X, Palette, CalendarFold, Pin } from 'lucide-react';
 
@@ -40,7 +39,13 @@ function taskPopup({
 
   const [title, setTitle] = useState(initialTask.title || '');
   const [description, setDescription] = useState(initialTask.description || '');
-  const [dueDate, setDueDate] = useState(initialTask.dueDate || '');
+  const [dueDate, setDueDate] = useState(
+    initialTask.dueDate &&
+      initialTask.dueDate.trim() &&
+      initialTask.dueDate.length > 0
+      ? new Date(initialTask.dueDate)
+      : '',
+  );
   const [priority, setPriority] = useState(initialTask.priority || 4);
   const [labels, setLabels] = useState(initialTask.labels || []);
   const [color, setColor] = useState(initialTask.cardColor || '#ffffff');
@@ -49,7 +54,7 @@ function taskPopup({
 
   // toggle state
   const [islabelDropDownOpen, setIslabelDropDownOpen] = useState(false);
-  const [showColorPicker, setShowColorPicker] = useState(false);
+  const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
 
   // all reference
   const popupRef = useRef(null);
@@ -67,11 +72,26 @@ function taskPopup({
       setId(taskDetails._id);
       setTitle(taskDetails.title);
       setDescription(taskDetails.description);
-      setDueDate(new Date(taskDetails.dueDate));
+      setDueDate(
+        taskDetails.dueDate && taskDetails.dueDate.trim()
+          ? new Date(taskDetails.dueDate)
+          : '',
+      );
       setPriority(taskDetails.priority);
       setLabels(taskDetails.labels);
       setColor(taskDetails.cardColor);
       setIsPinned(taskDetails.isPinned);
+      isDev === 'development'
+        ? console.log('Task submitted:', {
+            title,
+            description,
+            dueDate,
+            labels,
+            priority,
+            color,
+            isPinned,
+          })
+        : null;
     }
   }, [taskDetails]);
 
@@ -107,7 +127,7 @@ function taskPopup({
           isPinned,
         });
       }
-      isDev
+      isDev === 'development'
         ? console.log('Task submitted:', {
             title,
             description,
@@ -134,7 +154,11 @@ function taskPopup({
       setId(taskDetails._id);
       setTitle(taskDetails.title);
       setDescription(taskDetails.description);
-      setDueDate(new Date(taskDetails.dueDate));
+      setDueDate(
+        taskDetails.dueDate && taskDetails.dueDate.trim()
+          ? new Date(taskDetails.dueDate)
+          : '',
+      );
       setPriority(taskDetails.priority);
       setLabels(taskDetails.labels);
       setColor(taskDetails.cardColor);
@@ -142,9 +166,11 @@ function taskPopup({
     }
     onClose();
   };
+  const handleRemoveDueDate = () => {
+    setDueDate(''); // Clear the due date
+  };
   const handleLabel = () => {
     setIslabelDropDownOpen(!islabelDropDownOpen);
-    // setShowColorPicker(false);
   };
   const handleRemoveLabel = (index) => {
     const inputLabels = labels.filter((_, i) => i !== index);
@@ -152,127 +178,34 @@ function taskPopup({
   };
   const handleColorChange = (newColor) => {
     setColor(newColor);
-    // setShowColorPicker(true);
     setIslabelDropDownOpen(false);
-    isDev
-      ? console.log('Toggled Color Picker. New state:', !showColorPicker)
-      : null;
   };
   const onPriorityChange = (p) => {
     setPriority(p);
   };
-  const handelIsPinned = () => {
+  const handleIsPinned = () => {
     setIsPinned(!isPinned);
   };
-
-  // main div outclick effect
-  useEffect(() => {
-    let colorPopperInstance = null;
-    if (
-      showColorPicker &&
-      colorPickerBtnRef.current &&
-      colorPickerDropdownRef.current
-    ) {
-      colorPopperInstance = createPopper(
-        colorPickerBtnRef.current,
-        colorPickerDropdownRef.current,
-        {
-          placement: 'bottom-start',
-          modifiers: [
-            {
-              name: 'flip',
-              options: { fallbackPlacements: ['top-start', 'right-start'] },
-            },
-            { name: 'preventOverflow', options: { padding: 8 } },
-          ],
-        },
-      );
-    }
-    return () => {
-      colorPopperInstance?.destroy();
-    };
-  }, [showColorPicker]);
-
-  useEffect(() => {
-    let labelPopperInstance = null;
-    if (
-      islabelDropDownOpen &&
-      labelPickerBtnRef.current &&
-      labelPickerDropdownRef.current
-    ) {
-      labelPopperInstance = createPopper(
-        labelPickerBtnRef.current,
-        labelPickerDropdownRef.current,
-        {
-          placement: 'bottom-start',
-          modifiers: [
-            {
-              name: 'flip',
-              options: { fallbackPlacements: ['top-start', 'right-start'] },
-            },
-            { name: 'preventOverflow', options: { padding: 8 } },
-          ],
-        },
-      );
-    }
-    return () => {
-      labelPopperInstance?.destroy();
-    };
-  }, [islabelDropDownOpen]);
-
-  useEffect(() => {
-    if (!colorPickerRef) return;
-    const colorPickerTimer = setTimeout(() => {
-      const handleClickOutside = (event) => {
-        if (
-          colorPickerRef.current &&
-          !colorPickerRef.current.contains(event.target)
-        ) {
-          setShowColorPicker(false);
-        }
-      };
-      document.addEventListener('pointerdown', handleClickOutside);
-
-      return () => {
-        document.removeEventListener('pointerdown', handleClickOutside);
-      };
-    }, 0);
-    return () => clearTimeout(colorPickerTimer);
-  }, [colorPickerRef]);
-
-  useEffect(() => {
-    if (!labelDropDownRef) return;
-    const labelDropdownTimer = setTimeout(() => {
-      const handleClickOutside = (event) => {
-        if (
-          labelDropDownRef.current &&
-          !labelDropDownRef.current.contains(event.target)
-        ) {
-          setIslabelDropDownOpen(false);
-        }
-      };
-      document.addEventListener('pointerdown', handleClickOutside);
-      return () => {
-        document.removeEventListener('pointerdown', handleClickOutside);
-      };
-    }, 0);
-    return () => clearTimeout(labelDropdownTimer);
-  }, [labelDropDownRef]);
 
   const COLOR_PALETTE = [
     '#fdfbd5',
     '#f9a6a6',
+    '#ffb885ff',
     '#b1cbf2',
     '#c2ebbc',
+    '#19cbf1',
+    '#ff8bf8',
+    '#d7ff87',
     '#f3f3f3',
     '#ffffff',
   ];
+
   return trigger ? (
     <div className="popup-container">
       <div className="popup" style={{ backgroundColor: color }} ref={popupRef}>
         <form onSubmit={handleSubmit}>
           <div
-            onClick={handelIsPinned}
+            onClick={handleIsPinned}
             className={isPinned ? 'pinned pin' : 'pin'}
           >
             {/* style={{ rotate: isPinned ? '0deg' : '45deg' }} */}
@@ -303,7 +236,7 @@ function taskPopup({
               required
             />
           </div>
-          {dueDate && (
+          {dueDate !== '' ? (
             <div
               className="due-date-container"
               style={{
@@ -315,9 +248,24 @@ function taskPopup({
                     : '#4e4e4e',
               }}
             >
-              <CalendarFold width={'1em'} height={'1em'} />
-              <span> {new Date(dueDate).toLocaleDateString()} </span>
+              <div className="task-date-container">
+                <CalendarFold width={'1em'} height={'1em'} />
+                <span>
+                  {dueDate instanceof Date
+                    ? dueDate.toLocaleDateString()
+                    : 'Invalid Date'}
+                </span>
+                <button
+                  className="cross"
+                  type="button"
+                  onClick={handleRemoveDueDate}
+                >
+                  <X />
+                </button>
+              </div>
             </div>
+          ) : (
+            ''
           )}
           <div className="label-tag-container">
             {labels.map((label, index) => (
@@ -336,65 +284,83 @@ function taskPopup({
           <hr />
           <div className="popup-btn">
             <div className="task-properties">
-              <DatePicker setDueDate={setDueDate} />
+              <DatePicker setDueDate={setDueDate} dueDate={dueDate} />
               <PriorityDropdown
                 onPriorityChange={onPriorityChange}
                 priority={priority}
               />
-              <div ref={labelDropDownRef}>
-                <button
-                  className="btn"
-                  id="task-btn"
-                  type="button"
-                  onClick={handleLabel}
-                  ref={labelPickerBtnRef}
-                >
-                  <Tag className="task-property-icon" />
-                </button>
-                {islabelDropDownOpen ? (
-                  <LabelDropDown
-                    handleLabel={handleLabel}
-                    labels={labels}
-                    setLabels={setLabels}
-                    ref={labelPickerDropdownRef}
-                  />
-                ) : null}
-              </div>
-              <div ref={colorPickerRef}>
-                <button
-                  className="btn"
-                  id="task-btn"
-                  type="button"
-                  onClick={() => {
-                    setShowColorPicker(!showColorPicker);
-                    setIslabelDropDownOpen(false);
-                  }}
-                  ref={colorPickerBtnRef}
-                >
-                  <Palette className="task-property-icon" />
-                </button>
-                {showColorPicker && (
-                  <div
-                    className="color-picker-container"
-                    ref={colorPickerDropdownRef}
-                  >
-                    {COLOR_PALETTE.map((c) => (
-                      <div
-                        key={c}
-                        className="color-swatch"
-                        style={{
-                          backgroundColor: c,
-                          border:
-                            c === color
-                              ? '2px solid #3b82f6'
-                              : '2px solid #d1d5db',
-                        }}
-                        onClick={() => handleColorChange(c)}
-                      ></div>
-                    ))}
+              <PopperDropdown
+                containerRef={labelDropDownRef}
+                btnRef={labelPickerBtnRef}
+                dropdownRef={labelPickerDropdownRef}
+                isOpen={islabelDropDownOpen}
+                setIsOpen={setIslabelDropDownOpen}
+                content={
+                  <div ref={labelDropDownRef}>
+                    <button
+                      className="btn"
+                      id="task-btn"
+                      type="button"
+                      onClick={handleLabel}
+                      ref={labelPickerBtnRef}
+                    >
+                      <Tag className="task-property-icon" />
+                    </button>
+                    {islabelDropDownOpen ? (
+                      <LabelDropDown
+                        handleLabel={handleLabel}
+                        labels={labels}
+                        setLabels={setLabels}
+                        ref={labelPickerDropdownRef}
+                      />
+                    ) : null}
                   </div>
-                )}
-              </div>
+                }
+              />
+              <PopperDropdown
+                containerRef={colorPickerRef}
+                btnRef={colorPickerBtnRef}
+                dropdownRef={colorPickerDropdownRef}
+                isOpen={isColorPickerOpen}
+                setIsOpen={setIsColorPickerOpen}
+                content={
+                  <div ref={colorPickerRef}>
+                    <button
+                      className="btn"
+                      id="task-btn"
+                      type="button"
+                      onClick={() => {
+                        setIsColorPickerOpen(!isColorPickerOpen);
+                        setIslabelDropDownOpen(false);
+                      }}
+                      ref={colorPickerBtnRef}
+                    >
+                      <Palette className="task-property-icon" />
+                    </button>
+                    {isColorPickerOpen && (
+                      <div
+                        className="color-picker-container"
+                        ref={colorPickerDropdownRef}
+                      >
+                        {COLOR_PALETTE.map((c) => (
+                          <div
+                            key={c}
+                            className="color-swatch"
+                            style={{
+                              backgroundColor: c,
+                              border:
+                                c === color
+                                  ? '2px solid #3b82f6'
+                                  : '2px solid #d1d5db',
+                            }}
+                            onClick={() => handleColorChange(c)}
+                          ></div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                }
+              />
             </div>
             <div className="submit-btn">
               <button className="btn submit" type="submit">

@@ -1,11 +1,10 @@
 import React from 'react';
-import '../../assets/css/popup.css';
-import TruncatedText from '../helper/truncatedText';
 
-function ConfirmDeletePopup({ trigger, title, onClose, deleteTask }) {
+function LogoutPopup({ trigger, handleLogout, onClose }) {
   const handleSubmit = (e) => {
     e.preventDefault();
-    deleteTask();
+    handleLogout();
+    onClose();
   };
   const handleClose = () => {
     onClose();
@@ -14,23 +13,12 @@ function ConfirmDeletePopup({ trigger, title, onClose, deleteTask }) {
     <div className="popup-container">
       <div className="popup" style={{ width: '45%' }}>
         <form onSubmit={handleSubmit}>
-          <h1 className="deleteTaskHeading">Delete task?</h1>
-          <p className="descriptiotn">
-            Do you want to delete{' '}
-            {
-              <TruncatedText
-                className={'fw-bold'}
-                text={title}
-                wordLimit={12}
-                type={'span'}
-              />
-            }{' '}
-            task?
-          </p>
+          <h1 className="deleteTaskHeading">Logout</h1>
+          <p className="descriptiotn">Do you want to logout?</p>
           <div className="popup-btn" style={{ float: 'right', margin: '0' }}>
             <div className="submit-btn">
               <button className="btn submit" type="submit">
-                Delete
+                Logout
               </button>
               <button
                 className="btn cancel"
@@ -47,4 +35,4 @@ function ConfirmDeletePopup({ trigger, title, onClose, deleteTask }) {
   ) : null;
 }
 
-export default ConfirmDeletePopup;
+export default LogoutPopup;

@@ -1,4 +1,4 @@
-import { useState, useEffect, createContext } from 'react';
+import { useState, useEffect, createContext, useCallback } from 'react';
 
 import AuthView from './pages/authView';
 import Sidebar from './components/sidebar';
@@ -16,6 +16,7 @@ const TOKEN_STORAGE_KEY = 'user_jwt_token';
 
 export const MobileContext = createContext(false);
 export const TokenContext = createContext(null);
+export const UserContext = createContext(null);
 
 const useResponsiveLayout = (breakpoint = 640) => {
   const [isMobile, setIsMobile] = useState(false);
@@ -125,10 +126,10 @@ function App() {
     }
   };
 
-  const handleLogout = () => {
+  const handleLogout = useCallback(() => {
     localStorage.removeItem(TOKEN_STORAGE_KEY);
     setToken(null);
-  };
+  });
 
   // --- 2. Application UI/Layout State ---
   const isMobile = useResponsiveLayout();
@@ -144,15 +145,15 @@ function App() {
   const handleRefresh = () => {
     setRefreshTrigger((prev) => !prev);
   };
-  const handleCloseSidebar = () => {
+  const handleCloseSidebar = useCallback(() => {
     setIsSidebarOpen(!isSidebarOpen);
-  };
-  const handleNavigation = (pageName) => {
+  });
+  const handleNavigation = useCallback((pageName) => {
     setCurrentPage(pageName);
     if (isMobile) {
       setIsSidebarOpen(false);
     }
-  };
+  });
 
   // --- 3. Conditional Render Logic ---
   if (isCheckingAuth) {
@@ -179,6 +180,7 @@ function App() {
       case 'Inbox':
       case 'Today':
       case 'Upcoming':
+      case 'FilterLabels':
         return (
           <Inbox
             isGridClose={isGridClose}
@@ -188,8 +190,8 @@ function App() {
             searchQuery={searchQuery}
           />
         );
-      case 'FilterLabels':
-        return <FilterLabels />;
+      // case 'FilterLabels':
+      //   return <FilterLabels />;
       default:
         return (
           <Inbox
@@ -204,37 +206,39 @@ function App() {
   };
 
   return (
-    <MobileContext.Provider value={isMobile}>
-      <TokenContext.Provider value={token}>
-        <div className="min-h-screen flex flex-col font-inter">
-          <Header
-            handleGridChange={handleGridChange}
-            isGridClose={isGridClose}
-            refreshTrigger={handleRefresh}
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
-            setIsSidebarOpen={setIsSidebarOpen}
-            onLogout={handleLogout}
-          />
-          <div className="flex flex-1 overflow-hidden">
-            <Sidebar
+    <UserContext.Provider value={userName}>
+      <MobileContext.Provider value={isMobile}>
+        <TokenContext.Provider value={token}>
+          <div className="min-h-screen flex flex-col font-inter">
+            <Header
+              handleGridChange={handleGridChange}
+              isGridClose={isGridClose}
               refreshTrigger={handleRefresh}
-              isSidebarOpen={isSidebarOpen}
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
               setIsSidebarOpen={setIsSidebarOpen}
-              handleCloseSidebar={handleCloseSidebar}
-              handleLogout={handleLogout}
-              currentPage={currentPage}
-              onNavigate={handleNavigation}
-              user={userName}
+              onLogout={handleLogout}
             />
-            <main className="flex-1 overflow-y-auto bg-gray-100 transition-all duration-300">
-              {getPageElement()}
-              <Footer />
-            </main>
+            <div className="flex flex-1 overflow-hidden">
+              <Sidebar
+                refreshTrigger={handleRefresh}
+                isSidebarOpen={isSidebarOpen}
+                setIsSidebarOpen={setIsSidebarOpen}
+                handleCloseSidebar={handleCloseSidebar}
+                handleLogout={handleLogout}
+                currentPage={currentPage}
+                onNavigate={handleNavigation}
+                user={userName}
+              />
+              <main className="flex-1 overflow-y-auto bg-gray-100 transition-all duration-300">
+                {getPageElement()}
+                <Footer />
+              </main>
+            </div>
           </div>
-        </div>
-      </TokenContext.Provider>
-    </MobileContext.Provider>
+        </TokenContext.Provider>
+      </MobileContext.Provider>
+    </UserContext.Provider>
   );
 }
 

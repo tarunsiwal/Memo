@@ -59,8 +59,7 @@
 }
 
 .day-cell.selected {
-    background: var(--color-1);
-    color: white;
+    background: rgb(255 154 0 / 19%);
 }
 
 .day-cell.inactive {
