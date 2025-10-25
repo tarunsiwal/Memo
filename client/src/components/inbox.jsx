@@ -11,7 +11,7 @@ function Inbox({
   refreshTrigger,
   handleRefresh,
   searchQuery,
-  setSearchQuery,
+  // setSearchQuery,
 }) {
   const apiUrl = import.meta.env.VITE_APP_API_URL;
   const TASK_API_BASE_URL = `${apiUrl}/tasks`;
@@ -105,7 +105,7 @@ function Inbox({
     } else if (page === 'Upcoming') {
       fetchURL = `${TASK_API_BASE_URL}/upcoming`;
     } else {
-      if (page === 'FilterLabels' || hasStructuredFilters) {
+      if (page === 'FilterLabels') {
         if (selectedColor) {
           params.append('color', selectedColor);
         }

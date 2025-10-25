@@ -62,6 +62,57 @@
     background: rgb(255 154 0 / 19%);
 }
 
+.day-cell.today {
+    background-color: #1c74e7;
+    color: #fff;
+}
+
 .day-cell.inactive {
     color: #bbb;
+}
+
+.calendar-btn-container {
+    /* display: flex;
+    justify-content: space-around; */
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.calendar-btn-container button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    font-size: 12px;
+    padding: 0;
+}
+
+.calendar-btn-container button:hover {
+    background-color: transparent !important;
+}
+
+.calendar-btn-container svg {
+    stroke-width: 2;
+    height: 1.1em;
+    width: 1.1em;
+    margin-bottom: 5px;
+    flex-shrink: 0;
+}
+
+.calendar-btn-container .btn:hover .clear {
+    color: red;
+}
+
+.calendar-btn-container .btn:hover .today {
+    color: #1c74e7;
+}
+
+.calendar-btn-container .btn:hover .tomorrow {
+    /* color: aquamarine; */
+    color: lawngreen;
+}
+
+.calendar-btn-container .btn:hover .sunday {
+    color: rgb(255, 0, 93);
 }

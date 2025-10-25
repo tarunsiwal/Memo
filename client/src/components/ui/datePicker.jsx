@@ -5,7 +5,16 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { Calendar, X, ChevronRight, ChevronLeft } from 'lucide-react';
+import {
+  Calendar,
+  X,
+  ChevronRight,
+  ChevronLeft,
+  CalendarArrowUp,
+  CalendarCheck2,
+  CalendarHeartIcon,
+  CalendarX2,
+} from 'lucide-react';
 import '../../assets/css/datePicker.css';
 import PopperDropdown from '../helper/popperDropdown';
 
@@ -94,6 +103,26 @@ function DatePicker({ setDueDate, dueDate }) {
     );
   };
 
+  const selectTomorrow = () => {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    setDueDate(tomorrow);
+  };
+
+  const selectSunday = () => {
+    const today = new Date();
+    const currentDayOfWeek = today.getDay();
+    let dayUntilSunday;
+    if (currentDayOfWeek === 0) {
+      dayUntilSunday = 7;
+    } else {
+      dayUntilSunday = 7 - currentDayOfWeek;
+    }
+    const upcomingSunday = new Date(today);
+    upcomingSunday.setDate(today.getDate() + dayUntilSunday);
+    setDueDate(upcomingSunday);
+  };
+
   const calendarBtnRef = useRef(null);
   const calendarDropdownRef = useRef(null);
   const pickerRef = useRef(null);
@@ -143,7 +172,7 @@ function DatePicker({ setDueDate, dueDate }) {
               </div>
 
               <div className="calendar-grid">
-                {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(
+                {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(
                   (day) => (
                     <div key={day} className="day-header">
                       {day}
@@ -161,7 +190,7 @@ function DatePicker({ setDueDate, dueDate }) {
                     <div
                       key={idx}
                       className={`day-cell 
-                    ${isSelected ? 'selected' : isToday ? ' ' : ' '} 
+                    ${isSelected ? 'selected' : isToday ? 'today' : ' '} 
                     ${day.isCurrentMonth ? '' : 'inactive'}`}
                       onClick={() => handleDateClick(day)}
                     >
@@ -169,6 +198,33 @@ function DatePicker({ setDueDate, dueDate }) {
                     </div>
                   );
                 })}
+              </div>
+              <hr />
+              <div className="calendar-btn-container">
+                <button
+                  type="button"
+                  className="btn"
+                  onClick={() => setDueDate('')}
+                >
+                  <CalendarX2 className="clear" />
+                  <span className="icon-names">Clear</span>
+                </button>
+                <button
+                  type="button"
+                  className="btn"
+                  onClick={() => setDueDate(new Date())}
+                >
+                  <CalendarCheck2 className="today" />
+                  <span className="icon-names">Today</span>
+                </button>
+                <button type="button" className="btn" onClick={selectTomorrow}>
+                  <CalendarArrowUp className="tomorrow" />
+                  <span className="icon-names">Tomorrow</span>
+                </button>
+                <button type="button" className="btn" onClick={selectSunday}>
+                  <CalendarHeartIcon className="sunday" />
+                  <span className="icon-names">Sunday</span>
+                </button>
               </div>
             </div>
           )}

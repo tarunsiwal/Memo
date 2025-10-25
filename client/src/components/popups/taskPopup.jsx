@@ -166,9 +166,9 @@ function taskPopup({
     }
     onClose();
   };
-  const handleRemoveDueDate = () => {
-    setDueDate(''); // Clear the due date
-  };
+  // const handleRemoveDueDate = () => {
+  //   setDueDate(''); // Clear the due date
+  // };
   const handleLabel = () => {
     setIslabelDropDownOpen(!islabelDropDownOpen);
   };
@@ -255,13 +255,13 @@ function taskPopup({
                     ? dueDate.toLocaleDateString()
                     : 'Invalid Date'}
                 </span>
-                <button
+                {/* <button
                   className="cross"
                   type="button"
                   onClick={handleRemoveDueDate}
                 >
                   <X />
-                </button>
+                </button> */}
               </div>
             </div>
           ) : (
