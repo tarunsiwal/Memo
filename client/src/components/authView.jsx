@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import Spinner from '../components/helper/spinner';
+import Spinner from './helper/spinner';
 import { X, Eye, EyeClosed } from 'lucide-react';
 import '../assets/css/auth.css';
+import MenoLoginAnimation from './ui/menoLoginAnimation';
 // ----------------------------------------------------------------------
 // Auth Views (Login/Register)
 // ----------------------------------------------------------------------
@@ -28,7 +29,7 @@ const AuthView = ({ onAuthAction, authError, setAuthError }) => {
     <div className="auth-container">
       <div className="auth-card">
         <h2 className="auth-header">
-          {isLogin ? 'Sign In to Karyam' : 'Create Your Account'}
+          {isLogin ? 'Sign In to Memo' : 'Create Your Account'}
         </h2>
         <p className="auth-subtext">
           {isLogin ? 'Need an account? ' : 'Already have an account? '}

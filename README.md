@@ -1,6 +1,6 @@
 <div align="center">
-<h1><img src='client/public/favicon.png'></img> Karyam: Your Ultimate Task Companion</h1>
-<p>A fundamental to-do application, Karyam serves as a portfolio piece showcasing MERN stack development with an emphasis on **clean code, robust CRUD functionality, and JWT-based authentication**.</p>
+<h1><img src='client/public/favicon.png'></img> Memo: Your Ultimate Task Companion</h1>
+<p>A fundamental to-do application, Memo serves as a portfolio piece showcasing MERN stack development with an emphasis on **clean code, robust CRUD functionality, and JWT-based authentication**.</p>
 </div>
 
 ## 💻 Tech Stack & Features
@@ -17,7 +17,7 @@ This application is built with a powerful **MERN stack**, showcasing full-stack 
 
 ## 🚀 Getting Started
 
-Follow these steps to get Karyam running on your local machine:
+Follow these steps to get Memo running on your local machine:
 
 1.  Clone the repository:
     ```bash

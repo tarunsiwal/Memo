@@ -126,7 +126,12 @@ function TaskCard({
             </button>
             {isTaskUtilMenuOpen ? (
               <ul className="task-dropdown-menu" ref={taskDropdownRef}>
-                <li onClick={() => handleUpdateTaskPopup(task._id)}>
+                <li
+                  onClick={() => {
+                    handleUpdateTaskPopup(task._id);
+                    setisTaskUtilMenuOpen(false);
+                  }}
+                >
                   <Pencil /> Edit
                 </li>
                 <hr style={{ margin: '0' }} />

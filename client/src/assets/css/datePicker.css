@@ -36,7 +36,7 @@
 }
 
 .day-header {
-    font-size: 14px;
+    font-size: 12px;
     color: var(--color-1);
 }
 
@@ -80,12 +80,13 @@
 
 .calendar-btn-container button {
     display: flex;
+    height: unset !important;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 100%;
     font-size: 12px;
-    padding: 0;
+    padding: 5px 0 !important;
 }
 
 .calendar-btn-container button:hover {
@@ -100,6 +101,12 @@
     flex-shrink: 0;
 }
 
+.calendar-btn-container .btn:focus-visible,
+.calendar-btn-container .btn:active,
+.calendar-btn-container .btn:focus {
+    border: none !important;
+}
+
 .calendar-btn-container .btn:hover .clear {
     color: red;
 }
@@ -109,8 +116,7 @@
 }
 
 .calendar-btn-container .btn:hover .tomorrow {
-    /* color: aquamarine; */
-    color: lawngreen;
+    color: #6ad800;
 }
 
 .calendar-btn-container .btn:hover .sunday {

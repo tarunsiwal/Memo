@@ -94,10 +94,14 @@ function Tasks({
   const styles = {
     taskContainer: {
       // display: isGridClose ? 'block' : undefined,
-      // columnCount: isGridClose ? '1' : isMobile ? '2' : '3',
+      // columnCount: isGridClose
+      //   ? '1'
+      //   : !isMobile
+      //   ? '2'
+      //   : 'repeat(auto-fit, minmax(240px, 240px))',
       // columnGap: isMobile ? '0.6rem' : '1rem',
-      display: isGridClose ? 'block' : 'grid',
 
+      display: isGridClose ? 'block' : 'grid',
       justifyContent: 'center',
       justifyItems: 'start',
       gridTemplateColumns: isMobile

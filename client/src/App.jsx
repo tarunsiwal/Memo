@@ -1,10 +1,9 @@
 import { useState, useEffect, createContext, useCallback } from 'react';
 
-import AuthView from './pages/authView';
+import AuthView from './components/authView';
 import Sidebar from './components/sidebar';
 import Header from './components/header';
 import Inbox from './components/inbox';
-import FilterLabels from './pages/filterLabels';
 import Footer from './components/footer';
 import Spinner from './components/helper/spinner';
 
@@ -190,8 +189,6 @@ function App() {
             searchQuery={searchQuery}
           />
         );
-      // case 'FilterLabels':
-      //   return <FilterLabels />;
       default:
         return (
           <Inbox
