@@ -11,11 +11,13 @@ import './App.css';
 
 const apiUrl = import.meta.env.VITE_APP_API_URL;
 const USER_API_BASE_URL = `${apiUrl}/user`;
+console.log(USER_API_BASE_URL, apiUrl);
 const TOKEN_STORAGE_KEY = 'user_jwt_token';
 
 export const MobileContext = createContext(false);
 export const TokenContext = createContext(null);
 export const UserContext = createContext(null);
+export const ApiUrlContext = createContext(null);
 
 const useResponsiveLayout = (breakpoint = 640) => {
   const [isMobile, setIsMobile] = useState(false);
@@ -206,33 +208,35 @@ function App() {
     <UserContext.Provider value={userName}>
       <MobileContext.Provider value={isMobile}>
         <TokenContext.Provider value={token}>
-          <div className="min-h-screen flex flex-col font-inter">
-            <Header
-              handleGridChange={handleGridChange}
-              isGridClose={isGridClose}
-              refreshTrigger={handleRefresh}
-              searchQuery={searchQuery}
-              setSearchQuery={setSearchQuery}
-              setIsSidebarOpen={setIsSidebarOpen}
-              onLogout={handleLogout}
-            />
-            <div className="flex flex-1 overflow-hidden">
-              <Sidebar
+          <ApiUrlContext.Provider value={apiUrl}>
+            <div className="min-h-screen flex flex-col font-inter">
+              <Header
+                handleGridChange={handleGridChange}
+                isGridClose={isGridClose}
                 refreshTrigger={handleRefresh}
-                isSidebarOpen={isSidebarOpen}
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
                 setIsSidebarOpen={setIsSidebarOpen}
-                handleCloseSidebar={handleCloseSidebar}
-                handleLogout={handleLogout}
-                currentPage={currentPage}
-                onNavigate={handleNavigation}
-                user={userName}
+                onLogout={handleLogout}
               />
-              <main className="flex-1 overflow-y-auto bg-gray-100 transition-all duration-300">
-                {getPageElement()}
-                <Footer />
-              </main>
+              <div className="flex flex-1 overflow-hidden">
+                <Sidebar
+                  refreshTrigger={handleRefresh}
+                  isSidebarOpen={isSidebarOpen}
+                  setIsSidebarOpen={setIsSidebarOpen}
+                  handleCloseSidebar={handleCloseSidebar}
+                  handleLogout={handleLogout}
+                  currentPage={currentPage}
+                  onNavigate={handleNavigation}
+                  user={userName}
+                />
+                <main className="flex-1 overflow-y-auto bg-gray-100 transition-all duration-300">
+                  {getPageElement()}
+                  <Footer />
+                </main>
+              </div>
             </div>
-          </div>
+          </ApiUrlContext.Provider>
         </TokenContext.Provider>
       </MobileContext.Provider>
     </UserContext.Provider>

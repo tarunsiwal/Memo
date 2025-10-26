@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext, useCallback } from 'react';
 import Task from './task';
-import { TokenContext } from '../App';
+import { TokenContext, ApiUrlContext } from '../App';
 import TaskPopup from './popups/taskPopup';
 import { Flag } from 'lucide-react';
 import '../App.css';
@@ -13,7 +13,7 @@ function Inbox({
   searchQuery,
   // setSearchQuery,
 }) {
-  const apiUrl = import.meta.env.VITE_APP_API_URL;
+  const apiUrl = useContext(ApiUrlContext);
   const TASK_API_BASE_URL = `${apiUrl}/tasks`;
   const token = useContext(TokenContext);
   const isDev = import.meta.env.REACT_APP_ENV === 'development';

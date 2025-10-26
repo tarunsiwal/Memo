@@ -9,16 +9,14 @@ import { Plus, Tag, X } from 'lucide-react';
 import '../../assets/css/labelDropDown.css';
 import Spinner from '../helper/spinner.jsx';
 import TruncatedText from '../helper/truncatedText.jsx';
-import { TokenContext } from '../../App.jsx';
-
-const apiUrl = import.meta.env.VITE_APP_API_URL;
+import { TokenContext, ApiUrlContext } from '../../App.jsx';
 
 const LabelsManager = forwardRef(({ handleLabel, labels, setLabels }, ref) => {
   const [displayedLabels, setDisplayedLabels] = useState([]);
   const [allLabelsCache, setAllLabelsCache] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-
+  const apiUrl = useContext(ApiUrlContext);
   const token = useContext(TokenContext);
 
   useEffect(() => {

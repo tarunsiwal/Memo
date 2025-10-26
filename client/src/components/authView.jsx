@@ -2,7 +2,6 @@ import { useState } from 'react';
 import Spinner from './helper/spinner';
 import { X, Eye, EyeClosed } from 'lucide-react';
 import '../assets/css/auth.css';
-import MenoLoginAnimation from './ui/menoLoginAnimation';
 // ----------------------------------------------------------------------
 // Auth Views (Login/Register)
 // ----------------------------------------------------------------------

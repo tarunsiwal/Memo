@@ -17,8 +17,6 @@ const router = express.Router();
 // Routes
 router.get("/today", protect, getTasksByDate); // Fetch tasks for today
 router.get("/upcoming", protect, getUpcomingTasks); // Fetch upcoming tasks
-// router.get("/today/search", protect, getTasksWithFilters); // Fetch tasks for today
-// router.get("/upcoming/search", protect, getTasksWithFilters); // Fetch upcoming tasks
 router.get("/search", protect, getTasksWithFilters); // search task
 router.get("/", protect, getAllTasks); // Fetch all tasks
 router.get("/:id", protect, getTaskById); // Fetch task by ID
