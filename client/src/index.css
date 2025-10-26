@@ -21,6 +21,22 @@
   --color-3: rgb(255 251 246);
 }
 
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px #fff inset !important;
+  background-color: #fff !important;
+  color: #000 !important;
+  /* Optionally force text color to black */
+}
+
+/* For Firefox, which uses a different selector (less common to require override) */
+input:-moz-autofill {
+  background-color: #fff !important;
+  color: #000 !important;
+}
+
 a {
   font-weight: 500;
   color: #646cff;

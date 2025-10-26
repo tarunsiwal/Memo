@@ -11,7 +11,6 @@ import './App.css';
 
 const apiUrl = import.meta.env.VITE_APP_API_URL;
 const USER_API_BASE_URL = `${apiUrl}/user`;
-console.log(USER_API_BASE_URL, apiUrl);
 const TOKEN_STORAGE_KEY = 'user_jwt_token';
 
 export const MobileContext = createContext(false);
