@@ -12,7 +12,12 @@ dotenv.config();
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+const corsOptions = {
+  origin: ["https://memo-one.vercel.app", "https://memo.js.org"], // Add any custom domains too!
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true,
+};
+app.use(cors(corsOptions));
 app.use("/api/tasks", tasksRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/user/labels", userLabelsRoutes);
