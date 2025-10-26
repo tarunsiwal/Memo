@@ -1,5 +1,5 @@
 <div align="center">
-<h1><img src='client/public/favicon.png'></img> Memo: Your Ultimate Task Companion</h1>
+<h1><img src='client/public/favicon.png' width="50" height="50"></img> Memo: Your Ultimate Task Companion</h1>
 <p>A fundamental to-do application, Memo serves as a portfolio piece showcasing MERN stack development with an emphasis on **clean code, robust CRUD functionality, and JWT-based authentication**.</p>
 </div>
 
