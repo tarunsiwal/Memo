@@ -197,6 +197,21 @@
     }
 
     .sidebarImage {
-        width: 1.7em;
+        width: 2em;
+        height: 25px;
+    }
+
+    .addTask .image-container svg {
+        width: 2em;
+        height: 25px;
+    }
+
+    .dynamicCalendarIcon span {
+        font-size: .8em;
+        top: 7px;
+    }
+
+    .sideBarMenu button .txt {
+        font-size: 16px;
     }
 }
