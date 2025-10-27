@@ -182,7 +182,10 @@ function Sidebar({
           ))}
           <li style={style.widthLI}>
             <button
-              onClick={() => setIsLogoutPopupOpen(true)}
+              onClick={() => {
+                setIsLogoutPopupOpen(true);
+                setIsSidebarOpen(false);
+              }}
               className="logout-btn"
               style={style.widthBT}
             >
@@ -200,7 +203,6 @@ function Sidebar({
         trigger={isLogoutPopupOpen}
         handleLogout={handleLogout}
         onClose={() => setIsLogoutPopupOpen(false)}
-        setIsSidebarOpen={setIsSidebarOpen}
       />
       <TaskPopup
         trigger={isAddTaskPopupOpen}

@@ -1,14 +1,12 @@
 import React from 'react';
 
-function LogoutPopup({ trigger, handleLogout, onClose, setIsSidebarOpen }) {
+function LogoutPopup({ trigger, handleLogout, onClose }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     handleLogout();
-    setIsSidebarOpen(false);
     onClose();
   };
   const handleClose = () => {
-    setIsSidebarOpen(false);
     onClose();
   };
   return trigger ? (
