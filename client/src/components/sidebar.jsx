@@ -15,11 +15,8 @@ import {
   Inbox,
   CalendarDays,
   FunnelPlus,
-  LayoutGrid,
   LogOut,
   CirclePlus,
-  // StickyNote,
-  // Clock,
 } from 'lucide-react';
 import LogoutPopup from './popups/logoutPopup';
 
@@ -203,6 +200,7 @@ function Sidebar({
         trigger={isLogoutPopupOpen}
         handleLogout={handleLogout}
         onClose={() => setIsLogoutPopupOpen(false)}
+        setIsSidebarOpen={setIsSidebarOpen}
       />
       <TaskPopup
         trigger={isAddTaskPopupOpen}

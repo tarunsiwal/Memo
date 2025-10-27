@@ -13,7 +13,7 @@ const app = express();
 
 app.use(express.json());
 const corsOptions = {
-  origin: ["https://memo-one.vercel.app", "https://memo.js.org"], // Add any custom domains too!
+  origin: ["https://memo-one.vercel.app"],
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
 };
