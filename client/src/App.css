@@ -527,10 +527,12 @@
 
   .mainContainer {
     padding: 0.8rem;
+    margin-top: 4rem;
   }
 
   .header {
-    padding: 0 1.5rem;
+    /* padding: 0 1.5rem; */
+    padding: 0 0.6rem;
   }
 
   .sideNavMobileToggle {

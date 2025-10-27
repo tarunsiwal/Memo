@@ -195,4 +195,8 @@
     .sideBar .profileContainer {
         justify-content: space-between;
     }
+
+    .sidebarImage {
+        width: 1.7em;
+    }
 }
