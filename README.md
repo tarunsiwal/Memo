@@ -1,6 +1,8 @@
 <div align="center">
 <h1><img src='client/public/favicon.png' width="50" height="50"></img> Memo: Your Ultimate Task Companion</h1>
-<p>A fundamental to-do application, Memo serves as a portfolio piece showcasing MERN stack development with an emphasis on **clean code, robust CRUD functionality, and JWT-based authentication**.</p>
+<p>A fundamental to-do application, Memo serves as a portfolio piece showcasing MERN stack development with an emphasis on **clean code, robust CRUD functionality, and JWT-based authentication**.<br>
+Please visit the site here -> <a>https://memo-one.vercel.app/</a>
+</p>
 </div>
 
 ## 💻 Tech Stack & Features
