@@ -8,8 +8,11 @@ import Footer from './components/footer';
 import Spinner from './components/helper/spinner';
 
 import './App.css';
-
-const apiUrl = import.meta.env.VITE_APP_API_URL;
+const apiUrl =
+  import.meta.env.REACT_APP_ENV === 'development'
+    ? import.meta.env.VITE_APP_API_URL_DEV
+    : import.meta.env.VITE_APP_API_URL;
+// const apiUrl = import.meta.env.VITE_APP_API_URL;
 const USER_API_BASE_URL = `${apiUrl}/user`;
 const TOKEN_STORAGE_KEY = 'user_jwt_token';
 

@@ -1,6 +1,7 @@
-import React from 'react';
-
+import React, { useContext } from 'react';
+import { UserContext } from '../../App';
 function LogoutPopup({ trigger, handleLogout, onClose }) {
+  const userName = useContext(UserContext);
   const handleSubmit = (e) => {
     e.preventDefault();
     handleLogout();
@@ -14,7 +15,9 @@ function LogoutPopup({ trigger, handleLogout, onClose }) {
       <div className="popup" style={{ width: '45%' }}>
         <form onSubmit={handleSubmit}>
           <h1 className="deleteTaskHeading">Logout</h1>
-          <p className="descriptiotn">Do you want to logout?</p>
+          <p className="descriptiotn">
+            <b>{userName}</b> do you want to logout?
+          </p>
           <div className="popup-btn" style={{ float: 'right', margin: '0' }}>
             <div className="submit-btn">
               <button className="btn submit" type="submit">

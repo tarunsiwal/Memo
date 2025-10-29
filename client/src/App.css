@@ -562,13 +562,15 @@
   }
 
   .task-card .pin.pinned {
-    /* opacity: 1 !important;
-    visibility: visible !important; */
     display: block;
   }
 
   .task-card .pin {
     display: none;
+  }
+
+  .task-properties {
+    justify-content: center;
   }
 }
 

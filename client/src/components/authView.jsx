@@ -14,15 +14,31 @@ const AuthView = ({ onAuthAction, authError, setAuthError }) => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const isLogin = authMode === 'login';
+  const GUEST_USERNAME = 'guest';
+  const GUEST_EMAIL = 'guest@gmail.com';
+  const GUEST_PASSWORD = '123';
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    if (e) {
+      e.preventDefault();
+    }
     setLoading(true);
     await onAuthAction(userName, email, password, authMode);
     setLoading(false);
   };
+
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
+  };
+
+  const handleGuestSubmit = async () => {
+    if (loading) return;
+    setLoading(true);
+    if (authMode !== 'login') {
+      setAuthMode('login');
+    }
+    await onAuthAction(GUEST_USERNAME, GUEST_EMAIL, GUEST_PASSWORD, 'login');
+    setLoading(false);
   };
   return (
     <div className="auth-container">
@@ -120,6 +136,14 @@ const AuthView = ({ onAuthAction, authError, setAuthError }) => {
                             }`}
             >
               {loading ? <Spinner /> : isLogin ? 'Sign In' : 'Register'}
+            </button>
+            <button
+              type="button"
+              onClick={handleGuestSubmit}
+              disabled={loading}
+              className="guest-button"
+            >
+              Login as guest
             </button>
           </div>
         </form>

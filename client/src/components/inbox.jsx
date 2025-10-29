@@ -11,7 +11,6 @@ function Inbox({
   refreshTrigger,
   handleRefresh,
   searchQuery,
-  // setSearchQuery,
 }) {
   const apiUrl = useContext(ApiUrlContext);
   const TASK_API_BASE_URL = `${apiUrl}/tasks`;
