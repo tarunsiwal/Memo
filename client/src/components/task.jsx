@@ -17,6 +17,7 @@ function Tasks({
   handleUpdateTaskPopup,
   page,
   onPinTask,
+  isUpdatePopupOpen,
 }) {
   const userName = useContext(UserContext);
   const token = useContext(TokenContext);
@@ -140,6 +141,7 @@ function Tasks({
                 deletePopup={deletePopup}
                 handleUpdateTaskPopup={handleUpdateTaskPopup}
                 styles={styles}
+                isUpdatePopupOpen={isUpdatePopupOpen}
               />
             ))}
           </div>
@@ -161,6 +163,7 @@ function Tasks({
                 deletePopup={deletePopup}
                 handleUpdateTaskPopup={handleUpdateTaskPopup}
                 styles={styles}
+                isUpdatePopupOpen={isUpdatePopupOpen}
               />
             ))}
           </div>

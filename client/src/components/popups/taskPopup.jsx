@@ -236,143 +236,145 @@ function taskPopup({
               required
             />
           </div>
-          {dueDate !== '' ? (
-            <div
-              className="due-date-container"
-              style={{
-                fontSize: '14px',
-                marginBottom: '5px',
-                color:
-                  color === '#ffffff' || color === '#f3f3f3'
-                    ? '#ff9a00'
-                    : '#4e4e4e',
-              }}
-            >
-              <div className="task-date-container">
-                <CalendarFold width={'1em'} height={'1em'} />
-                <span>
-                  {dueDate instanceof Date
-                    ? dueDate.toLocaleDateString()
-                    : 'Invalid Date'}
-                </span>
-                {/* <button
+          <div className="option-grid">
+            {dueDate !== '' ? (
+              <div
+                className="due-date-container"
+                style={{
+                  fontSize: '14px',
+                  marginBottom: '5px',
+                  color:
+                    color === '#ffffff' || color === '#f3f3f3'
+                      ? '#ff9a00'
+                      : '#4e4e4e',
+                }}
+              >
+                <div className="task-date-container">
+                  <CalendarFold width={'1em'} height={'1em'} />
+                  <span>
+                    {dueDate instanceof Date
+                      ? dueDate.toLocaleDateString()
+                      : 'Invalid Date'}
+                  </span>
+                  {/* <button
                   className="cross"
                   type="button"
                   onClick={handleRemoveDueDate}
                 >
                   <X />
                 </button> */}
+                </div>
               </div>
+            ) : (
+              ''
+            )}
+            <div className="label-tag-container">
+              {labels.map((label, index) => (
+                <div key={index} className="label-tag">
+                  <span>{label}</span>
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveLabel(index)}
+                    className="btn"
+                  >
+                    <X color="#4e4e4e" height="16" width="16" />
+                  </button>
+                </div>
+              ))}
             </div>
-          ) : (
-            ''
-          )}
-          <div className="label-tag-container">
-            {labels.map((label, index) => (
-              <div key={index} className="label-tag">
-                <span>{label}</span>
+            <hr />
+            <div className="popup-btn">
+              <div className="task-properties">
+                <DatePicker setDueDate={setDueDate} dueDate={dueDate} />
+                <PriorityDropdown
+                  onPriorityChange={onPriorityChange}
+                  priority={priority}
+                />
+                <PopperDropdown
+                  containerRef={labelDropDownRef}
+                  btnRef={labelPickerBtnRef}
+                  dropdownRef={labelPickerDropdownRef}
+                  isOpen={islabelDropDownOpen}
+                  setIsOpen={setIslabelDropDownOpen}
+                  content={
+                    <div ref={labelDropDownRef}>
+                      <button
+                        className="btn"
+                        id="task-btn"
+                        type="button"
+                        onClick={handleLabel}
+                        ref={labelPickerBtnRef}
+                      >
+                        <Tag className="task-property-icon" />
+                      </button>
+                      {islabelDropDownOpen ? (
+                        <LabelDropDown
+                          handleLabel={handleLabel}
+                          labels={labels}
+                          setLabels={setLabels}
+                          ref={labelPickerDropdownRef}
+                        />
+                      ) : null}
+                    </div>
+                  }
+                />
+                <PopperDropdown
+                  containerRef={colorPickerRef}
+                  btnRef={colorPickerBtnRef}
+                  dropdownRef={colorPickerDropdownRef}
+                  isOpen={isColorPickerOpen}
+                  setIsOpen={setIsColorPickerOpen}
+                  content={
+                    <div ref={colorPickerRef}>
+                      <button
+                        className="btn"
+                        id="task-btn"
+                        type="button"
+                        onClick={() => {
+                          setIsColorPickerOpen(!isColorPickerOpen);
+                          setIslabelDropDownOpen(false);
+                        }}
+                        ref={colorPickerBtnRef}
+                      >
+                        <Palette className="task-property-icon" />
+                      </button>
+                      {isColorPickerOpen && (
+                        <div
+                          className="color-picker-container"
+                          ref={colorPickerDropdownRef}
+                        >
+                          {COLOR_PALETTE.map((c) => (
+                            <div
+                              key={c}
+                              className="color-swatch"
+                              style={{
+                                backgroundColor: c,
+                                border:
+                                  c === color
+                                    ? '2px solid #3b82f6'
+                                    : '2px solid #d1d5db',
+                              }}
+                              onClick={() => handleColorChange(c)}
+                            ></div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  }
+                />
+              </div>
+              <div className="submit-btn">
+                <button className="btn submit" type="submit">
+                  {action === 'add' ? 'Add task' : 'Update'}
+                </button>
                 <button
+                  className="btn cancel"
                   type="button"
-                  onClick={() => handleRemoveLabel(index)}
-                  className="btn"
+                  onClick={handleCloseAndClear}
                 >
-                  <X color="#4e4e4e" height="16" width="16" />
+                  Cancel
                 </button>
               </div>
-            ))}
-          </div>
-          <hr />
-          <div className="popup-btn">
-            <div className="task-properties">
-              <DatePicker setDueDate={setDueDate} dueDate={dueDate} />
-              <PriorityDropdown
-                onPriorityChange={onPriorityChange}
-                priority={priority}
-              />
-              <PopperDropdown
-                containerRef={labelDropDownRef}
-                btnRef={labelPickerBtnRef}
-                dropdownRef={labelPickerDropdownRef}
-                isOpen={islabelDropDownOpen}
-                setIsOpen={setIslabelDropDownOpen}
-                content={
-                  <div ref={labelDropDownRef}>
-                    <button
-                      className="btn"
-                      id="task-btn"
-                      type="button"
-                      onClick={handleLabel}
-                      ref={labelPickerBtnRef}
-                    >
-                      <Tag className="task-property-icon" />
-                    </button>
-                    {islabelDropDownOpen ? (
-                      <LabelDropDown
-                        handleLabel={handleLabel}
-                        labels={labels}
-                        setLabels={setLabels}
-                        ref={labelPickerDropdownRef}
-                      />
-                    ) : null}
-                  </div>
-                }
-              />
-              <PopperDropdown
-                containerRef={colorPickerRef}
-                btnRef={colorPickerBtnRef}
-                dropdownRef={colorPickerDropdownRef}
-                isOpen={isColorPickerOpen}
-                setIsOpen={setIsColorPickerOpen}
-                content={
-                  <div ref={colorPickerRef}>
-                    <button
-                      className="btn"
-                      id="task-btn"
-                      type="button"
-                      onClick={() => {
-                        setIsColorPickerOpen(!isColorPickerOpen);
-                        setIslabelDropDownOpen(false);
-                      }}
-                      ref={colorPickerBtnRef}
-                    >
-                      <Palette className="task-property-icon" />
-                    </button>
-                    {isColorPickerOpen && (
-                      <div
-                        className="color-picker-container"
-                        ref={colorPickerDropdownRef}
-                      >
-                        {COLOR_PALETTE.map((c) => (
-                          <div
-                            key={c}
-                            className="color-swatch"
-                            style={{
-                              backgroundColor: c,
-                              border:
-                                c === color
-                                  ? '2px solid #3b82f6'
-                                  : '2px solid #d1d5db',
-                            }}
-                            onClick={() => handleColorChange(c)}
-                          ></div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                }
-              />
-            </div>
-            <div className="submit-btn">
-              <button className="btn submit" type="submit">
-                {action === 'add' ? 'Add task' : 'Update'}
-              </button>
-              <button
-                className="btn cancel"
-                type="button"
-                onClick={handleCloseAndClear}
-              >
-                Cancel
-              </button>
             </div>
           </div>
         </form>

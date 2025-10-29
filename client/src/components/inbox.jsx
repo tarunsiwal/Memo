@@ -359,6 +359,8 @@ function Inbox({
           onUpdateTask={onUpdateTask}
           taskDetails={taskDetails}
           action={'update'}
+          isUpdatePopupOpen={isUpdatePopupOpen}
+          handleUpdateTaskPopup={handleUpdateTaskPopup}
         />
         <Task
           taskList={tasks}

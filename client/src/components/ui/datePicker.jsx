@@ -64,7 +64,7 @@ function DatePicker({ setDueDate, dueDate }) {
     }
 
     let latestDayOfMonth = new Date(year, month + 1, 0).getDate();
-    for (let i = 1; i < latestDayOfMonth; i++) {
+    for (let i = 1; i <= latestDayOfMonth; i++) {
       let dayDate = new Date(year, month, i);
       calendarDays.push({
         date: i,
@@ -72,12 +72,13 @@ function DatePicker({ setDueDate, dueDate }) {
         fullDate: dayDate,
       });
     }
-
+    let nextMonthDays = 1;
     while (calendarDays.length % 7 !== 0) {
       calendarDays.push({
-        date: calendarDays.length % 7,
+        date: nextMonthDays,
         isCurrentMonth: false,
       });
+      nextMonthDays++;
     }
 
     return calendarDays;

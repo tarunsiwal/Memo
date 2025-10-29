@@ -1,13 +1,11 @@
 import React, { useRef } from 'react';
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import TruncatedText from '../helper/truncatedText';
 import { MobileContext } from '../../App';
 
 import {
   Trash2,
   Pencil,
-  Palette,
-  Tag,
   EllipsisVertical,
   Pin,
   CalendarFold,
@@ -19,6 +17,7 @@ function TaskCard({
   task,
   deletePopup,
   togglePin,
+  isUpdatePopupOpen,
   handleUpdateTaskPopup,
   styles,
 }) {
@@ -41,14 +40,36 @@ function TaskCard({
   else if (task.priority === 2) flag = '#ffec2e' && (fill = '#ffec2e');
   else if (task.priority === 1) flag = 'red' && (fill = 'red');
 
-  const handleUtilMenuToggle = () => {
+  const handleUtilMenuToggle = (e) => {
+    e.stopPropagation();
     setisTaskUtilMenuOpen(!isTaskUtilMenuOpen);
   };
+  const handleOpenPopup = (taskId) => {
+    console.log('clicked');
+
+    if (!isMobile) return;
+    handleUpdateTaskPopup(taskId);
+    window.history.pushState({ modal: 'task-popup', taskId: taskId }, '');
+  };
+
+  useEffect(() => {
+    if (!isMobile) return;
+    const handlePopState = (event) => {
+      if (isUpdatePopupOpen) {
+        handleUpdateTaskPopup();
+      }
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [isMobile, isUpdatePopupOpen, handleUpdateTaskPopup]);
 
   return (
     <div
       key={task._id}
       className="task-card container "
+      onClick={isMobile ? () => handleOpenPopup(task._id) : null}
       style={{ ...styles.taskCard, backgroundColor: task.cardColor }}
       onMouseEnter={() => setHoveredCardId(task._id)}
       onMouseLeave={() => setHoveredCardId(null)}
@@ -135,7 +156,12 @@ function TaskCard({
                   <Pencil /> Edit
                 </li>
                 <hr style={{ margin: '0' }} />
-                <li onClick={() => deletePopup(task._id, task.title)}>
+                <li
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    deletePopup(task._id, task.title);
+                  }}
+                >
                   <Trash2 color="#ff0000ff" />
                   <span style={{ color: '#ff0000ff' }}> Delete</span>
                 </li>
